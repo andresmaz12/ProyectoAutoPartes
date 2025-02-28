@@ -1,0 +1,71 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Runtime.InteropServices.Marshalling;
+using System.Text;
+using System.Threading.Tasks;
+using MySql.Data.MySqlClient;
+
+namespace ProyectoAutoPartes
+{
+    public class claseGestionVentas
+    {
+        //Llama a la lista enlazada para realizar 
+        linkedListFacturas facturas = new linkedListFacturas();
+        //Dirección de la base de datos 
+        private string enlaceConeccion = "Dirreccion de la base de datos";
+
+        private formMenu form;
+
+        // Constructor con inyección de dependencias
+        public claseGestionVentas(string enlaceConeccion, formMenu form)
+        {
+            this.enlaceConeccion = enlaceConeccion;
+            this.form = form;
+        }
+
+        public void CargarDatosXFecha()
+        { 
+            string fechaSeleccionada = form.dateTimePickerVentas.Value.ToString("yyyy-MM-dd");
+            try 
+            {
+                using(MySqlConnection con = new MySqlConnection(enlaceConeccion))
+                {
+                    con.Open();
+
+                    string tabla = "SELECT * FROM <<tabla>> WHERE DATE(fecha)  =@fecha";
+                    MySqlCommand cmd = new MySqlCommand(tabla, con);
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Parameters.AddWithValue("@fecha", fechaSeleccionada);
+
+                    MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                    DataTable dataTable = new DataTable();
+                    adapter.Fill(dataTable);
+
+                    form.dataGridViewVentas.DataSource = dataTable;
+                }
+            }
+            catch(Exception ex) 
+            {
+                MessageBox.Show("Error: " + ex.Message);
+            }
+                
+        }
+
+        public void CargarProductosEnComboBox(ComboBox comboBox)
+        {
+
+        }
+
+        public void CrearFactura(string idproducto, string nombreproducto, string nitcliente, int cantidadllevada, int nofactura, string fechacompra, double pagoindividual, double pagototal)
+        { 
+            facturas.AgregarDatosFactura(idproducto, nombreproducto, nitcliente, cantidadllevada, nofactura, fechacompra, pagoindividual, pagototal);
+        }
+        
+        public void RealizarCompra()
+        {
+            facturas.EfecturarCompra();
+        }
+    }
+}
