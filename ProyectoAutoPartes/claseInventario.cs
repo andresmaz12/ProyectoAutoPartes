@@ -4,6 +4,8 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MySql.Data.MySqlClient;
+using System.Windows.Forms; // Asegurar el uso de MessageBox
 
 namespace ProyectoAutoPartes
 {
@@ -19,144 +21,96 @@ namespace ProyectoAutoPartes
             this.form = form;
         }
 
-        // Método para insertar datos en la base de datos
+        // Método para insertar datos en la base de datos (Migrado de Access a MySQL)
+        // Se cambiaron OleDbConnection y OleDbCommand por MySqlConnection y MySqlCommand
+        // Se cambiaron los parámetros de '?' a '@nombre', '@descripcion', etc.
         public void InsertarDatos(string nombre, string descripcion, double precio, int stock)
         {
             try
             {
-                // Abre la conexión con la base de datos
-                using (OleDbConnection conn = new OleDbConnection(connectionString))
+                using (MySqlConnection conn = new MySqlConnection(connectionString))
                 {
-                    // Consulta SQL ajustada para los nombres de las columnas
-                    string query = "INSERT INTO Productos (Nombre_producto, Descripcion, Precio_Unitario, Stock_Actual) VALUES (?, ?, ?, ?)";
-                    using var cmd = new OleDbCommand(query, conn);
+                    string query = "INSERT INTO Productos (Nombre_producto, Descripcion, Precio_Unitario, Stock_Actual) VALUES (@nombre, @descripcion, @precio, @stock)";
+                    using var cmd = new MySqlCommand(query, conn);
 
-                    // Asignar los valores a los parámetros en el orden correcto
-                    cmd.Parameters.AddWithValue("?", nombre);
-                    cmd.Parameters.AddWithValue("?", descripcion);
-                    cmd.Parameters.AddWithValue("?", precio);  // Para Precio_Unitario, que es de tipo moneda
-                    cmd.Parameters.AddWithValue("?", stock);   // Para Stock_Actual, que es de tipo entero
+                    // Se asignan los valores a los parámetros
+                    cmd.Parameters.AddWithValue("@nombre", nombre);
+                    cmd.Parameters.AddWithValue("@descripcion", descripcion);
+                    cmd.Parameters.AddWithValue("@precio", precio);
+                    cmd.Parameters.AddWithValue("@stock", stock);
 
-                    // Ejecutar la consulta
                     conn.Open();
                     cmd.ExecuteNonQuery();
                     conn.Close();
 
-                    // Verificación: Mostrar un mensaje si la inserción fue exitosa
                     MessageBox.Show("Datos insertados correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
             catch (Exception ex)
             {
-                // Manejo de excepciones: Si algo salió mal, muestra el mensaje de error
                 MessageBox.Show($"Ocurrió un error al guardar los datos: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        //Metodo para cargar los datos en datagridview
-        public void CargarDatos()
-        {
-
-            using var conn = new OleDbConnection(connectionString);
-            string query = "SELECT * FROM Productos"; //Aqui se llama a la tabla que se quiere usar, es posible reutilizar el codigo en caso de ser necesesario
-            var adapter = new OleDbDataAdapter(query, conn);
-            DataTable dt = new DataTable();
-            adapter.Fill(dt);
-            form.dataGridView1.DataSource = dt;
-        }
-
+        // Método para buscar elementos (Migrado de Access a MySQL)
+        // Se cambiaron los '?' por '@nombre' y '@precio' en la consulta SQL
         public void BuscarElemento()
         {
             Form4 form4 = new Form4();
             form4.ShowDialog();
 
-
-            // Obtener los valores de los TextBox
             string nombre = form4.Nombre;
             string precio = form4.Precio;
 
-            // Crear la consulta SQL
-            string query = "SELECT * FROM Productos WHERE 1=1"; // La condición 1=1 es para que la consulta sea válida si no se proporcionan criterios
+            string query = "SELECT * FROM Productos WHERE 1=1";
 
-            // Añadir condiciones adicionales si los TextBox tienen valores
             if (!string.IsNullOrEmpty(nombre))
-            {
-                query += " AND Nombre_producto LIKE ?";
-            }
+                query += " AND Nombre_producto LIKE @nombre";
             if (!string.IsNullOrEmpty(precio))
-            {
-                query += " AND Precio_Unitario = ?";
-            }
+                query += " AND Precio_Unitario = @precio";
 
-            // Ejecutar la consulta
-            using (OleDbConnection conn = new OleDbConnection(connectionString))
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
-                using (OleDbDataAdapter adapter = new OleDbDataAdapter(query, conn))
+                using (MySqlCommand cmd = new MySqlCommand(query, conn))
                 {
-                    // Agregar los parámetros de la consulta, en el orden correcto
-                    adapter.SelectCommand.Parameters.Clear();
                     if (!string.IsNullOrEmpty(nombre))
-                    {
-                        adapter.SelectCommand.Parameters.AddWithValue("?", "%" + nombre + "%");
-                    }
+                        cmd.Parameters.AddWithValue("@nombre", "%" + nombre + "%");
                     if (!string.IsNullOrEmpty(precio))
+                        cmd.Parameters.AddWithValue("@precio", Convert.ToDouble(precio));
+
+                    using (MySqlDataAdapter adapter = new MySqlDataAdapter(cmd))
                     {
-                        adapter.SelectCommand.Parameters.AddWithValue("?", Convert.ToDouble(precio)); // Asegurando que el precio sea un número
+                        DataTable dt = new DataTable();
+                        adapter.Fill(dt);
+                        form.dataGridView1.DataSource = dt;
                     }
-
-                    DataTable dt = new DataTable();
-                    adapter.Fill(dt);
-
-                    // Mostrar los resultados en el DataGridView
-                    form.dataGridView1.DataSource = dt;
                 }
             }
         }
 
-        public void ReestableceDatos()
-        {
-            try
-            {
-                // Llamar al método que carga todos los datos en el DataGridView
-                CargarDatos();
-
-                MessageBox.Show("Los datos han sido reestablecidos.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            catch (Exception ex)
-            {
-                // Manejo de errores
-                MessageBox.Show($"Ocurrió un error al reestablecer los datos: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
+        // Método para editar datos (Migrado de Access a MySQL)
+        // Se reemplazaron OleDb por MySql en conexiones y comandos
         public void EditarDatos()
         {
             Form7 form7 = new Form7();
             DialogResult result = form7.ShowDialog();
 
-            // Verificar si el usuario guardó los datos antes de cerrar el formulario
             if (result == DialogResult.OK)
             {
-                using (OleDbConnection conn = new OleDbConnection(connectionString))
+                using (MySqlConnection conn = new MySqlConnection(connectionString))
                 {
                     conn.Open();
-
-                    // Sentencia UPDATE corregida
-                    string query = "UPDATE Productos SET Nombre_producto = ?, Descripcion = ?, Precio_Unitario = ?, Stock_Actual = ? WHERE Id = ?";
-
-                    using (OleDbCommand cmd = new OleDbCommand(query, conn))
+                    string query = "UPDATE Productos SET Nombre_producto = @nombre, Descripcion = @descripcion, Precio_Unitario = @precio, Stock_Actual = @stock WHERE Id = @id";
+                    using (MySqlCommand cmd = new MySqlCommand(query, conn))
                     {
-                        // Asignar valores a los parámetros en el orden correcto
-                        cmd.Parameters.AddWithValue("?", form7.Nombre);
-                        cmd.Parameters.AddWithValue("?", form7.Descripcion);
-                        cmd.Parameters.AddWithValue("?", form7.Precio);  // Para Precio_Unitario (tipo moneda)
-                        cmd.Parameters.AddWithValue("?", form7.Cantidad); // Para Stock_Actual (tipo entero)
-                        cmd.Parameters.AddWithValue("?", form7.ID); // El ID del producto a actualizar
+                        cmd.Parameters.AddWithValue("@nombre", form7.Nombre);
+                        cmd.Parameters.AddWithValue("@descripcion", form7.Descripcion);
+                        cmd.Parameters.AddWithValue("@precio", form7.Precio);
+                        cmd.Parameters.AddWithValue("@stock", form7.Cantidad);
+                        cmd.Parameters.AddWithValue("@id", form7.ID);
 
-                        // Ejecutar la consulta
                         int filasAfectadas = cmd.ExecuteNonQuery();
 
-                        // Verificación: Mostrar un mensaje según el resultado
                         if (filasAfectadas > 0)
                             MessageBox.Show("Datos actualizados correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         else
@@ -166,27 +120,23 @@ namespace ProyectoAutoPartes
             }
         }
 
-
+        // Método para eliminar datos (Migrado de Access a MySQL)
+        // Se ajustaron comandos para que sean compatibles con MySQL
         public void EliminarDatos()
         {
             Form6 form6 = new Form6();
             form6.ShowDialog();
 
-            using (OleDbConnection conn = new OleDbConnection(connectionString))
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
                 conn.Open();
-
-                // Sentencia DELETE para eliminar un producto por su ID
-                string query = "DELETE FROM Productos WHERE Id = ?";
-
-                using (OleDbCommand cmd = new OleDbCommand(query, conn))
+                string query = "DELETE FROM Productos WHERE Id = @id";
+                using (MySqlCommand cmd = new MySqlCommand(query, conn))
                 {
-                    // Solo añadimos un parámetro, que es el ID
-                    cmd.Parameters.AddWithValue("?", form6.ID);
+                    cmd.Parameters.AddWithValue("@id", form6.ID);
 
-                    // Preguntar al usuario antes de eliminar
-                    DialogResult result = MessageBox.Show("¿Estás seguro de que deseas eliminar este producto?",
-                        "Confirmar eliminación", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    // Confirmación antes de eliminar el registro
+                    DialogResult result = MessageBox.Show("¿Estás seguro de que deseas eliminar este producto?", "Confirmar eliminación", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
                     if (result == DialogResult.Yes)
                     {
@@ -194,11 +144,9 @@ namespace ProyectoAutoPartes
                         conn.Close();
 
                         if (filasAfectadas > 0)
-                            MessageBox.Show("Producto eliminado correctamente.", "Éxito",
-                                MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            MessageBox.Show("Producto eliminado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         else
-                            MessageBox.Show("No se encontró el producto para eliminar.", "Error",
-                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            MessageBox.Show("No se encontró el producto para eliminar.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
                 }
             }
