@@ -6,6 +6,7 @@ using System.Runtime.InteropServices.Marshalling;
 using System.Text;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
+using System.Windows.Forms;
 
 namespace ProyectoAutoPartes
 {
@@ -30,12 +31,12 @@ namespace ProyectoAutoPartes
             string fechaSeleccionada = form.dateTimePickerVentas.Value.ToString("yyyy-MM-dd");
             try 
             {
-                using(MySqlConnection con = new MySqlConnection(enlaceConeccion))
+                using (MySqlConnection con = new MySqlConnection(enlaceConexion))
                 {
                     con.Open();
 
-                    string tabla = "SELECT * FROM <<tabla>> WHERE DATE(fecha)  =@fecha";
-                    MySqlCommand cmd = new MySqlCommand(tabla, con);
+                    string query = "SELECT * FROM Ventas WHERE DATE(fecha) = @fecha";
+                    MySqlCommand cmd = new MySqlCommand(query, con);
                     cmd.CommandType = CommandType.Text;
                     cmd.Parameters.AddWithValue("@fecha", fechaSeleccionada);
 

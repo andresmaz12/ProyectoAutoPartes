@@ -1,49 +1,97 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices.Marshalling;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using MySql.Data.MySqlClient;
+using System.Windows.Forms; // Asegurar el uso de MessageBox
 
 namespace ProyectoAutoPartes
 {
-    public partial class formMenu : Form
+    public class claseGestionVentas
     {
-        private claseGestionInventario inventario;
-        private claseGestionVentas ventas;
-        private claseClientes clientes;
+        // Llama a la lista enlazada para realizar
+        linkedListFacturas facturas = new linkedListFacturas();
+        
+        // Dirección de la base de datos
+        private string enlaceConexion;
 
-        public Form2()
+        private formMenu form;
+
+        // Constructor con inyección de dependencias
+        public claseGestionVentas(string enlaceConexion, formMenu form)
         {
-            InitializeComponent();
-            string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\Usuario\Downloads\Database5.accdb;";
-
-            // Inicializar las clases de gestión pasando this como referencia
-            this.inventario = new claseGestionInventario(connectionString, this);
-            this.ventas = new claseGestionVentas(connectionString, this);
-            this.clientes = new claseClientes(connectionString, this);
+            this.enlaceConexion = enlaceConexion;
+            this.form = form;
         }
 
-        // Propiedades públicas para acceder a los controles
-        public DataGridView InventarioGridView => dataGridView1;
-        public DataGridView VentasGridView => dataGridViewVentas;
-        public DataGridView ClientesGridView => dataGridViewClientes;
+        // Método para cargar datos por fecha desde la base de datos MySQL (Migrado desde Access)
+        // Se modificó la conexión y los parámetros para que sean compatibles con MySQL
+        public void CargarDatosXFecha()
+        { 
+            string fechaSeleccionada = form.dateTimePickerVentas.Value.ToString("yyyy-MM-dd");
+            try 
+            {
+                using (MySqlConnection con = new MySqlConnection(enlaceConexion))
+                {
+                    con.Open();
 
-        private async void Form2_Load(object sender, EventArgs e)
-        {
-            //El metod cargara los datos en el primer dataGriedView
-            inventario.CargarDatos();
-            ventas.CargarDatosXFecha(dateTimePickerVentas.Value);
-            ventas.CargarProductosEnComboBox(comboBoxProducto);
-            clientes.CargarDatos();
+                    string query = "SELECT * FROM Ventas WHERE DATE(fecha) = @fecha";
+                    MySqlCommand cmd = new MySqlCommand(query, con);
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Parameters.AddWithValue("@fecha", fechaSeleccionada);
+
+                    MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                    DataTable dataTable = new DataTable();
+                    adapter.Fill(dataTable);
+
+                    form.dataGridViewVentas.DataSource = dataTable;
+                }
+            }
+            catch (Exception ex) 
+            {
+                MessageBox.Show("Error: " + ex.Message);
+            }
         }
 
-        private void buttonAgregarDatos_Click(object sender, EventArgs e)
+        // Método para cargar productos en un ComboBox desde MySQL
+        public void CargarProductosEnComboBox(ComboBox comboBox)
         {
+            try
+            {
+                using (MySqlConnection con = new MySqlConnection(enlaceConexion))
+                {
+                    con.Open();
+                    string query = "SELECT idProducto, nombreProducto FROM Productos";
+                    MySqlCommand cmd = new MySqlCommand(query, con);
+                    MySqlDataReader reader = cmd.ExecuteReader();
 
+                    comboBox.Items.Clear();
+                    while (reader.Read())
+                    {
+                        comboBox.Items.Add(new { Text = reader["nombreProducto"].ToString(), Value = reader["idProducto"].ToString() });
+                    }
+                    reader.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al cargar productos: " + ex.Message);
+            }
+        }
+
+        // Método para crear una factura en la lista enlazada
+        public void CrearFactura(string idproducto, string nombreproducto, string nitcliente, int cantidadllevada, int nofactura, string fechacompra, double pagoindividual, double pagototal)
+        { 
+            facturas.AgregarDatosFactura(idproducto, nombreproducto, nitcliente, cantidadllevada, nofactura, fechacompra, pagoindividual, pagototal);
+        }
+        
+        // Método para realizar la compra (Ejecutar la lógica de la lista enlazada de facturas)
+        public void RealizarCompra()
+        {
+            facturas.EfecturarCompra();
         }
     }
+}

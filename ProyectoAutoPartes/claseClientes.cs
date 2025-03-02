@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MySql.Data.MySqlClient;
 
 namespace ProyectoAutoPartes
 {
@@ -21,9 +22,9 @@ namespace ProyectoAutoPartes
 
         public void CargarDatos()
         {
-            using var conn = new OleDbConnection(connectionString);
+            using var conn = new MySqlConnection(connectionString);
             string query = "SELECT * FROM Clientes"; //Aqui se llama a la tabla que se quiere usar, es posible reutilizar el codigo en caso de ser necesesario
-            var adapter = new OleDbDataAdapter(query, conn);
+            var adapter = new MySqlDataAdapter(query, conn);
             DataTable dt = new DataTable();
             adapter.Fill(dt);
             form.dataGridView3.DataSource = dt;
@@ -32,13 +33,13 @@ namespace ProyectoAutoPartes
         public void BuscarCliente(string nombre)
         {
             if (string.IsNullOrWhiteSpace(nombre)) return; // Verifica que el campo de nombre no esté vacío
-            using var conn = new OleDbConnection(connectionString);
+            using var conn = new MySqlConnection(connectionString);
             string query = "SELECT * FROM Clientes WHERE Nombre = ?";
-            OleDbCommand cmd = new OleDbCommand(query, conn);
-            cmd.Parameters.AddWithValue("?", nombre); // Asigna el parámetro con el nombre del cliente
+            MySqlCommand cmd = new MySqlCommand(query, conn);
+            cmd.Parameters.AddWithValue("@nombre", nombre); // Asigna el parámetro con el nombre del cliente
 
             conn.Open();
-            OleDbDataReader reader = cmd.ExecuteReader();
+            MySqlDataReader reader = cmd.ExecuteReader();
 
             if (reader.Read()) // Si se encontró un cliente con el nombre dado
             {
@@ -64,9 +65,9 @@ namespace ProyectoAutoPartes
                 return;
             }
 
-            using var conn = new OleDbConnection(connectionString);
+             using var conn = new MySqlConnection(connectionString);
             string query = "INSERT INTO Clientes (Nombre, Telefono, NIT, Direccion) VALUES (?, ?, ?, ?)";
-            OleDbCommand cmd = new OleDbCommand(query, conn);
+            MySqlCommand cmd = new MySqlCommand(query, conn);
             cmd.Parameters.AddWithValue("?", form.textBox5.Text);
             cmd.Parameters.AddWithValue("?", form.textBox6.Text);
             cmd.Parameters.AddWithValue("?", form.textBox7.Text);
