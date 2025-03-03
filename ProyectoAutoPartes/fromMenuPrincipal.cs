@@ -12,16 +12,11 @@ namespace ProyectoAutoPartes
 {
     public class claseGestionVentas
     {
-        // Llama a la lista enlazada para realizar
-        linkedListFacturas facturas = new linkedListFacturas();
-        
-        // Dirección de la base de datos
-        private string enlaceConexion;
+        private claseGestionInventario inventario;
+        private claseGestionVentas ventas;
+        private claseClientes clientes;
 
-        private formMenu form;
-
-        // Constructor con inyección de dependencias
-        public claseGestionVentas(string enlaceConexion, formMenu form)
+        public Form2()
         {
             this.enlaceConexion = enlaceConexion;
             this.form = form;
