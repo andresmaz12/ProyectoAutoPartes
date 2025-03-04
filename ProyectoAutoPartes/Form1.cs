@@ -10,8 +10,8 @@ namespace ProyectoAutoPartes
         private void buttonIngreso_Click(object sender, EventArgs e)
         {
             formMenu formMenu = new formMenu();
-            formMenu.ShowDialog(this);
             this.Hide();
+            formMenu.ShowDialog(this);
             this.Close();
         }
     }

@@ -15,15 +15,20 @@ namespace ProyectoAutoPartes
         //Llama a la lista enlazada para realizar 
         linkedListFacturas facturas = new linkedListFacturas();
         //Dirección de la base de datos 
-        private string enlaceConeccion = "Dirreccion de la base de datos";
+        private string connectionString = "Dirreccion de la base de datos";
 
         private formMenu form;
 
         // Constructor con inyección de dependencias
-        public claseGestionVentas(string enlaceConeccion, formMenu form)
+        public claseGestionVentas(string connectionString, formMenu form)
         {
-            this.enlaceConeccion = enlaceConeccion;
+            this.connectionString = connectionString;
             this.form = form;
+        }
+
+        public void AgregarProductoLista()
+        {
+
         }
 
         public void CargarDatosXFecha()
@@ -31,7 +36,7 @@ namespace ProyectoAutoPartes
             string fechaSeleccionada = form.dateTimePickerVentas.Value.ToString("yyyy-MM-dd");
             try 
             {
-                using (MySqlConnection con = new MySqlConnection(enlaceConexion))
+                using (MySqlConnection con = new MySqlConnection(connectionString))
                 {
                     con.Open();
 
@@ -54,12 +59,16 @@ namespace ProyectoAutoPartes
                 
         }
 
-        public void CargarProductosEnComboBox(ComboBox comboBox)
+        public void VaciarLista()
         {
-
+            facturas.VaciarLista();
         }
 
-        public void CrearFactura(string idproducto, string nombreproducto, string nitcliente, int cantidadllevada, int nofactura, string fechacompra, double pagoindividual, double pagototal)
+        public void EliminiarElemento(string elemento)
+        {
+            facturas.EliminarProducto(elemento);
+        }
+        public void CrearFactura(string idproducto, string nombreproducto, string nitcliente, int cantidadllevada, string nofactura, string fechacompra, double pagoindividual, double pagototal)
         { 
             facturas.AgregarDatosFactura(idproducto, nombreproducto, nitcliente, cantidadllevada, nofactura, fechacompra, pagoindividual, pagototal);
         }
