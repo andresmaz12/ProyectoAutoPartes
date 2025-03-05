@@ -15,7 +15,7 @@ namespace ProyectoAutoPartes
         //Llama a la lista enlazada para realizar 
         linkedListFacturas facturas = new linkedListFacturas();
         //Dirección de la base de datos 
-        private string connectionString = "D:\\Base de datos VB\\ProyectoAutoPartes\\Avamce.... de proyecto.prueba6.mwb";
+        private string connectionString = "Server=localHost; ";
 
         private formMenu form;
 
