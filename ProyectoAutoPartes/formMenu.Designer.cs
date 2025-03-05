@@ -81,10 +81,10 @@
             label21 = new Label();
             label22 = new Label();
             comboBox1 = new ComboBox();
-            textBox1 = new TextBox();
-            textBox2 = new TextBox();
-            textBox3 = new TextBox();
-            textBox4 = new TextBox();
+            textBoxCuentaBan = new TextBox();
+            textBoxFechaNacEmpelado = new TextBox();
+            textBoxDPIEmpleado = new TextBox();
+            textBoxNombreEmpleado = new TextBox();
             buttonAgregarEmpleado = new Button();
             buttonBuscarEmpleado = new Button();
             label12 = new Label();
@@ -575,10 +575,10 @@
             tabPage4.Controls.Add(label21);
             tabPage4.Controls.Add(label22);
             tabPage4.Controls.Add(comboBox1);
-            tabPage4.Controls.Add(textBox1);
-            tabPage4.Controls.Add(textBox2);
-            tabPage4.Controls.Add(textBox3);
-            tabPage4.Controls.Add(textBox4);
+            tabPage4.Controls.Add(textBoxCuentaBan);
+            tabPage4.Controls.Add(textBoxFechaNacEmpelado);
+            tabPage4.Controls.Add(textBoxDPIEmpleado);
+            tabPage4.Controls.Add(textBoxNombreEmpleado);
             tabPage4.Controls.Add(buttonAgregarEmpleado);
             tabPage4.Controls.Add(buttonBuscarEmpleado);
             tabPage4.Controls.Add(label12);
@@ -594,84 +594,84 @@
             // label18
             // 
             label18.AutoSize = true;
-            label18.Location = new Point(677, 267);
+            label18.Location = new Point(679, 252);
             label18.Name = "label18";
-            label18.Size = new Size(116, 15);
+            label18.Size = new Size(93, 15);
             label18.TabIndex = 29;
-            label18.Text = "Direccion del Cliente";
+            label18.Text = "Cuenta Bancaria";
             // 
             // label19
             // 
             label19.AutoSize = true;
-            label19.Location = new Point(684, 219);
+            label19.Location = new Point(686, 204);
             label19.Name = "label19";
-            label19.Size = new Size(89, 15);
+            label19.Size = new Size(99, 15);
             label19.TabIndex = 28;
-            label19.Text = "Tipo del Cliente";
+            label19.Text = "Rol del Empleado";
             // 
             // label20
             // 
             label20.AutoSize = true;
-            label20.Location = new Point(677, 175);
+            label20.Location = new Point(642, 160);
             label20.Name = "label20";
-            label20.Size = new Size(110, 15);
+            label20.Size = new Size(175, 15);
             label20.TabIndex = 27;
-            label20.Text = "Nombre del Cliente";
+            label20.Text = "Fecha de Nacimiento Empelado";
             // 
             // label21
             // 
             label21.AutoSize = true;
-            label21.Location = new Point(689, 131);
+            label21.Location = new Point(691, 116);
             label21.Name = "label21";
-            label21.Size = new Size(84, 15);
+            label21.Size = new Size(126, 15);
             label21.TabIndex = 26;
-            label21.Text = "NIT del Cliente";
+            label21.Text = "Nombre del Empleado";
             // 
             // label22
             // 
             label22.AutoSize = true;
-            label22.Location = new Point(689, 87);
+            label22.Location = new Point(691, 72);
             label22.Name = "label22";
-            label22.Size = new Size(84, 15);
+            label22.Size = new Size(100, 15);
             label22.TabIndex = 25;
-            label22.Text = "DPI del Cliente";
+            label22.Text = "DPI del Empleado";
             // 
             // comboBox1
             // 
             comboBox1.FormattingEnabled = true;
-            comboBox1.Items.AddRange(new object[] { "Mayorista", "Cliente comun" });
-            comboBox1.Location = new Point(611, 237);
+            comboBox1.Items.AddRange(new object[] { "Bodeguista", "Gerente", "Cajero ", "Conserje ", "Vendedor" });
+            comboBox1.Location = new Point(613, 222);
             comboBox1.Name = "comboBox1";
             comboBox1.Size = new Size(229, 23);
             comboBox1.TabIndex = 24;
             // 
-            // textBox1
+            // textBoxCuentaBan
             // 
-            textBox1.Location = new Point(611, 285);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(229, 23);
-            textBox1.TabIndex = 23;
+            textBoxCuentaBan.Location = new Point(613, 270);
+            textBoxCuentaBan.Name = "textBoxCuentaBan";
+            textBoxCuentaBan.Size = new Size(229, 23);
+            textBoxCuentaBan.TabIndex = 23;
             // 
-            // textBox2
+            // textBoxFechaNacEmpelado
             // 
-            textBox2.Location = new Point(611, 193);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(229, 23);
-            textBox2.TabIndex = 22;
+            textBoxFechaNacEmpelado.Location = new Point(613, 178);
+            textBoxFechaNacEmpelado.Name = "textBoxFechaNacEmpelado";
+            textBoxFechaNacEmpelado.Size = new Size(229, 23);
+            textBoxFechaNacEmpelado.TabIndex = 22;
             // 
-            // textBox3
+            // textBoxDPIEmpleado
             // 
-            textBox3.Location = new Point(611, 105);
-            textBox3.Name = "textBox3";
-            textBox3.Size = new Size(229, 23);
-            textBox3.TabIndex = 21;
+            textBoxDPIEmpleado.Location = new Point(613, 90);
+            textBoxDPIEmpleado.Name = "textBoxDPIEmpleado";
+            textBoxDPIEmpleado.Size = new Size(229, 23);
+            textBoxDPIEmpleado.TabIndex = 21;
             // 
-            // textBox4
+            // textBoxNombreEmpleado
             // 
-            textBox4.Location = new Point(611, 149);
-            textBox4.Name = "textBox4";
-            textBox4.Size = new Size(229, 23);
-            textBox4.TabIndex = 20;
+            textBoxNombreEmpleado.Location = new Point(613, 134);
+            textBoxNombreEmpleado.Name = "textBoxNombreEmpleado";
+            textBoxNombreEmpleado.Size = new Size(229, 23);
+            textBoxNombreEmpleado.TabIndex = 20;
             // 
             // buttonAgregarEmpleado
             // 
@@ -820,10 +820,10 @@
         private Label label21;
         private Label label22;
         private ComboBox comboBox1;
-        private TextBox textBox1;
-        private TextBox textBox2;
-        private TextBox textBox3;
-        private TextBox textBox4;
+        private TextBox textBoxCuentaBan;
+        private TextBox textBoxFechaNacEmpelado;
+        private TextBox textBoxDPIEmpleado;
+        private TextBox textBoxNombreEmpleado;
         private Button button1;
         private Button buttonBusquedaFactura;
         public Button buttonEliminarProducto;
