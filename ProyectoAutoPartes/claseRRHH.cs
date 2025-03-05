@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Runtime.InteropServices.Marshalling;
 using System.Text;
+using Microsoft.VisualBasic;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 using System.Windows.Forms;
@@ -55,5 +56,19 @@ namespace ProyectoAutoPartes
             return accesoPermitido;
         }
 
+        public void BuscarEmpleado()
+        {
+            string nombre = Interaction.InputBox("Cual es el nombre del empleado", "Busqueda de empleados", "");
+        }
+
+        public void AgregarEmpleado(string DPI, string NombreEmpleado, string Rol, string CuentaBancaria, string Usuario, string Contraseña)
+        {
+
+        }
+
+        public void ModificarLlavesAcceso()
+        {
+
+        }
     }
 }

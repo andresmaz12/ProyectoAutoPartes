@@ -29,6 +29,16 @@ namespace ProyectoAutoPartes
             this.rRHH = new claseGestionRRHH(connectionString, this);
         }
 
+        #region Metodos internos
+        public void MoificarEsteticas()
+        {
+            this.BackColor = System.Drawing.Color.MediumSeaGreen; 
+            this.FormBorderStyle = FormBorderStyle.None; 
+
+        }
+        #endregion
+
+        //Modulo inventario
         #region Inventario
 
         private void buttonAgregarInventario_Click(object sender, EventArgs e)
@@ -99,6 +109,7 @@ namespace ProyectoAutoPartes
         }
         #endregion
 
+        // Modulo clientes
         #region Clientes
 
         private void buttonGuardarCliente_Click(object sender, EventArgs e)
@@ -116,6 +127,7 @@ namespace ProyectoAutoPartes
         }
         #endregion
 
+        //Modulo Recursos humanos
         #region RR HH
 
         #endregion

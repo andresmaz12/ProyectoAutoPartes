@@ -122,6 +122,7 @@
             // 
             // tabPage1
             // 
+            tabPage1.BackColor = Color.CornflowerBlue;
             tabPage1.Controls.Add(label8);
             tabPage1.Controls.Add(buttonBuscarInventario);
             tabPage1.Controls.Add(buttonEliminarInventario);
@@ -134,7 +135,6 @@
             tabPage1.Size = new Size(915, 389);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "Inventario";
-            tabPage1.UseVisualStyleBackColor = true;
             // 
             // label8
             // 
@@ -196,6 +196,7 @@
             // 
             // tabPage2
             // 
+            tabPage2.BackColor = Color.CornflowerBlue;
             tabPage2.Controls.Add(button1);
             tabPage2.Controls.Add(buttonBusquedaFactura);
             tabPage2.Controls.Add(buttonCancelarVenta);
@@ -223,7 +224,6 @@
             tabPage2.Size = new Size(915, 389);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "Ventas";
-            tabPage2.UseVisualStyleBackColor = true;
             // 
             // button1
             // 
@@ -741,8 +741,10 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.MediumSeaGreen;
             ClientSize = new Size(950, 425);
             Controls.Add(tabControl1);
+            MaximizeBox = false;
             Name = "formMenu";
             Text = "formMenu";
             tabControl1.ResumeLayout(false);
