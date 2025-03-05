@@ -1,5 +1,5 @@
 body {
-    background-color: #7a450f;
+    background-color: #178497;
     font-family: Arial, sans-serif;
     color: white;
 }
@@ -8,7 +8,7 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 20px;
-    background-color: #5a3410;
+    background-color: #21a6bd;
 }
 .nombre-empresa {
     margin: 0;
@@ -90,7 +90,7 @@ body {
     background-color: darkgreen;
 }
 .whatsapp {
-    background-color: green;
+    background-color: #37e628;
     color: white;
     padding: 10px;
     border-radius: 5px;
@@ -98,5 +98,5 @@ body {
     margin-top: 10px;
 }
 .whatsapp:hover {
-    background-color: darkgreen;
+    background-color: #37e628;
 }
