@@ -25,13 +25,13 @@ namespace ProyectoAutoPartes
         // Método para insertar datos en la base de datos (Migrado de Access a MySQL)
         // Se cambiaron OleDbConnection y OleDbCommand por MySqlConnection y MySqlCommand
         // Se cambiaron los parámetros de '?' a '@nombre', '@descripcion', etc.
-        public void InsertarDatos(string nombre, string descripcion, double costo, double ganancia, int stock, string ruta)
+        public void InsertarDatos(string nombre, string descripcion, double costo, double ganancia, int stock)
         {
             try
             {
                 using (MySqlConnection conn = new MySqlConnection(connectionString))
                 {
-                    string query = "INSERT INTO Productos (Nombre_producto, Descripcion, Precio_Unitario, Ganancia, Stock_Actual) VALUES (@nombre, @descripcion, @costo, @ganancia, @stock)";
+                    string query = "INSERT INTO inventario (NombreProducto, Descripcion, Costo, Ganancia, CantidadEnStock) VALUES (@nombre, @descripcion, @costo, @ganancia, @stock)";
                     using var cmd = new MySqlCommand(query, conn);
 
                     // Se asignan los valores a los parámetros
@@ -53,6 +53,7 @@ namespace ProyectoAutoPartes
                 MessageBox.Show($"Ocurrió un error al guardar los datos: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
 
 
 
@@ -102,12 +103,12 @@ namespace ProyectoAutoPartes
                 using (MySqlConnection conn = new MySqlConnection(connectionString))
                 {
                     conn.Open();
-                    string query = "UPDATE Productos SET Nombre_producto = @nombre, Descripcion = @descripcion, Precio_Unitario = @precio, Stock_Actual = @stock WHERE Id = @id";
+                    string query = "UPDATE inventario SET NombreProducto = @nombre, Descripcion = @descripcion, Costo = @costo, CantidadEnStock = @stock WHERE ID_Producto = @id";
                     using (MySqlCommand cmd = new MySqlCommand(query, conn))
                     {
                         cmd.Parameters.AddWithValue("@nombre", form7.Nombre);
                         cmd.Parameters.AddWithValue("@descripcion", form7.Descripcion);
-                        cmd.Parameters.AddWithValue("@precio", form7.Precio);
+                        cmd.Parameters.AddWithValue("@costo", form7.Precio); // Renombrado de 'Precio' a 'Costo'
                         cmd.Parameters.AddWithValue("@stock", form7.Cantidad);
                         cmd.Parameters.AddWithValue("@id", form7.ID);
 
@@ -121,6 +122,7 @@ namespace ProyectoAutoPartes
                 }
             }
         }
+
 
         // Método para eliminar datos (Migrado de Access a MySQL)
         // Se ajustaron comandos para que sean compatibles con MySQL
@@ -139,11 +141,11 @@ namespace ProyectoAutoPartes
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
                 conn.Open();
-                string query = "DELETE FROM Productos WHERE Id = @id";
+                string query = "DELETE FROM inventario WHERE ID_Producto = @id"; // Corrección aquí
 
                 using (MySqlCommand cmd = new MySqlCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@id", ID); 
+                    cmd.Parameters.AddWithValue("@id", ID);
 
                     // Confirmación antes de eliminar
                     DialogResult result = MessageBox.Show("¿Estás seguro de que deseas eliminar este producto?", "Confirmar eliminación",

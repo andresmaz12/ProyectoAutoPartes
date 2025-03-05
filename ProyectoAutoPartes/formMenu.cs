@@ -22,7 +22,7 @@ namespace ProyectoAutoPartes
         public formMenu()
         {
             InitializeComponent();
-            string connectionString = @"";
+            string connectionString = @"D:\Base de datos VB\ProyectoAutoPartes\Avamce.... de proyecto.prueba6.mwb";
             this.inventario = new claseGestionInventario(connectionString, this);
             this.ventas = new claseGestionVentas(connectionString, this);
             this.clientes = new claseClientes(connectionString, this);
@@ -35,7 +35,7 @@ namespace ProyectoAutoPartes
         {
             formAgregarInventario agregar = new formAgregarInventario();
             agregar.ShowDialog();
-            inventario.InsertarDatos(agregar.Nombre, agregar.Descripcion, agregar.Costo, agregar.Ganancia, agregar.Stock, agregar.Ruta);
+            inventario.InsertarDatos(agregar.Nombre, agregar.Descripcion, agregar.Costo, agregar.Ganancia, agregar.Stock);
         }
 
         private void buttonEditarInventario_Click(object sender, EventArgs e)
