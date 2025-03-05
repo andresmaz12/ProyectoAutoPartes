@@ -28,3 +28,16 @@ function agregarProducto() {
     // Limpiar el campo de entrada
     document.getElementById('producto').value = '';
 }
+function buscarProducto() {
+    const input = document.getElementById('buscar').value.toLowerCase();
+    const productos = document.querySelectorAll('.producto');
+
+    productos.forEach(producto => {
+        const nombre = producto.getAttribute('data-nombre').toLowerCase();
+        if (nombre.includes(input)) {
+            producto.style.display = 'block';
+        } else {
+            producto.style.display = 'none';
+        }
+    });
+}
