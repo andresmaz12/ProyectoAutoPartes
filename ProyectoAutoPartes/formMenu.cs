@@ -32,8 +32,8 @@ namespace ProyectoAutoPartes
         #region Metodos internos
         public void MoificarEsteticas()
         {
-            this.BackColor = System.Drawing.Color.MediumSeaGreen; 
-            this.FormBorderStyle = FormBorderStyle.None; 
+            this.BackColor = System.Drawing.Color.MediumSeaGreen;
+            this.FormBorderStyle = FormBorderStyle.None;
 
         }
         #endregion
@@ -66,6 +66,11 @@ namespace ProyectoAutoPartes
 
         // Modulo de ventas
         #region Ventas
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+        }
 
         private void buttonAgregarProducto_Click(object sender, EventArgs e)
         {
@@ -130,6 +135,15 @@ namespace ProyectoAutoPartes
         //Modulo Recursos humanos
         #region RR HH
 
+        private void buttonBuscarEmpleado_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void buttonAgregarEmpleado_Click(object sender, EventArgs e)
+        {
+
+        }
         #endregion
     }
 }

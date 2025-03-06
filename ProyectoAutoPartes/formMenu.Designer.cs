@@ -37,7 +37,6 @@
             buttonAgregarInventario = new Button();
             dataGridViewInvetario = new DataGridView();
             tabPage2 = new TabPage();
-            button1 = new Button();
             buttonBusquedaFactura = new Button();
             buttonCancelarVenta = new Button();
             listBox1 = new ListBox();
@@ -117,7 +116,7 @@
             tabControl1.Multiline = true;
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(946, 397);
+            tabControl1.Size = new Size(973, 422);
             tabControl1.TabIndex = 0;
             // 
             // tabPage1
@@ -132,7 +131,7 @@
             tabPage1.Location = new Point(27, 4);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new Padding(3);
-            tabPage1.Size = new Size(915, 389);
+            tabPage1.Size = new Size(942, 414);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "Inventario";
             // 
@@ -197,7 +196,6 @@
             // tabPage2
             // 
             tabPage2.BackColor = Color.CornflowerBlue;
-            tabPage2.Controls.Add(button1);
             tabPage2.Controls.Add(buttonBusquedaFactura);
             tabPage2.Controls.Add(buttonCancelarVenta);
             tabPage2.Controls.Add(listBox1);
@@ -221,18 +219,9 @@
             tabPage2.Location = new Point(27, 4);
             tabPage2.Name = "tabPage2";
             tabPage2.Padding = new Padding(3);
-            tabPage2.Size = new Size(915, 389);
+            tabPage2.Size = new Size(942, 414);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "Ventas";
-            // 
-            // button1
-            // 
-            button1.Location = new Point(672, 315);
-            button1.Name = "button1";
-            button1.Size = new Size(103, 41);
-            button1.TabIndex = 36;
-            button1.Text = "Buscar por Factura";
-            button1.UseVisualStyleBackColor = true;
             // 
             // buttonBusquedaFactura
             // 
@@ -415,6 +404,7 @@
             // 
             // tabPage3
             // 
+            tabPage3.BackColor = Color.CornflowerBlue;
             tabPage3.Controls.Add(label7);
             tabPage3.Controls.Add(label6);
             tabPage3.Controls.Add(buttonBuscarCliente);
@@ -430,12 +420,12 @@
             tabPage3.Controls.Add(textBoxDPI);
             tabPage3.Controls.Add(textBoxNit);
             tabPage3.Controls.Add(dataGridViewClientes);
+            tabPage3.ForeColor = Color.Black;
             tabPage3.Location = new Point(27, 4);
             tabPage3.Name = "tabPage3";
-            tabPage3.Size = new Size(915, 389);
+            tabPage3.Size = new Size(942, 414);
             tabPage3.TabIndex = 2;
             tabPage3.Text = "Clientes";
-            tabPage3.UseVisualStyleBackColor = true;
             // 
             // label7
             // 
@@ -569,6 +559,7 @@
             // 
             // tabPage4
             // 
+            tabPage4.BackColor = Color.CornflowerBlue;
             tabPage4.Controls.Add(label18);
             tabPage4.Controls.Add(label19);
             tabPage4.Controls.Add(label20);
@@ -586,10 +577,9 @@
             tabPage4.Controls.Add(label11);
             tabPage4.Location = new Point(27, 4);
             tabPage4.Name = "tabPage4";
-            tabPage4.Size = new Size(915, 389);
+            tabPage4.Size = new Size(942, 414);
             tabPage4.TabIndex = 3;
             tabPage4.Text = "RR HH";
-            tabPage4.UseVisualStyleBackColor = true;
             // 
             // label18
             // 
@@ -681,6 +671,7 @@
             buttonAgregarEmpleado.TabIndex = 19;
             buttonAgregarEmpleado.Text = "Agregar Empleados";
             buttonAgregarEmpleado.UseVisualStyleBackColor = true;
+            buttonAgregarEmpleado.Click += buttonAgregarEmpleado_Click;
             // 
             // buttonBuscarEmpleado
             // 
@@ -690,6 +681,7 @@
             buttonBuscarEmpleado.TabIndex = 18;
             buttonBuscarEmpleado.Text = "Buscar Empleao";
             buttonBuscarEmpleado.UseVisualStyleBackColor = true;
+            buttonBuscarEmpleado.Click += buttonBuscarEmpleado_Click;
             // 
             // label12
             // 
@@ -723,7 +715,7 @@
             // 
             tabPage5.Location = new Point(27, 4);
             tabPage5.Name = "tabPage5";
-            tabPage5.Size = new Size(915, 389);
+            tabPage5.Size = new Size(942, 414);
             tabPage5.TabIndex = 4;
             tabPage5.Text = "Gestion WEB";
             tabPage5.UseVisualStyleBackColor = true;
@@ -732,7 +724,7 @@
             // 
             tabPage6.Location = new Point(27, 4);
             tabPage6.Name = "tabPage6";
-            tabPage6.Size = new Size(915, 389);
+            tabPage6.Size = new Size(942, 414);
             tabPage6.TabIndex = 5;
             tabPage6.Text = "Finanzas";
             tabPage6.UseVisualStyleBackColor = true;
@@ -741,8 +733,8 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.MediumSeaGreen;
-            ClientSize = new Size(950, 425);
+            BackColor = Color.LawnGreen;
+            ClientSize = new Size(978, 447);
             Controls.Add(tabControl1);
             MaximizeBox = false;
             Name = "formMenu";
@@ -826,7 +818,6 @@
         private TextBox textBoxFechaNacEmpelado;
         private TextBox textBoxDPIEmpleado;
         private TextBox textBoxNombreEmpleado;
-        private Button button1;
         private Button buttonBusquedaFactura;
         public Button buttonEliminarProducto;
         public DataGridView dataGridViewInvetario;
