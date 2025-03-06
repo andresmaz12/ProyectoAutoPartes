@@ -1,9 +1,9 @@
 // Datos de ejemplo (pueden ser reemplazados por una API)
 const productos = [
-    { nombre: "Sistema de Dirección", marca: "Toyota", año: "2020", modelo: "Corolla", precio: "$150.00", imagen: "direccion.jpeg" },
-    { nombre: "Sistema de Frenos", marca: "Honda", año: "2021", modelo: "Civic", precio: "$200.00", imagen: "frenos.jpeg" },
-    { nombre: "Sistema de Motor", marca: "Ford", año: "2022", modelo: "Mustang", precio: "$500.00", imagen: "motor.jpeg" },
-    { nombre: "Sistema de Suspensión", marca: "Chevrolet", año: "2023", modelo: "Silverado", precio: "$300.00", imagen: "suspension.jpeg" },
+    { nombre: "Sistema de Dirección", marca: "Toyota", año: "2020", modelo: "Corolla", precio: "150.00", imagen: "direccion.jpeg" },
+    { nombre: "Sistema de Frenos", marca: "Honda", año: "2021", modelo: "Civic", precio: "200.00", imagen: "frenos.jpeg" },
+    { nombre: "Sistema de Motor", marca: "Ford", año: "2022", modelo: "Mustang", precio: "500.00", imagen: "motor.jpeg" },
+    { nombre: "Sistema de Suspensión", marca: "Chevrolet", año: "2023", modelo: "Silverado", precio: "300.00", imagen: "suspension.jpeg" },
 ];
 
 // Función para renderizar productos
