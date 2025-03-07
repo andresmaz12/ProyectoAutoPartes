@@ -67,11 +67,6 @@ namespace ProyectoAutoPartes
         // Modulo de ventas
         #region Ventas
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void buttonAgregarProducto_Click(object sender, EventArgs e)
         {
             ventas.AgregarProductoLista();
@@ -98,6 +93,7 @@ namespace ProyectoAutoPartes
         private void buttonBusquedaFactura_Click(object sender, EventArgs e)
         {
             string noFactura = Interaction.InputBox("Ingrese el numero de factura", "Busqueda por factura", "Ej. 10XY");
+            ventas.BusquedaFactura(noFactura);
         }
 
         private void buttonCancelarVenta_Click(object sender, EventArgs e)
@@ -119,11 +115,11 @@ namespace ProyectoAutoPartes
 
         private void buttonGuardarCliente_Click(object sender, EventArgs e)
         {
-            string a = "";
-            string b = "";
-            string c = "";
-            string d = "";
-            clientes.GuardarCliente(a, b, c, d);
+            string dpiCliente = textBoxDPI.Text;
+            string telefonoCliente = "";
+            string nitCliente = textBoxNit.Text;
+            string direccionCliente = textBoxDireccion.Text;
+            clientes.GuardarCliente(dpiCliente, telefonoCliente, nitCliente, direccionCliente );
         }
 
         private void buttonBuscarCliente_Click(object sender, EventArgs e)
@@ -137,12 +133,17 @@ namespace ProyectoAutoPartes
 
         private void buttonBuscarEmpleado_Click(object sender, EventArgs e)
         {
-
+            rRHH.BuscarEmpleado();
         }
 
         private void buttonAgregarEmpleado_Click(object sender, EventArgs e)
         {
+            string dpiEmpleado = textBoxDPIEmpleado.Text;
+            string nombreEmpleado = textBoxNombreEmpleado.Text;
+            string rolEmpleado = comboBoxRol.Text;
+            string cuentaBanc = textBoxCuentaBan.Text;
 
+            rRHH.AgregarEmpleado(dpiEmpleado, nombreEmpleado, rolEmpleado, cuentaBanc,);
         }
         #endregion
     }

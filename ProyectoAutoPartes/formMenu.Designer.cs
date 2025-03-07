@@ -79,7 +79,7 @@
             label20 = new Label();
             label21 = new Label();
             label22 = new Label();
-            comboBox1 = new ComboBox();
+            comboBoxRol = new ComboBox();
             textBoxCuentaBan = new TextBox();
             textBoxFechaNacEmpelado = new TextBox();
             textBoxDPIEmpleado = new TextBox();
@@ -565,7 +565,7 @@
             tabPage4.Controls.Add(label20);
             tabPage4.Controls.Add(label21);
             tabPage4.Controls.Add(label22);
-            tabPage4.Controls.Add(comboBox1);
+            tabPage4.Controls.Add(comboBoxRol);
             tabPage4.Controls.Add(textBoxCuentaBan);
             tabPage4.Controls.Add(textBoxFechaNacEmpelado);
             tabPage4.Controls.Add(textBoxDPIEmpleado);
@@ -626,14 +626,14 @@
             label22.TabIndex = 25;
             label22.Text = "DPI del Empleado";
             // 
-            // comboBox1
+            // comboBoxRol
             // 
-            comboBox1.FormattingEnabled = true;
-            comboBox1.Items.AddRange(new object[] { "Bodeguista", "Gerente", "Cajero ", "Conserje ", "Vendedor" });
-            comboBox1.Location = new Point(613, 222);
-            comboBox1.Name = "comboBox1";
-            comboBox1.Size = new Size(229, 23);
-            comboBox1.TabIndex = 24;
+            comboBoxRol.FormattingEnabled = true;
+            comboBoxRol.Items.AddRange(new object[] { "Bodeguista", "Gerente", "Cajero ", "Conserje ", "Vendedor" });
+            comboBoxRol.Location = new Point(613, 222);
+            comboBoxRol.Name = "comboBoxRol";
+            comboBoxRol.Size = new Size(229, 23);
+            comboBoxRol.TabIndex = 24;
             // 
             // textBoxCuentaBan
             // 
@@ -813,7 +813,7 @@
         private Label label20;
         private Label label21;
         private Label label22;
-        private ComboBox comboBox1;
+        private ComboBox comboBoxRol;
         private TextBox textBoxCuentaBan;
         private TextBox textBoxFechaNacEmpelado;
         private TextBox textBoxDPIEmpleado;
