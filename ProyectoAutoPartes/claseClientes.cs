@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
+using Microsoft.VisualBasic;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 
@@ -27,11 +28,12 @@ namespace ProyectoAutoPartes
             var adapter = new MySqlDataAdapter(query, conn);
             DataTable dt = new DataTable();
             adapter.Fill(dt);
-            form.dataGridView3.DataSource = dt;
+            form.dataGridViewClientes.DataSource = dt;
         }
 
-        public void BuscarCliente(string nombre)
+        public void BuscarCliente()
         {
+            string nombre = Interaction.InputBox("Ingrese el nombre", "Busqueda", " ");
             if (string.IsNullOrWhiteSpace(nombre)) return; // Verifica que el campo de nombre no esté vacío
             using var conn = new MySqlConnection(connectionString);
             string query = "SELECT * FROM Clientes WHERE Nombre = ?";
@@ -40,38 +42,26 @@ namespace ProyectoAutoPartes
 
             conn.Open();
             MySqlDataReader reader = cmd.ExecuteReader();
-
-            if (reader.Read()) // Si se encontró un cliente con el nombre dado
-            {
-                form.textBox6.Text = reader["Telefono"].ToString();
-                form.textBox7.Text = reader["NIT"].ToString();
-                form.textBox8.Text = reader["Direccion"].ToString();
-            }
-            else
-            {
-                MessageBox.Show("Cliente no encontrado.");
-            }
-
             conn.Close();
         }
 
-        public void GuardarCliente()
+        public void GuardarCliente(string nombre, string telefono, string nit, string direccion)
         {
             // Verifica que todos los campos estén llenos antes de guardar
-            if (string.IsNullOrWhiteSpace(form.textBox5.Text) || string.IsNullOrWhiteSpace(form.textBox6.Text) ||
-                string.IsNullOrWhiteSpace(form.textBox7.Text) || string.IsNullOrWhiteSpace(form.textBox8.Text))
+            if (string.IsNullOrWhiteSpace(nombre) || string.IsNullOrWhiteSpace(telefono) ||
+                string.IsNullOrWhiteSpace(nit) || string.IsNullOrWhiteSpace(direccion))
             {
                 MessageBox.Show("Todos los campos son obligatorios.");
                 return;
             }
 
-             using var conn = new MySqlConnection(connectionString);
-            string query = "INSERT INTO Clientes (Nombre, Telefono, NIT, Direccion) VALUES (?, ?, ?, ?)";
+            using var conn = new MySqlConnection(connectionString);
+            string query = "INSERT INTO Clientes (Nombre, Telefono, NIT, Direccion) VALUES (@nombre, @telefono, @nit, @direccion)";
             MySqlCommand cmd = new MySqlCommand(query, conn);
-            cmd.Parameters.AddWithValue("?", form.textBox5.Text);
-            cmd.Parameters.AddWithValue("?", form.textBox6.Text);
-            cmd.Parameters.AddWithValue("?", form.textBox7.Text);
-            cmd.Parameters.AddWithValue("?", form.textBox8.Text);
+            cmd.Parameters.AddWithValue("@nombre", nombre);
+            cmd.Parameters.AddWithValue("@telefono", telefono);
+            cmd.Parameters.AddWithValue("@nit", nit);
+            cmd.Parameters.AddWithValue("@direccion", direccion);
 
             conn.Open();
             cmd.ExecuteNonQuery();
