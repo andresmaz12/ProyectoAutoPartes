@@ -115,6 +115,7 @@ namespace ProyectoAutoPartes
 
         private void buttonGuardarCliente_Click(object sender, EventArgs e)
         {
+            //Datos obtenidos por medio de los textBox en la pestaña/tab "Clientes"
             string dpiCliente = textBoxDPI.Text;
             string telefonoCliente = "";
             string nitCliente = textBoxNit.Text;
@@ -138,12 +139,19 @@ namespace ProyectoAutoPartes
 
         private void buttonAgregarEmpleado_Click(object sender, EventArgs e)
         {
+            //Llama al formulario usuarioContraseña para obtener los datos para agregar el usuario y contraseña del empleado
+            usuarioContrasenia verificar = new usuarioContrasenia();
+            //Datos obtenidos por medio de los textBox en la pestaña/tab "RRHH"
             string dpiEmpleado = textBoxDPIEmpleado.Text;
             string nombreEmpleado = textBoxNombreEmpleado.Text;
             string rolEmpleado = comboBoxRol.Text;
             string cuentaBanc = textBoxCuentaBan.Text;
-
-            rRHH.AgregarEmpleado(dpiEmpleado, nombreEmpleado, rolEmpleado, cuentaBanc,);
+            string fechaNac = textBoxFechaNacEmpelado.Text;
+            //datos obtenidos por medio de los constructores del formulario usuarioContraseña
+            string usuario = verificar.Usuario;
+            string contrasenia = verificar.Contrasenia;
+            //Inserta los datos necesarios para el funcionamiento del metodo
+            rRHH.AgregarEmpleado(dpiEmpleado, nombreEmpleado, rolEmpleado, cuentaBanc, usuario, contrasenia);
         }
         #endregion
     }

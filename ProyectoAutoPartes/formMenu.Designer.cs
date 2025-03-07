@@ -91,6 +91,8 @@
             label11 = new Label();
             tabPage5 = new TabPage();
             tabPage6 = new TabPage();
+            label23 = new Label();
+            textBoxTelefonoEmpleado = new TextBox();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewInvetario).BeginInit();
@@ -560,6 +562,8 @@
             // tabPage4
             // 
             tabPage4.BackColor = Color.CornflowerBlue;
+            tabPage4.Controls.Add(label23);
+            tabPage4.Controls.Add(textBoxTelefonoEmpleado);
             tabPage4.Controls.Add(label18);
             tabPage4.Controls.Add(label19);
             tabPage4.Controls.Add(label20);
@@ -584,7 +588,7 @@
             // label18
             // 
             label18.AutoSize = true;
-            label18.Location = new Point(679, 252);
+            label18.Location = new Point(679, 209);
             label18.Name = "label18";
             label18.Size = new Size(93, 15);
             label18.TabIndex = 29;
@@ -593,7 +597,7 @@
             // label19
             // 
             label19.AutoSize = true;
-            label19.Location = new Point(686, 204);
+            label19.Location = new Point(686, 161);
             label19.Name = "label19";
             label19.Size = new Size(99, 15);
             label19.TabIndex = 28;
@@ -602,7 +606,7 @@
             // label20
             // 
             label20.AutoSize = true;
-            label20.Location = new Point(642, 160);
+            label20.Location = new Point(642, 255);
             label20.Name = "label20";
             label20.Size = new Size(175, 15);
             label20.TabIndex = 27;
@@ -630,21 +634,21 @@
             // 
             comboBoxRol.FormattingEnabled = true;
             comboBoxRol.Items.AddRange(new object[] { "Bodeguista", "Gerente", "Cajero ", "Conserje ", "Vendedor" });
-            comboBoxRol.Location = new Point(613, 222);
+            comboBoxRol.Location = new Point(613, 179);
             comboBoxRol.Name = "comboBoxRol";
             comboBoxRol.Size = new Size(229, 23);
             comboBoxRol.TabIndex = 24;
             // 
             // textBoxCuentaBan
             // 
-            textBoxCuentaBan.Location = new Point(613, 270);
+            textBoxCuentaBan.Location = new Point(613, 227);
             textBoxCuentaBan.Name = "textBoxCuentaBan";
             textBoxCuentaBan.Size = new Size(229, 23);
             textBoxCuentaBan.TabIndex = 23;
             // 
             // textBoxFechaNacEmpelado
             // 
-            textBoxFechaNacEmpelado.Location = new Point(613, 178);
+            textBoxFechaNacEmpelado.Location = new Point(613, 273);
             textBoxFechaNacEmpelado.Name = "textBoxFechaNacEmpelado";
             textBoxFechaNacEmpelado.Size = new Size(229, 23);
             textBoxFechaNacEmpelado.TabIndex = 22;
@@ -665,7 +669,7 @@
             // 
             // buttonAgregarEmpleado
             // 
-            buttonAgregarEmpleado.Location = new Point(789, 345);
+            buttonAgregarEmpleado.Location = new Point(806, 359);
             buttonAgregarEmpleado.Name = "buttonAgregarEmpleado";
             buttonAgregarEmpleado.Size = new Size(103, 41);
             buttonAgregarEmpleado.TabIndex = 19;
@@ -728,6 +732,22 @@
             tabPage6.TabIndex = 5;
             tabPage6.Text = "Finanzas";
             tabPage6.UseVisualStyleBackColor = true;
+            // 
+            // label23
+            // 
+            label23.AutoSize = true;
+            label23.Location = new Point(642, 302);
+            label23.Name = "label23";
+            label23.Size = new Size(171, 15);
+            label23.TabIndex = 31;
+            label23.Text = "Numero de Telefono Empleado";
+            // 
+            // textBoxTelefonoEmpleado
+            // 
+            textBoxTelefonoEmpleado.Location = new Point(613, 320);
+            textBoxTelefonoEmpleado.Name = "textBoxTelefonoEmpleado";
+            textBoxTelefonoEmpleado.Size = new Size(229, 23);
+            textBoxTelefonoEmpleado.TabIndex = 30;
             // 
             // formMenu
             // 
@@ -821,5 +841,7 @@
         private Button buttonBusquedaFactura;
         public Button buttonEliminarProducto;
         public DataGridView dataGridViewInvetario;
+        private Label label23;
+        private TextBox textBoxTelefonoEmpleado;
     }
 }

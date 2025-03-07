@@ -59,6 +59,11 @@ namespace ProyectoAutoPartes
                 
         }
 
+        public void BusquedaFactura(string factura)
+        {
+            
+        }
+
         public void VaciarLista()
         {
             facturas.VaciarLista();

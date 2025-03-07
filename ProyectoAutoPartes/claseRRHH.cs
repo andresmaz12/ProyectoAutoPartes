@@ -63,12 +63,13 @@ namespace ProyectoAutoPartes
 
         public void AgregarEmpleado(string DPI, string NombreEmpleado, string Rol, string CuentaBancaria, string Usuario, string Contraseña)
         {
-
+            
         }
 
         public void ModificarLlavesAcceso()
         {
-
+            string Validacion = Interaction.InputBox("Ingrese su contraseña", "Moificar llaves de acceso", "");
+            
         }
     }
 }
