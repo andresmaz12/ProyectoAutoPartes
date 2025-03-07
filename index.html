@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Catálogo avanzado de autopartes de Auto Partes El Sapo">
+    <meta name="keywords" content="autopartes, dirección, frenos, motor, suspensión, marca, año, modelo">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Auto Partes El Sapo - Catálogo Avanzado</title>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <!-- Logo y título -->
+            <div class="logo-section">
+                <img src="logo.png" alt="Logo Auto Partes El Sapo" class="logo-img">
+                <h1 class="logo">Auto Partes El Sapo</h1>
+            </div>
+
+            <!-- Redes sociales y perfil -->
+            <div class="user-section">
+                <div class="social-links">
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                </div>
+                <div class="profile">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navegación -->
+        <nav class="navbar">
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="informacion.html">Información</a></li>
+                <li><a href="cotizaciones.html">Cotizaciones</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="main">
+        <!-- Buscador y filtros -->
+        <section class="search-section">
+            <div class="container">
+                <div class="search-filters">
+                    <input type="text" id="search" placeholder="Buscar por nombre..." aria-label="Buscar producto">
+                    <select id="marca">
+                        <option value="">Todas las Marcas</option>
+                        <option value="Toyota">Toyota</option>
+                        <option value="Honda">Honda</option>
+                        <option value="Ford">Ford</option>
+                        <option value="Chevrolet">Chevrolet</option>
+                    </select>
+                    <select id="año">
+                        <option value="">Todos los Años</option>
+                        <option value="2020">2020</option>
+                        <option value="2021">2021</option>
+                        <option value="2022">2022</option>
+                        <option value="2023">2023</option>
+                        <option value="2024">2024</option>
+                        <option value="2025">2025</option>
+                    </select>
+                    <select id="modelo">
+                        <option value="">Todos los Modelos</option>
+                        <option value="Corolla">Corolla</option>
+                        <option value="Civic">Civic</option>
+                        <option value="Mustang">Mustang</option>
+                        <option value="Silverado">Silverado</option>
+                    </select>
+                    <button onclick="filtrarProductos()">Filtrar</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Catálogo -->
+        <section class="catalog">
+            <!-- Productos dinámicos -->
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="whatsapp-contact">
+                <p>Contactar por WhatsApp: <a href="https://wa.me/502xxxxxxxx" target="_blank">+502 xxxxxxxx</a></p>
+            </div>
+            <p class="copyright">&copy; 2023 Auto Partes El Sapo. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
