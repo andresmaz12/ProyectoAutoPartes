@@ -98,6 +98,7 @@ namespace ProyectoAutoPartes
 
         private void buttonCancelarVenta_Click(object sender, EventArgs e)
         {
+            //Por medio de un messageBox se pregunta al dependiente si desea cancelar la venta, lo cual reinica todos los valores en la lista enlazada
             DialogResult cancelarVenta = MessageBox.Show("¿Desea cancelar la venta?", "Cancelar venta", MessageBoxButtons.YesNo);
             if (cancelarVenta == DialogResult.Yes)
             {
@@ -134,6 +135,7 @@ namespace ProyectoAutoPartes
 
         private void buttonBuscarEmpleado_Click(object sender, EventArgs e)
         {
+            //Metodo el cual modifica desde la claseRRHH el datagridviewRRHH para que se muestre al o empleados con el nombre que desea buscar
             rRHH.BuscarEmpleado();
         }
 
@@ -150,6 +152,8 @@ namespace ProyectoAutoPartes
             //datos obtenidos por medio de los constructores del formulario usuarioContraseña
             string usuario = verificar.Usuario;
             string contrasenia = verificar.Contrasenia;
+            //Se encarga de dar el nivel jerarquico al que el empleado tiene acceso
+            rRHH.SeleccionarNivel(rolEmpleado);
             //Inserta los datos necesarios para el funcionamiento del metodo
             rRHH.AgregarEmpleado(dpiEmpleado, nombreEmpleado, rolEmpleado, cuentaBanc, usuario, contrasenia);
         }
