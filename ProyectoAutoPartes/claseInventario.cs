@@ -54,11 +54,6 @@ namespace ProyectoAutoPartes
             }
         }
 
-
-
-
-        // Método para buscar elementos (Migrado de Access a MySQL)
-        // Se cambiaron los '?' por '@nombre' y '@precio' en la consulta SQL
         public void BuscarElemento()
         {
             // Obtener el nombre desde un InputBox
