@@ -68,7 +68,7 @@ namespace ProyectoAutoPartes
         {
             Nodo actual = cabeza;
             int contador = 0;
-            while(actual.nombreProducto != elementoBorrar && actual.siguiente != null)
+            while(actual.idProducto != elementoBorrar && actual.siguiente != null)
             {
                 actual = actual.siguiente;
                 contador++;

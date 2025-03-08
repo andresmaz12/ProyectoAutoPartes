@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Runtime.InteropServices.Marshalling;
 using System.Text;
+using Microsoft.VisualBasic;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 using System.Windows.Forms;
@@ -71,6 +72,7 @@ namespace ProyectoAutoPartes
 
         public void EliminiarElemento(string elemento)
         {
+            //Se usara un inputBox para obtener el id del producto 
             facturas.EliminarProducto(elemento);
         }
         public void CrearFactura(string idproducto, string nombreproducto, string nitcliente, int cantidadllevada, string nofactura, string fechacompra, double pagoindividual, double pagototal)

@@ -20,8 +20,10 @@ namespace ProyectoAutoPartes
         public string Especificacion { get; set; }
         public double Costo { get; set; }
         public double Ganancia { get; set; }
+        public double Precio { get; set;}
+        public int Anio { get; set; }
         public int Stock { get; set; }
-        public string Ruta {  get; set; }
+        public string Ruta { get; set; }
 
         public formAgregarInventario()
         {
@@ -74,12 +76,30 @@ namespace ProyectoAutoPartes
                 return;  // Salir si la validación falla
             }
 
+            if (int.TryParse(textBoxAnioVehiculo.Text, out int anio))
+            {
+                Anio = anio;  // Asignar el valor a la propiedad Stock
+            }
+            else
+            {
+                MessageBox.Show("Por favor, ingrese un valor válido para el Stock.");
+                return;  // Salir si la validación falla
+            }
+
+            //Asigna un valor al precio 
+            Precio = (Costo + Ganancia);
+
             //Asignar un valor para la ruta de acceso de la imagen
             Ruta = textBoxRuta.Text;
 
             // Cerrar el formulario y devolver un resultado exitoso
             this.DialogResult = DialogResult.OK;
             this.Close();
+        }
+
+        private void formAgregarInventario_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -74,6 +74,8 @@
             textBoxNit = new TextBox();
             dataGridViewClientes = new DataGridView();
             tabPage4 = new TabPage();
+            label23 = new Label();
+            textBoxTelefonoEmpleado = new TextBox();
             label18 = new Label();
             label19 = new Label();
             label20 = new Label();
@@ -91,8 +93,7 @@
             label11 = new Label();
             tabPage5 = new TabPage();
             tabPage6 = new TabPage();
-            label23 = new Label();
-            textBoxTelefonoEmpleado = new TextBox();
+            button1 = new Button();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewInvetario).BeginInit();
@@ -407,6 +408,7 @@
             // tabPage3
             // 
             tabPage3.BackColor = Color.CornflowerBlue;
+            tabPage3.Controls.Add(button1);
             tabPage3.Controls.Add(label7);
             tabPage3.Controls.Add(label6);
             tabPage3.Controls.Add(buttonBuscarCliente);
@@ -433,7 +435,7 @@
             // 
             label7.AutoSize = true;
             label7.Font = new Font("Pivot Classic", 21.75F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
-            label7.Location = new Point(582, 16);
+            label7.Location = new Point(639, 16);
             label7.Name = "label7";
             label7.Size = new Size(264, 33);
             label7.TabIndex = 15;
@@ -451,7 +453,7 @@
             // 
             // buttonBuscarCliente
             // 
-            buttonBuscarCliente.Location = new Point(14, 338);
+            buttonBuscarCliente.Location = new Point(14, 360);
             buttonBuscarCliente.Name = "buttonBuscarCliente";
             buttonBuscarCliente.Size = new Size(133, 40);
             buttonBuscarCliente.TabIndex = 13;
@@ -461,7 +463,7 @@
             // 
             // buttonGuardarCliente
             // 
-            buttonGuardarCliente.Location = new Point(776, 338);
+            buttonGuardarCliente.Location = new Point(770, 314);
             buttonGuardarCliente.Name = "buttonGuardarCliente";
             buttonGuardarCliente.Size = new Size(133, 40);
             buttonGuardarCliente.TabIndex = 12;
@@ -472,7 +474,7 @@
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(685, 247);
+            label5.Location = new Point(740, 247);
             label5.Name = "label5";
             label5.Size = new Size(116, 15);
             label5.TabIndex = 11;
@@ -481,7 +483,7 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(692, 199);
+            label4.Location = new Point(747, 199);
             label4.Name = "label4";
             label4.Size = new Size(89, 15);
             label4.TabIndex = 10;
@@ -490,7 +492,7 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(685, 155);
+            label3.Location = new Point(740, 155);
             label3.Name = "label3";
             label3.Size = new Size(110, 15);
             label3.TabIndex = 9;
@@ -499,7 +501,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(697, 111);
+            label2.Location = new Point(752, 111);
             label2.Name = "label2";
             label2.Size = new Size(84, 15);
             label2.TabIndex = 8;
@@ -508,7 +510,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(697, 67);
+            label1.Location = new Point(752, 67);
             label1.Name = "label1";
             label1.Size = new Size(84, 15);
             label1.TabIndex = 7;
@@ -518,35 +520,35 @@
             // 
             comboBoxTipoClientes.FormattingEnabled = true;
             comboBoxTipoClientes.Items.AddRange(new object[] { "Mayorista", "Cliente comun" });
-            comboBoxTipoClientes.Location = new Point(619, 217);
+            comboBoxTipoClientes.Location = new Point(674, 217);
             comboBoxTipoClientes.Name = "comboBoxTipoClientes";
             comboBoxTipoClientes.Size = new Size(229, 23);
             comboBoxTipoClientes.TabIndex = 6;
             // 
             // textBoxDireccion
             // 
-            textBoxDireccion.Location = new Point(619, 265);
+            textBoxDireccion.Location = new Point(674, 265);
             textBoxDireccion.Name = "textBoxDireccion";
             textBoxDireccion.Size = new Size(229, 23);
             textBoxDireccion.TabIndex = 5;
             // 
             // textBoxNombre
             // 
-            textBoxNombre.Location = new Point(619, 173);
+            textBoxNombre.Location = new Point(674, 173);
             textBoxNombre.Name = "textBoxNombre";
             textBoxNombre.Size = new Size(229, 23);
             textBoxNombre.TabIndex = 3;
             // 
             // textBoxDPI
             // 
-            textBoxDPI.Location = new Point(619, 85);
+            textBoxDPI.Location = new Point(674, 85);
             textBoxDPI.Name = "textBoxDPI";
             textBoxDPI.Size = new Size(229, 23);
             textBoxDPI.TabIndex = 2;
             // 
             // textBoxNit
             // 
-            textBoxNit.Location = new Point(619, 129);
+            textBoxNit.Location = new Point(674, 129);
             textBoxNit.Name = "textBoxNit";
             textBoxNit.Size = new Size(229, 23);
             textBoxNit.TabIndex = 1;
@@ -556,7 +558,7 @@
             dataGridViewClientes.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridViewClientes.Location = new Point(14, 52);
             dataGridViewClientes.Name = "dataGridViewClientes";
-            dataGridViewClientes.Size = new Size(516, 280);
+            dataGridViewClientes.Size = new Size(516, 302);
             dataGridViewClientes.TabIndex = 0;
             // 
             // tabPage4
@@ -584,6 +586,22 @@
             tabPage4.Size = new Size(942, 414);
             tabPage4.TabIndex = 3;
             tabPage4.Text = "RR HH";
+            // 
+            // label23
+            // 
+            label23.AutoSize = true;
+            label23.Location = new Point(642, 302);
+            label23.Name = "label23";
+            label23.Size = new Size(171, 15);
+            label23.TabIndex = 31;
+            label23.Text = "Numero de Telefono Empleado";
+            // 
+            // textBoxTelefonoEmpleado
+            // 
+            textBoxTelefonoEmpleado.Location = new Point(613, 320);
+            textBoxTelefonoEmpleado.Name = "textBoxTelefonoEmpleado";
+            textBoxTelefonoEmpleado.Size = new Size(229, 23);
+            textBoxTelefonoEmpleado.TabIndex = 30;
             // 
             // label18
             // 
@@ -733,21 +751,14 @@
             tabPage6.Text = "Finanzas";
             tabPage6.UseVisualStyleBackColor = true;
             // 
-            // label23
+            // button1
             // 
-            label23.AutoSize = true;
-            label23.Location = new Point(642, 302);
-            label23.Name = "label23";
-            label23.Size = new Size(171, 15);
-            label23.TabIndex = 31;
-            label23.Text = "Numero de Telefono Empleado";
-            // 
-            // textBoxTelefonoEmpleado
-            // 
-            textBoxTelefonoEmpleado.Location = new Point(613, 320);
-            textBoxTelefonoEmpleado.Name = "textBoxTelefonoEmpleado";
-            textBoxTelefonoEmpleado.Size = new Size(229, 23);
-            textBoxTelefonoEmpleado.TabIndex = 30;
+            button1.Location = new Point(770, 360);
+            button1.Name = "button1";
+            button1.Size = new Size(133, 40);
+            button1.TabIndex = 16;
+            button1.Text = "Guardar cliente";
+            button1.UseVisualStyleBackColor = true;
             // 
             // formMenu
             // 
@@ -843,5 +854,6 @@
         public DataGridView dataGridViewInvetario;
         private Label label23;
         private TextBox textBoxTelefonoEmpleado;
+        private Button button1;
     }
 }

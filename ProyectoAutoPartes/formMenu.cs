@@ -9,6 +9,7 @@ using Microsoft.VisualBasic;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySqlX.XDevAPI.Common;
+using Org.BouncyCastle.Asn1;
 
 namespace ProyectoAutoPartes
 {
@@ -45,7 +46,8 @@ namespace ProyectoAutoPartes
         {
             formAgregarInventario agregar = new formAgregarInventario();
             agregar.ShowDialog();
-            inventario.InsertarDatos(agregar.Nombre, agregar.Descripcion, agregar.Costo, agregar.Ganancia, agregar.Stock);
+            inventario.InsertarDatos(agregar.Nombre, agregar.Descripcion, agregar.Stock, agregar.Especificacion,
+                agregar.Costo, agregar.Ganancia, agregar.Precio, agregar.Anio);
         }
 
         private void buttonEditarInventario_Click(object sender, EventArgs e)
@@ -69,7 +71,9 @@ namespace ProyectoAutoPartes
 
         private void buttonAgregarProducto_Click(object sender, EventArgs e)
         {
+            //Por medio de esto 
             ventas.AgregarProductoLista();
+            //Libera todo los buttons bloqueados para evitar problemas con la lista enlazada
             buttonCancelarVenta.Enabled = true;
             buttonRealizarVenta.Enabled = true;
             buttonEliminarProducto.Enabled = true;
@@ -77,14 +81,15 @@ namespace ProyectoAutoPartes
 
         private void buttonEliminarProducto_Click(object sender, EventArgs e)
         {
-            string elemento = Interaction.InputBox("Ingrese el nombre del producto", "Eliminar producto", "Ej. Chazis");
+            //Por medio del message box se obtiene el ID del producto a elminiar
+            string elemento = Interaction.InputBox("Ingrese el ID del producto", "Eliminar producto", "Ej. 00");
             ventas.EliminiarElemento(elemento);
             Console.WriteLine("Puto si me leen");
         }
 
         private void buttonRealizarVenta_Click(object sender, EventArgs e)
         {
-
+            //Se liberan los buttons para evitar problemas con la lista enlazada
             buttonCancelarVenta.Enabled = false;
             buttonRealizarVenta.Enabled = false;
             buttonEliminarProducto.Enabled = false;
@@ -102,7 +107,12 @@ namespace ProyectoAutoPartes
             DialogResult cancelarVenta = MessageBox.Show("¿Desea cancelar la venta?", "Cancelar venta", MessageBoxButtons.YesNo);
             if (cancelarVenta == DialogResult.Yes)
             {
+                //El metodo simplemente vacia la lista enlazada permitiendo al dependiente hacer otra venta
                 ventas.VaciarLista();
+                //Se bloquean los botones hasta que se vuelva a agregar otro producto evitando problemas con la lista enlazada
+                buttonCancelarVenta.Enabled = true;
+                buttonRealizarVenta.Enabled = true;
+                buttonEliminarProducto.Enabled = true;
             }
             else if (cancelarVenta == DialogResult.No)
             {
@@ -121,12 +131,13 @@ namespace ProyectoAutoPartes
             string telefonoCliente = "";
             string nitCliente = textBoxNit.Text;
             string direccionCliente = textBoxDireccion.Text;
-            clientes.GuardarCliente(dpiCliente, telefonoCliente, nitCliente, direccionCliente );
+            clientes.GuardarCliente(dpiCliente, nitCliente, );
         }
 
         private void buttonBuscarCliente_Click(object sender, EventArgs e)
         {
-            clientes.BuscarCliente();
+            string nombre = Interaction.InputBox("Ingrese el nombre", "Busqueda", " ");
+            clientes.BuscarCliente(nombre);
         }
         #endregion
 

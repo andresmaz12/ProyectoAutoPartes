@@ -31,9 +31,8 @@ namespace ProyectoAutoPartes
             form.dataGridViewClientes.DataSource = dt;
         }
 
-        public void BuscarCliente()
-        {
-            string nombre = Interaction.InputBox("Ingrese el nombre", "Busqueda", " ");
+        public void BuscarCliente(string nombre)
+        { 
             if (string.IsNullOrWhiteSpace(nombre)) return; // Verifica que el campo de nombre no esté vacío
             using var conn = new MySqlConnection(connectionString);
             string query = "SELECT * FROM Clientes WHERE Nombre = ?";
