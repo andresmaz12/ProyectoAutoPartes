@@ -62,34 +62,42 @@ namespace ProyectoAutoPartes
             string nombre = Interaction.InputBox("Cual es el nombre del empleado", "Busqueda de empleados", "");
         }
 
-        public void AgregarEmpleado(string DPI, string NombreEmpleado, string Rol, string CuentaBancaria, string Usuario, string Contraseña)
+        public void AgregarEmpleado(string dpiEmpleado, string idEmpleado, string nombre, DateTime fechaNacimiento, string rol, 
+                                string cuentaBancaria, string usuario, string contraseña, int faltas, double bonos, double salario)
         {
-            try
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                using (MySqlConnection conn = new MySqlConnection(connectionString))
+                string query = "INSERT INTO RRHH (DPI_Empleado, ID_Empleado, Nombre, " +
+                              "FechaDeNacimiento, Rol, CuentaBancaria, Usuario, Contraseña, Faltas, Bonos, Salario) " +
+                              "VALUES (@DPI, @ID, @Nombre, @Fecha, @Rol, @Cuenta, @Usuario, @Password, @Faltas, @Bonos, @Salario)";
+
+                MySqlCommand command = new MySqlCommand(query, connection);
+
+                command.Parameters.AddWithValue("@DPI", dpiEmpleado);
+                command.Parameters.AddWithValue("@ID", idEmpleado);
+                command.Parameters.AddWithValue("@Nombre", nombre);
+                command.Parameters.AddWithValue("@Fecha", fechaNacimiento);
+                command.Parameters.AddWithValue("@Rol", rol);
+                command.Parameters.AddWithValue("@Cuenta", cuentaBancaria);
+                command.Parameters.AddWithValue("@Usuario", usuario);
+                command.Parameters.AddWithValue("@Password", contraseña);
+                command.Parameters.AddWithValue("@Faltas", faltas);
+                command.Parameters.AddWithValue("@Bonos", bonos);
+                command.Parameters.AddWithValue("@Salario", salario);
+
+                try
                 {
-                    string query = "INSERT INTO inventario (NombreProducto, Descripcion, Costo, Ganancia, CantidadEnStock) VALUES (@nombre, @descripcion, @costo, @ganancia, @stock)";
-                    using var cmd = new MySqlCommand(query, conn);
-
-                    // Se asignan los valores a los parámetros
-                    cmd.Parameters.AddWithValue("@nombre", nombre);
-                    cmd.Parameters.AddWithValue("@descripcion", descripcion);
-                    cmd.Parameters.AddWithValue("@costo", costo);
-                    cmd.Parameters.AddWithValue("@ganancia", ganancia);
-                    cmd.Parameters.AddWithValue("@stock", stock);
-
-                    conn.Open();
-                    cmd.ExecuteNonQuery();
-                    conn.Close();
-
-                    MessageBox.Show("Datos insertados correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                    MessageBox.Show("Empleado agregado con éxito!");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error al agregar empleado: " + ex.Message);
                 }
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Ocurrió un error al guardar los datos: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
         }
+
 
         public void ModificarLlavesAcceso()
         {

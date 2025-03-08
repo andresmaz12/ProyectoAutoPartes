@@ -25,32 +25,36 @@ namespace ProyectoAutoPartes
         // Método para insertar datos en la base de datos (Migrado de Access a MySQL)
         // Se cambiaron OleDbConnection y OleDbCommand por MySqlConnection y MySqlCommand
         // Se cambiaron los parámetros de '?' a '@nombre', '@descripcion', etc.
-        public void InsertarDatos(string nombre, string descripcion, double costo, double ganancia, int stock)
+        public void InsertarDatos( string nombreProducto, string descripcion, int cantidadStock, 
+                                  string especificacionVehiculo, double costo, double ganancia, double precio, int año)
         {
-            try
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                using (MySqlConnection conn = new MySqlConnection(connectionString))
+                string query = "INSERT INTO Inventario (ID_Producto, NombreProducto, Descripcion, " +
+                              "CantidadEnStock, EspecificacionVehiculo, Costo, Ganancia, Precio, Año) " +
+                              "VALUES (@ID, @Nombre, @Desc, @Stock, @Espec, @Costo, @Ganancia, @Precio, @Año)";
+
+                MySqlCommand command = new MySqlCommand(query, connection);
+
+                command.Parameters.AddWithValue("@Nombre", nombreProducto);
+                command.Parameters.AddWithValue("@Desc", descripcion);
+                command.Parameters.AddWithValue("@Stock", cantidadStock);
+                command.Parameters.AddWithValue("@Espec", especificacionVehiculo);
+                command.Parameters.AddWithValue("@Costo", costo);
+                command.Parameters.AddWithValue("@Ganancia", ganancia);
+                command.Parameters.AddWithValue("@Precio", precio);
+                command.Parameters.AddWithValue("@Año", año);
+
+                try
                 {
-                    string query = "INSERT INTO inventario (NombreProducto, Descripcion, Costo, Ganancia, CantidadEnStock) VALUES (@nombre, @descripcion, @costo, @ganancia, @stock)";
-                    using var cmd = new MySqlCommand(query, conn);
-
-                    // Se asignan los valores a los parámetros
-                    cmd.Parameters.AddWithValue("@nombre", nombre);
-                    cmd.Parameters.AddWithValue("@descripcion", descripcion);
-                    cmd.Parameters.AddWithValue("@costo", costo);
-                    cmd.Parameters.AddWithValue("@ganancia", ganancia);
-                    cmd.Parameters.AddWithValue("@stock", stock);
-
-                    conn.Open();
-                    cmd.ExecuteNonQuery();
-                    conn.Close();
-
-                    MessageBox.Show("Datos insertados correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                    MessageBox.Show("Producto agregado al inventario con éxito!");
                 }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Ocurrió un error al guardar los datos: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error al agregar producto: " + ex.Message);
+                }
             }
         }
 
