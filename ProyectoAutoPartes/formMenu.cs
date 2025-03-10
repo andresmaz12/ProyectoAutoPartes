@@ -120,6 +120,16 @@ namespace ProyectoAutoPartes
                 MessageBox.Show("No se cancelara la venta", "Cancelar venta", MessageBoxButtons.OK);
             }
         }
+
+        private void buttonEditarCompra_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void buttonEliminarCompra_Click(object sender, EventArgs e)
+        {
+
+        }
         #endregion
 
         // Modulo clientes
@@ -134,7 +144,7 @@ namespace ProyectoAutoPartes
             string nombreCliente = textBoxNombreCliente.Text;
             string tipoCliente = comboBoxTipoClientes.Text;
             string direccionCliente = textBoxDireccion.Text;
-            clientes.GuardarCliente(dpiCliente, nitCliente, nombreCliente, tipoCliente, direccionCliente, 0 ,telefonoCliente, 0);
+            clientes.GuardarCliente(dpiCliente, nitCliente, nombreCliente, tipoCliente, direccionCliente, 0, telefonoCliente, 0);
         }
 
         private void buttonBuscarCliente_Click(object sender, EventArgs e)
@@ -221,7 +231,5 @@ namespace ProyectoAutoPartes
 
         }
         #endregion
-
-
     }
 }

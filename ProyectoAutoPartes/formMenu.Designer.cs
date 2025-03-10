@@ -37,6 +37,8 @@
             buttonAgregarInventario = new Button();
             dataGridViewInvetario = new DataGridView();
             tabPage2 = new TabPage();
+            buttonEditarCompra = new Button();
+            buttonEliminarCompra = new Button();
             buttonBusquedaFactura = new Button();
             buttonCancelarVenta = new Button();
             listBox1 = new ListBox();
@@ -94,6 +96,11 @@
             label11 = new Label();
             tabPage5 = new TabPage();
             tabPage6 = new TabPage();
+            buttonEliminarEmpleado = new Button();
+            buttonFiltarSueldoEmpleado = new Button();
+            buttonFiltrarRol = new Button();
+            buttonFiltrarFaltas = new Button();
+            buttonFiltrarVentas = new Button();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewInvetario).BeginInit();
@@ -115,11 +122,11 @@
             tabControl1.Controls.Add(tabPage4);
             tabControl1.Controls.Add(tabPage5);
             tabControl1.Controls.Add(tabPage6);
-            tabControl1.Location = new Point(2, 31);
+            tabControl1.Location = new Point(-3, 31);
             tabControl1.Multiline = true;
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(973, 422);
+            tabControl1.Size = new Size(982, 422);
             tabControl1.TabIndex = 0;
             // 
             // tabPage1
@@ -134,7 +141,7 @@
             tabPage1.Location = new Point(27, 4);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new Padding(3);
-            tabPage1.Size = new Size(942, 414);
+            tabPage1.Size = new Size(951, 414);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "Inventario";
             // 
@@ -199,6 +206,8 @@
             // tabPage2
             // 
             tabPage2.BackColor = Color.CornflowerBlue;
+            tabPage2.Controls.Add(buttonEditarCompra);
+            tabPage2.Controls.Add(buttonEliminarCompra);
             tabPage2.Controls.Add(buttonBusquedaFactura);
             tabPage2.Controls.Add(buttonCancelarVenta);
             tabPage2.Controls.Add(listBox1);
@@ -222,13 +231,33 @@
             tabPage2.Location = new Point(27, 4);
             tabPage2.Name = "tabPage2";
             tabPage2.Padding = new Padding(3);
-            tabPage2.Size = new Size(942, 414);
+            tabPage2.Size = new Size(951, 414);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "Ventas";
             // 
+            // buttonEditarCompra
+            // 
+            buttonEditarCompra.Location = new Point(559, 315);
+            buttonEditarCompra.Name = "buttonEditarCompra";
+            buttonEditarCompra.Size = new Size(103, 41);
+            buttonEditarCompra.TabIndex = 37;
+            buttonEditarCompra.Text = "Editar Compra";
+            buttonEditarCompra.UseVisualStyleBackColor = true;
+            buttonEditarCompra.Click += buttonEditarCompra_Click;
+            // 
+            // buttonEliminarCompra
+            // 
+            buttonEliminarCompra.Location = new Point(668, 315);
+            buttonEliminarCompra.Name = "buttonEliminarCompra";
+            buttonEliminarCompra.Size = new Size(103, 41);
+            buttonEliminarCompra.TabIndex = 36;
+            buttonEliminarCompra.Text = "Eliminar Compra";
+            buttonEliminarCompra.UseVisualStyleBackColor = true;
+            buttonEliminarCompra.Click += buttonEliminarCompra_Click;
+            // 
             // buttonBusquedaFactura
             // 
-            buttonBusquedaFactura.Location = new Point(781, 315);
+            buttonBusquedaFactura.Location = new Point(777, 315);
             buttonBusquedaFactura.Name = "buttonBusquedaFactura";
             buttonBusquedaFactura.Size = new Size(103, 41);
             buttonBusquedaFactura.TabIndex = 35;
@@ -238,7 +267,7 @@
             // 
             // buttonCancelarVenta
             // 
-            buttonCancelarVenta.Location = new Point(352, 342);
+            buttonCancelarVenta.Location = new Point(357, 367);
             buttonCancelarVenta.Name = "buttonCancelarVenta";
             buttonCancelarVenta.Size = new Size(103, 41);
             buttonCancelarVenta.TabIndex = 34;
@@ -252,7 +281,7 @@
             listBox1.ItemHeight = 15;
             listBox1.Location = new Point(259, 62);
             listBox1.Name = "listBox1";
-            listBox1.Size = new Size(196, 274);
+            listBox1.Size = new Size(196, 304);
             listBox1.TabIndex = 33;
             // 
             // label17
@@ -342,7 +371,7 @@
             // 
             // buttonRealizarVenta
             // 
-            buttonRealizarVenta.Location = new Point(243, 342);
+            buttonRealizarVenta.Location = new Point(248, 367);
             buttonRealizarVenta.Name = "buttonRealizarVenta";
             buttonRealizarVenta.Size = new Size(103, 41);
             buttonRealizarVenta.TabIndex = 21;
@@ -352,7 +381,7 @@
             // 
             // buttonEliminarProducto
             // 
-            buttonEliminarProducto.Location = new Point(134, 342);
+            buttonEliminarProducto.Location = new Point(139, 367);
             buttonEliminarProducto.Name = "buttonEliminarProducto";
             buttonEliminarProducto.Size = new Size(103, 41);
             buttonEliminarProducto.TabIndex = 20;
@@ -362,7 +391,7 @@
             // 
             // buttonAgregarProducto
             // 
-            buttonAgregarProducto.Location = new Point(25, 342);
+            buttonAgregarProducto.Location = new Point(30, 367);
             buttonAgregarProducto.Name = "buttonAgregarProducto";
             buttonAgregarProducto.Size = new Size(103, 41);
             buttonAgregarProducto.TabIndex = 19;
@@ -427,7 +456,7 @@
             tabPage3.ForeColor = Color.Black;
             tabPage3.Location = new Point(27, 4);
             tabPage3.Name = "tabPage3";
-            tabPage3.Size = new Size(942, 414);
+            tabPage3.Size = new Size(951, 414);
             tabPage3.TabIndex = 2;
             tabPage3.Text = "Clientes";
             // 
@@ -574,6 +603,11 @@
             // tabPage4
             // 
             tabPage4.BackColor = Color.CornflowerBlue;
+            tabPage4.Controls.Add(buttonFiltrarVentas);
+            tabPage4.Controls.Add(buttonFiltrarFaltas);
+            tabPage4.Controls.Add(buttonFiltrarRol);
+            tabPage4.Controls.Add(buttonFiltarSueldoEmpleado);
+            tabPage4.Controls.Add(buttonEliminarEmpleado);
             tabPage4.Controls.Add(label23);
             tabPage4.Controls.Add(textBoxTelefonoEmpleado);
             tabPage4.Controls.Add(label18);
@@ -593,7 +627,7 @@
             tabPage4.Controls.Add(label11);
             tabPage4.Location = new Point(27, 4);
             tabPage4.Name = "tabPage4";
-            tabPage4.Size = new Size(942, 414);
+            tabPage4.Size = new Size(951, 414);
             tabPage4.TabIndex = 3;
             tabPage4.Text = "RR HH";
             // 
@@ -697,17 +731,17 @@
             // 
             // buttonAgregarEmpleado
             // 
-            buttonAgregarEmpleado.Location = new Point(806, 359);
+            buttonAgregarEmpleado.Location = new Point(739, 359);
             buttonAgregarEmpleado.Name = "buttonAgregarEmpleado";
             buttonAgregarEmpleado.Size = new Size(103, 41);
             buttonAgregarEmpleado.TabIndex = 19;
-            buttonAgregarEmpleado.Text = "Agregar Empleados";
+            buttonAgregarEmpleado.Text = "Agregar Empleado";
             buttonAgregarEmpleado.UseVisualStyleBackColor = true;
             buttonAgregarEmpleado.Click += buttonAgregarEmpleado_Click;
             // 
             // buttonBuscarEmpleado
             // 
-            buttonBuscarEmpleado.Location = new Point(27, 345);
+            buttonBuscarEmpleado.Location = new Point(13, 339);
             buttonBuscarEmpleado.Name = "buttonBuscarEmpleado";
             buttonBuscarEmpleado.Size = new Size(103, 41);
             buttonBuscarEmpleado.TabIndex = 18;
@@ -728,16 +762,16 @@
             // dataGridView1
             // 
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(27, 72);
+            dataGridView1.Location = new Point(13, 72);
             dataGridView1.Name = "dataGridView1";
-            dataGridView1.Size = new Size(454, 261);
+            dataGridView1.Size = new Size(539, 261);
             dataGridView1.TabIndex = 16;
             // 
             // label11
             // 
             label11.AutoSize = true;
             label11.Font = new Font("Pivot Classic", 21.75F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
-            label11.Location = new Point(74, 36);
+            label11.Location = new Point(144, 36);
             label11.Name = "label11";
             label11.Size = new Size(299, 33);
             label11.TabIndex = 15;
@@ -747,7 +781,7 @@
             // 
             tabPage5.Location = new Point(27, 4);
             tabPage5.Name = "tabPage5";
-            tabPage5.Size = new Size(942, 414);
+            tabPage5.Size = new Size(951, 411);
             tabPage5.TabIndex = 4;
             tabPage5.Text = "Gestion WEB";
             tabPage5.UseVisualStyleBackColor = true;
@@ -756,10 +790,55 @@
             // 
             tabPage6.Location = new Point(27, 4);
             tabPage6.Name = "tabPage6";
-            tabPage6.Size = new Size(942, 414);
+            tabPage6.Size = new Size(951, 411);
             tabPage6.TabIndex = 5;
             tabPage6.Text = "Finanzas";
             tabPage6.UseVisualStyleBackColor = true;
+            // 
+            // buttonEliminarEmpleado
+            // 
+            buttonEliminarEmpleado.Location = new Point(613, 359);
+            buttonEliminarEmpleado.Name = "buttonEliminarEmpleado";
+            buttonEliminarEmpleado.Size = new Size(103, 41);
+            buttonEliminarEmpleado.TabIndex = 32;
+            buttonEliminarEmpleado.Text = "Eliminar Empleado";
+            buttonEliminarEmpleado.UseVisualStyleBackColor = true;
+            // 
+            // buttonFiltarSueldoEmpleado
+            // 
+            buttonFiltarSueldoEmpleado.Location = new Point(122, 339);
+            buttonFiltarSueldoEmpleado.Name = "buttonFiltarSueldoEmpleado";
+            buttonFiltarSueldoEmpleado.Size = new Size(103, 41);
+            buttonFiltarSueldoEmpleado.TabIndex = 33;
+            buttonFiltarSueldoEmpleado.Text = "Filtrar por Sueldo";
+            buttonFiltarSueldoEmpleado.UseVisualStyleBackColor = true;
+            // 
+            // buttonFiltrarRol
+            // 
+            buttonFiltrarRol.Location = new Point(231, 339);
+            buttonFiltrarRol.Name = "buttonFiltrarRol";
+            buttonFiltrarRol.Size = new Size(103, 41);
+            buttonFiltrarRol.TabIndex = 34;
+            buttonFiltrarRol.Text = "Filtrar por Rol ";
+            buttonFiltrarRol.UseVisualStyleBackColor = true;
+            // 
+            // buttonFiltrarFaltas
+            // 
+            buttonFiltrarFaltas.Location = new Point(340, 339);
+            buttonFiltrarFaltas.Name = "buttonFiltrarFaltas";
+            buttonFiltrarFaltas.Size = new Size(103, 41);
+            buttonFiltrarFaltas.TabIndex = 35;
+            buttonFiltrarFaltas.Text = "Filtrar por Faltas";
+            buttonFiltrarFaltas.UseVisualStyleBackColor = true;
+            // 
+            // buttonFiltrarVentas
+            // 
+            buttonFiltrarVentas.Location = new Point(449, 339);
+            buttonFiltrarVentas.Name = "buttonFiltrarVentas";
+            buttonFiltrarVentas.Size = new Size(103, 41);
+            buttonFiltrarVentas.TabIndex = 36;
+            buttonFiltrarVentas.Text = "Filtrar por Ventas";
+            buttonFiltrarVentas.UseVisualStyleBackColor = true;
             // 
             // formMenu
             // 
@@ -856,5 +935,12 @@
         private Label label23;
         private TextBox textBoxTelefonoEmpleado;
         private Button buttonEliminiarCliente;
+        private Button buttonEditarCompra;
+        private Button buttonEliminarCompra;
+        private Button buttonFiltrarFaltas;
+        private Button buttonFiltrarRol;
+        private Button buttonFiltarSueldoEmpleado;
+        private Button buttonEliminarEmpleado;
+        private Button buttonFiltrarVentas;
     }
 }
