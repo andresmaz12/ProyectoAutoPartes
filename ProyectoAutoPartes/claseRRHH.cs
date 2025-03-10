@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 using System.Windows.Forms;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Globalization;
 
 namespace ProyectoAutoPartes
 {
@@ -62,7 +63,7 @@ namespace ProyectoAutoPartes
             string nombre = Interaction.InputBox("Cual es el nombre del empleado", "Busqueda de empleados", "");
         }
 
-        public void AgregarEmpleado(string dpiEmpleado, string idEmpleado, string nombre, DateTime fechaNacimiento, string rol, 
+        public void AgregarEmpleado(string dpiEmpleado, string nombre, DateTime fechaNacimiento, string rol, 
                                 string cuentaBancaria, string usuario, string contraseña, int faltas, double bonos, double salario)
         {
             using (MySqlConnection connection = new MySqlConnection(connectionString))
@@ -74,7 +75,6 @@ namespace ProyectoAutoPartes
                 MySqlCommand command = new MySqlCommand(query, connection);
 
                 command.Parameters.AddWithValue("@DPI", dpiEmpleado);
-                command.Parameters.AddWithValue("@ID", idEmpleado);
                 command.Parameters.AddWithValue("@Nombre", nombre);
                 command.Parameters.AddWithValue("@Fecha", fechaNacimiento);
                 command.Parameters.AddWithValue("@Rol", rol);
@@ -123,6 +123,28 @@ namespace ProyectoAutoPartes
                 case "e":
                     break;
             }
+        }
+
+        public double Salario()
+        {
+            string input = Interaction.InputBox("Ingrese el salario del empleado", "Inscripción Empleado", "");
+
+            if (double.TryParse(input, out double salario))
+            {
+                MessageBox.Show("Salario agregado correctamente", "Inscripción de empleado", MessageBoxButtons.OK);
+                return salario; // Retorna el salario válido
+            }
+            else
+            {
+                MessageBox.Show("Ingrese un número válido para el salario (entero o con dos decimales)", "Inscripción de empleado", MessageBoxButtons.OK);
+                return Salario(); // Vuelve a pedir el salario hasta que sea válido
+            }
+        }
+
+        public bool EsFechaValida(string fecha)
+        {
+            DateTime fechaConvertida;
+            return DateTime.TryParseExact(fecha, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out fechaConvertida);
         }
     }
 }

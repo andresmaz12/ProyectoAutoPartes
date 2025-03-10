@@ -6,6 +6,7 @@ using System.Text;
 using Microsoft.VisualBasic;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
+using System.Globalization;
 
 namespace ProyectoAutoPartes
 {
@@ -45,7 +46,7 @@ namespace ProyectoAutoPartes
         }
 
         public void GuardarCliente(string dpiCliente, string nit, string nombre, string tipoCliente,
-                              string direccion, bool comprasEmpresa, string telefono, double descuentosFidelidad)
+                              string direccion, int comprasEmpresa, string telefono, double descuentosFidelidad)
         {
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
@@ -77,5 +78,12 @@ namespace ProyectoAutoPartes
                 }
             }
         }
+
+        public void EliminarClientes(string nombre)
+        {
+
+        }
+
+        
     }
 }

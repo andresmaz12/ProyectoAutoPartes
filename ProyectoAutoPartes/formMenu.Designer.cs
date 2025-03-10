@@ -58,6 +58,7 @@
             dateTimePickerVentas = new DateTimePicker();
             dataGridViewVentas = new DataGridView();
             tabPage3 = new TabPage();
+            buttonEliminiarCliente = new Button();
             label7 = new Label();
             label6 = new Label();
             buttonBuscarCliente = new Button();
@@ -69,7 +70,7 @@
             label1 = new Label();
             comboBoxTipoClientes = new ComboBox();
             textBoxDireccion = new TextBox();
-            textBoxNombre = new TextBox();
+            textBoxNombreCliente = new TextBox();
             textBoxDPI = new TextBox();
             textBoxNit = new TextBox();
             dataGridViewClientes = new DataGridView();
@@ -93,7 +94,6 @@
             label11 = new Label();
             tabPage5 = new TabPage();
             tabPage6 = new TabPage();
-            button1 = new Button();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewInvetario).BeginInit();
@@ -408,7 +408,7 @@
             // tabPage3
             // 
             tabPage3.BackColor = Color.CornflowerBlue;
-            tabPage3.Controls.Add(button1);
+            tabPage3.Controls.Add(buttonEliminiarCliente);
             tabPage3.Controls.Add(label7);
             tabPage3.Controls.Add(label6);
             tabPage3.Controls.Add(buttonBuscarCliente);
@@ -420,7 +420,7 @@
             tabPage3.Controls.Add(label1);
             tabPage3.Controls.Add(comboBoxTipoClientes);
             tabPage3.Controls.Add(textBoxDireccion);
-            tabPage3.Controls.Add(textBoxNombre);
+            tabPage3.Controls.Add(textBoxNombreCliente);
             tabPage3.Controls.Add(textBoxDPI);
             tabPage3.Controls.Add(textBoxNit);
             tabPage3.Controls.Add(dataGridViewClientes);
@@ -430,6 +430,16 @@
             tabPage3.Size = new Size(942, 414);
             tabPage3.TabIndex = 2;
             tabPage3.Text = "Clientes";
+            // 
+            // buttonEliminiarCliente
+            // 
+            buttonEliminiarCliente.Location = new Point(770, 360);
+            buttonEliminiarCliente.Name = "buttonEliminiarCliente";
+            buttonEliminiarCliente.Size = new Size(133, 40);
+            buttonEliminiarCliente.TabIndex = 16;
+            buttonEliminiarCliente.Text = "Eliminar Cliente";
+            buttonEliminiarCliente.UseVisualStyleBackColor = true;
+            buttonEliminiarCliente.Click += buttonEliminiarCliente_Click;
             // 
             // label7
             // 
@@ -532,12 +542,12 @@
             textBoxDireccion.Size = new Size(229, 23);
             textBoxDireccion.TabIndex = 5;
             // 
-            // textBoxNombre
+            // textBoxNombreCliente
             // 
-            textBoxNombre.Location = new Point(674, 173);
-            textBoxNombre.Name = "textBoxNombre";
-            textBoxNombre.Size = new Size(229, 23);
-            textBoxNombre.TabIndex = 3;
+            textBoxNombreCliente.Location = new Point(674, 173);
+            textBoxNombreCliente.Name = "textBoxNombreCliente";
+            textBoxNombreCliente.Size = new Size(229, 23);
+            textBoxNombreCliente.TabIndex = 3;
             // 
             // textBoxDPI
             // 
@@ -751,15 +761,6 @@
             tabPage6.Text = "Finanzas";
             tabPage6.UseVisualStyleBackColor = true;
             // 
-            // button1
-            // 
-            button1.Location = new Point(770, 360);
-            button1.Name = "button1";
-            button1.Size = new Size(133, 40);
-            button1.TabIndex = 16;
-            button1.Text = "Guardar cliente";
-            button1.UseVisualStyleBackColor = true;
-            // 
             // formMenu
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -805,7 +806,7 @@
         public DataGridView dataGridViewClientes;
         private ComboBox comboBoxTipoClientes;
         private TextBox textBoxDireccion;
-        private TextBox textBoxNombre;
+        private TextBox textBoxNombreCliente;
         private TextBox textBoxDPI;
         private TextBox textBoxNit;
         private Label label5;
@@ -854,6 +855,6 @@
         public DataGridView dataGridViewInvetario;
         private Label label23;
         private TextBox textBoxTelefonoEmpleado;
-        private Button button1;
+        private Button buttonEliminiarCliente;
     }
 }

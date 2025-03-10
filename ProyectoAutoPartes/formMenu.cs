@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySqlX.XDevAPI.Common;
 using Org.BouncyCastle.Asn1;
+using Mysqlx.Cursor;
 
 namespace ProyectoAutoPartes
 {
@@ -130,14 +131,22 @@ namespace ProyectoAutoPartes
             string dpiCliente = textBoxDPI.Text;
             string telefonoCliente = "";
             string nitCliente = textBoxNit.Text;
+            string nombreCliente = textBoxNombreCliente.Text;
+            string tipoCliente = comboBoxTipoClientes.Text;
             string direccionCliente = textBoxDireccion.Text;
-            clientes.GuardarCliente(dpiCliente, nitCliente, );
+            clientes.GuardarCliente(dpiCliente, nitCliente, nombreCliente, tipoCliente, direccionCliente, 0 ,telefonoCliente, 0);
         }
 
         private void buttonBuscarCliente_Click(object sender, EventArgs e)
         {
             string nombre = Interaction.InputBox("Ingrese el nombre", "Busqueda", " ");
             clientes.BuscarCliente(nombre);
+        }
+
+        private void buttonEliminiarCliente_Click(object sender, EventArgs e)
+        {
+            string cliente = Interaction.InputBox("Ingrese el nombre del clinete a eliminar", "Eliminar cliente", "Ej. Claudia Lopez");
+            clientes.EliminarClientes(cliente);
         }
         #endregion
 
@@ -152,22 +161,67 @@ namespace ProyectoAutoPartes
 
         private void buttonAgregarEmpleado_Click(object sender, EventArgs e)
         {
-            //Llama al formulario usuarioContraseña para obtener los datos para agregar el usuario y contraseña del empleado
+            //  Llama al formulario usuarioContrasenia para obtener usuario y contraseña
             usuarioContrasenia verificar = new usuarioContrasenia();
-            //Datos obtenidos por medio de los textBox en la pestaña/tab "RRHH"
-            string dpiEmpleado = textBoxDPIEmpleado.Text;
-            string nombreEmpleado = textBoxNombreEmpleado.Text;
-            string rolEmpleado = comboBoxRol.Text;
-            string cuentaBanc = textBoxCuentaBan.Text;
-            string fechaNac = textBoxFechaNacEmpelado.Text;
-            //datos obtenidos por medio de los constructores del formulario usuarioContraseña
+            if (verificar.ShowDialog() != DialogResult.OK)
+            {
+                MessageBox.Show("No se ingresaron credenciales. Operación cancelada.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return; // Detiene la ejecución si el usuario cancela
+            }
+
+            // Obtiene datos de los TextBox en la pestaña "RRHH"
+            string dpiEmpleado = textBoxDPIEmpleado.Text.Trim();
+            string nombreEmpleado = textBoxNombreEmpleado.Text.Trim();
+            string rolEmpleado = comboBoxRol.Text.Trim();
+            string cuentaBanc = textBoxCuentaBan.Text.Trim();
+            string fechaNac = textBoxFechaNacEmpelado.Text.Trim();
+
+            // Validaciones básicas
+            if (string.IsNullOrEmpty(dpiEmpleado) || string.IsNullOrEmpty(nombreEmpleado) ||
+                string.IsNullOrEmpty(rolEmpleado) || string.IsNullOrEmpty(cuentaBanc) ||
+                string.IsNullOrEmpty(fechaNac))
+            {
+                MessageBox.Show("Todos los campos son obligatorios.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Declarar la variable antes
+            DateTime fecha;
+
+            // Validar formato de fecha
+            if (!rRHH.EsFechaValida(fechaNac))
+            {
+                MessageBox.Show("Formato de fecha incorrecto. Use el formato: yyyy-MM-dd", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return; // Detiene la ejecución si la fecha no es válida
+            }
+            else
+            {
+                fecha = DateTime.Parse(fechaNac);
+            }
+
+            // Obtener usuario y contraseña desde el formulario de verificación
             string usuario = verificar.Usuario;
             string contrasenia = verificar.Contrasenia;
-            //Se encarga de dar el nivel jerarquico al que el empleado tiene acceso
+
+            // Asignar nivel jerárquico según rol
             rRHH.SeleccionarNivel(rolEmpleado);
-            //Inserta los datos necesarios para el funcionamiento del metodo
-            rRHH.AgregarEmpleado(dpiEmpleado, nombreEmpleado, rolEmpleado, cuentaBanc, usuario, contrasenia);
+
+            // Validar que el salario se obtenga correctamente
+            double salario = rRHH.Salario();
+            if (salario <= 0)
+            {
+                MessageBox.Show("El salario debe ser mayor a 0.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Agregar empleado
+            rRHH.AgregarEmpleado(dpiEmpleado, nombreEmpleado, fecha, rolEmpleado, cuentaBanc, usuario, contrasenia, 0, 0, salario);
+
+            MessageBox.Show("Empleado agregado exitosamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
         }
         #endregion
+
+
     }
 }
