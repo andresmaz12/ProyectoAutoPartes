@@ -75,7 +75,7 @@ namespace ProyectoAutoPartes
             //Se usara un inputBox para obtener el id del producto 
             facturas.EliminarProducto(elemento);
         }
-        public void CrearFactura(string idproducto, string nombreproducto, string nitcliente, int cantidadllevada, string nofactura, string fechacompra, double pagoindividual, double pagototal)
+        public void CrearFactura(string idproducto, string nombreproducto, string nitcliente, int cantidadllevada, string nofactura, DateTime fechacompra, double pagoindividual, double pagototal)
         { 
             facturas.AgregarDatosFactura(idproducto, nombreproducto, nitcliente, cantidadllevada, nofactura, fechacompra, pagoindividual, pagototal);
         }

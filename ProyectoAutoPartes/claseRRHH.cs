@@ -146,5 +146,10 @@ namespace ProyectoAutoPartes
             DateTime fechaConvertida;
             return DateTime.TryParseExact(fecha, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out fechaConvertida);
         }
+        
+       public void FiltrarSalario(int salario)
+        {
+
+        }
     }
 }

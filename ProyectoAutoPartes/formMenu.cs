@@ -230,6 +230,110 @@ namespace ProyectoAutoPartes
             MessageBox.Show("Empleado agregado exitosamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
         }
+
+        private void buttonFiltarSueldoEmpleado_Click(object sender, EventArgs e)
+        {
+            string resultado = Interaction.InputBox("Ingrese el salario a partir del cual desea filtrar", "Filtrar empleados por rango", "Ej. 3000");
+
+            // Verificar si el usuario canceló
+            if (string.IsNullOrEmpty(resultado))
+            {
+                MessageBox.Show("Operación cancelada por el usuario", "Información");
+                return; // Salir del método sin continuar
+            }
+
+            // Si llegamos aquí, el usuario presionó OK
+            if (int.TryParse(resultado, out int salario))
+            {
+                if (salario <= 0)
+                {
+                    MessageBox.Show("No puede haber un salario negativo o igual a cero", "Error");
+                }
+                else
+                {
+                    rRHH.FiltrarSalario(salario);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Debe ingresar un valor numérico válido", "Error");
+            }
+        }
+
+        private void buttonFiltrarRol_Click(object sender, EventArgs e)
+        {
+            string resultado = Interaction.InputBox("Ingrese el rol a partir del cual desea filtrar", "Filtrar empleados por rango", "Ej. Bodegista");
+
+            // Verificar si el usuario canceló
+            if (string.IsNullOrEmpty(resultado))
+            {
+                MessageBox.Show("Operación cancelada por el usuario", "Información");
+                return; // Salir del método sin continuar
+            }
+
+            // Si llegamos aquí, el usuario presionó OK
+          
+        }
+
+        private void buttonFiltrarFaltas_Click(object sender, EventArgs e)
+        {
+            string resultado = Interaction.InputBox("Ingrese el salario a partir del cual desea filtrar", "Filtrar empleados por rango", "Ej. 3000");
+
+            // Verificar si el usuario canceló
+            if (string.IsNullOrEmpty(resultado))
+            {
+                MessageBox.Show("Operación cancelada por el usuario", "Información");
+                return; // Salir del método sin continuar
+            }
+
+            // Si llegamos aquí, el usuario presionó OK
+            if (int.TryParse(resultado, out int salario))
+            {
+                if (salario <= 0)
+                {
+                    MessageBox.Show("No puede haber un salario negativo o igual a cero", "Error");
+                }
+                else
+                {
+                    rRHH.FiltrarSalario(salario);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Debe ingresar un valor numérico válido", "Error");
+            }
+        }
+
+
+        private void buttonFiltrarVentas_Click(object sender, EventArgs e)
+        {
+            string resultado = Interaction.InputBox("Ingrese el salario a partir del cual desea filtrar", "Filtrar empleados por rango", "Ej. 3000");
+
+            // Verificar si el usuario canceló
+            if (string.IsNullOrEmpty(resultado))
+            {
+                MessageBox.Show("Operación cancelada por el usuario", "Información");
+                return; // Salir del método sin continuar
+            }
+
+            // Si llegamos aquí, el usuario presionó OK
+            if (int.TryParse(resultado, out int salario))
+            {
+                if (salario <= 0)
+                {
+                    MessageBox.Show("No puede haber un salario negativo o igual a cero", "Error");
+                }
+                else
+                {
+                    rRHH.FiltrarSalario(salario);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Debe ingresar un valor numérico válido", "Error");
+            }
+        }
         #endregion
+
     }
 }

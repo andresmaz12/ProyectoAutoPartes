@@ -77,6 +77,11 @@
             textBoxNit = new TextBox();
             dataGridViewClientes = new DataGridView();
             tabPage4 = new TabPage();
+            buttonFiltrarVentas = new Button();
+            buttonFiltrarFaltas = new Button();
+            buttonFiltrarRol = new Button();
+            buttonFiltarSueldoEmpleado = new Button();
+            buttonEliminarEmpleado = new Button();
             label23 = new Label();
             textBoxTelefonoEmpleado = new TextBox();
             label18 = new Label();
@@ -96,11 +101,6 @@
             label11 = new Label();
             tabPage5 = new TabPage();
             tabPage6 = new TabPage();
-            buttonEliminarEmpleado = new Button();
-            buttonFiltarSueldoEmpleado = new Button();
-            buttonFiltrarRol = new Button();
-            buttonFiltrarFaltas = new Button();
-            buttonFiltrarVentas = new Button();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewInvetario).BeginInit();
@@ -631,6 +631,55 @@
             tabPage4.TabIndex = 3;
             tabPage4.Text = "RR HH";
             // 
+            // buttonFiltrarVentas
+            // 
+            buttonFiltrarVentas.Location = new Point(449, 339);
+            buttonFiltrarVentas.Name = "buttonFiltrarVentas";
+            buttonFiltrarVentas.Size = new Size(103, 41);
+            buttonFiltrarVentas.TabIndex = 36;
+            buttonFiltrarVentas.Text = "Filtrar por Ventas";
+            buttonFiltrarVentas.UseVisualStyleBackColor = true;
+            buttonFiltrarVentas.Click += buttonFiltrarVentas_Click;
+            // 
+            // buttonFiltrarFaltas
+            // 
+            buttonFiltrarFaltas.Location = new Point(340, 339);
+            buttonFiltrarFaltas.Name = "buttonFiltrarFaltas";
+            buttonFiltrarFaltas.Size = new Size(103, 41);
+            buttonFiltrarFaltas.TabIndex = 35;
+            buttonFiltrarFaltas.Text = "Filtrar por Faltas";
+            buttonFiltrarFaltas.UseVisualStyleBackColor = true;
+            buttonFiltrarFaltas.Click += buttonFiltrarFaltas_Click;
+            // 
+            // buttonFiltrarRol
+            // 
+            buttonFiltrarRol.Location = new Point(231, 339);
+            buttonFiltrarRol.Name = "buttonFiltrarRol";
+            buttonFiltrarRol.Size = new Size(103, 41);
+            buttonFiltrarRol.TabIndex = 34;
+            buttonFiltrarRol.Text = "Filtrar por Rol ";
+            buttonFiltrarRol.UseVisualStyleBackColor = true;
+            buttonFiltrarRol.Click += buttonFiltrarRol_Click;
+            // 
+            // buttonFiltarSueldoEmpleado
+            // 
+            buttonFiltarSueldoEmpleado.Location = new Point(122, 339);
+            buttonFiltarSueldoEmpleado.Name = "buttonFiltarSueldoEmpleado";
+            buttonFiltarSueldoEmpleado.Size = new Size(103, 41);
+            buttonFiltarSueldoEmpleado.TabIndex = 33;
+            buttonFiltarSueldoEmpleado.Text = "Filtrar por Sueldo";
+            buttonFiltarSueldoEmpleado.UseVisualStyleBackColor = true;
+            buttonFiltarSueldoEmpleado.Click += buttonFiltarSueldoEmpleado_Click;
+            // 
+            // buttonEliminarEmpleado
+            // 
+            buttonEliminarEmpleado.Location = new Point(613, 359);
+            buttonEliminarEmpleado.Name = "buttonEliminarEmpleado";
+            buttonEliminarEmpleado.Size = new Size(103, 41);
+            buttonEliminarEmpleado.TabIndex = 32;
+            buttonEliminarEmpleado.Text = "Eliminar Empleado";
+            buttonEliminarEmpleado.UseVisualStyleBackColor = true;
+            // 
             // label23
             // 
             label23.AutoSize = true;
@@ -781,7 +830,7 @@
             // 
             tabPage5.Location = new Point(27, 4);
             tabPage5.Name = "tabPage5";
-            tabPage5.Size = new Size(951, 411);
+            tabPage5.Size = new Size(951, 414);
             tabPage5.TabIndex = 4;
             tabPage5.Text = "Gestion WEB";
             tabPage5.UseVisualStyleBackColor = true;
@@ -790,55 +839,10 @@
             // 
             tabPage6.Location = new Point(27, 4);
             tabPage6.Name = "tabPage6";
-            tabPage6.Size = new Size(951, 411);
+            tabPage6.Size = new Size(951, 414);
             tabPage6.TabIndex = 5;
             tabPage6.Text = "Finanzas";
             tabPage6.UseVisualStyleBackColor = true;
-            // 
-            // buttonEliminarEmpleado
-            // 
-            buttonEliminarEmpleado.Location = new Point(613, 359);
-            buttonEliminarEmpleado.Name = "buttonEliminarEmpleado";
-            buttonEliminarEmpleado.Size = new Size(103, 41);
-            buttonEliminarEmpleado.TabIndex = 32;
-            buttonEliminarEmpleado.Text = "Eliminar Empleado";
-            buttonEliminarEmpleado.UseVisualStyleBackColor = true;
-            // 
-            // buttonFiltarSueldoEmpleado
-            // 
-            buttonFiltarSueldoEmpleado.Location = new Point(122, 339);
-            buttonFiltarSueldoEmpleado.Name = "buttonFiltarSueldoEmpleado";
-            buttonFiltarSueldoEmpleado.Size = new Size(103, 41);
-            buttonFiltarSueldoEmpleado.TabIndex = 33;
-            buttonFiltarSueldoEmpleado.Text = "Filtrar por Sueldo";
-            buttonFiltarSueldoEmpleado.UseVisualStyleBackColor = true;
-            // 
-            // buttonFiltrarRol
-            // 
-            buttonFiltrarRol.Location = new Point(231, 339);
-            buttonFiltrarRol.Name = "buttonFiltrarRol";
-            buttonFiltrarRol.Size = new Size(103, 41);
-            buttonFiltrarRol.TabIndex = 34;
-            buttonFiltrarRol.Text = "Filtrar por Rol ";
-            buttonFiltrarRol.UseVisualStyleBackColor = true;
-            // 
-            // buttonFiltrarFaltas
-            // 
-            buttonFiltrarFaltas.Location = new Point(340, 339);
-            buttonFiltrarFaltas.Name = "buttonFiltrarFaltas";
-            buttonFiltrarFaltas.Size = new Size(103, 41);
-            buttonFiltrarFaltas.TabIndex = 35;
-            buttonFiltrarFaltas.Text = "Filtrar por Faltas";
-            buttonFiltrarFaltas.UseVisualStyleBackColor = true;
-            // 
-            // buttonFiltrarVentas
-            // 
-            buttonFiltrarVentas.Location = new Point(449, 339);
-            buttonFiltrarVentas.Name = "buttonFiltrarVentas";
-            buttonFiltrarVentas.Size = new Size(103, 41);
-            buttonFiltrarVentas.TabIndex = 36;
-            buttonFiltrarVentas.Text = "Filtrar por Ventas";
-            buttonFiltrarVentas.UseVisualStyleBackColor = true;
             // 
             // formMenu
             // 
