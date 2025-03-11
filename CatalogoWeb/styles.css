@@ -135,7 +135,6 @@ body {
     background-color: #52d1b2;
 }
 
-/* Catálogo */
 .catalog {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));

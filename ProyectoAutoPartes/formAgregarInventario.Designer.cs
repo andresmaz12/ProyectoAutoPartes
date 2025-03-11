@@ -46,6 +46,8 @@
             buttonAgregar = new Button();
             button1 = new Button();
             label8 = new Label();
+            label9 = new Label();
+            textBoxAnioVehiculo = new TextBox();
             SuspendLayout();
             // 
             // textBoxID
@@ -94,7 +96,7 @@
             // 
             // textBoxRuta
             // 
-            textBoxRuta.Location = new Point(12, 351);
+            textBoxRuta.Location = new Point(12, 395);
             textBoxRuta.Name = "textBoxRuta";
             textBoxRuta.Size = new Size(251, 23);
             textBoxRuta.TabIndex = 7;
@@ -172,7 +174,7 @@
             // 
             // buttonAgregar
             // 
-            buttonAgregar.Location = new Point(295, 336);
+            buttonAgregar.Location = new Point(294, 354);
             buttonAgregar.Name = "buttonAgregar";
             buttonAgregar.Size = new Size(96, 38);
             buttonAgregar.TabIndex = 16;
@@ -182,7 +184,7 @@
             // 
             // button1
             // 
-            button1.Location = new Point(295, 289);
+            button1.Location = new Point(294, 307);
             button1.Name = "button1";
             button1.Size = new Size(96, 38);
             button1.TabIndex = 17;
@@ -192,17 +194,35 @@
             // label8
             // 
             label8.AutoSize = true;
-            label8.Location = new Point(71, 333);
+            label8.Location = new Point(71, 377);
             label8.Name = "label8";
             label8.Size = new Size(90, 15);
             label8.TabIndex = 18;
             label8.Text = "Ruta de Imagen";
             // 
+            // label9
+            // 
+            label9.AutoSize = true;
+            label9.Location = new Point(84, 333);
+            label9.Name = "label9";
+            label9.Size = new Size(96, 15);
+            label9.TabIndex = 20;
+            label9.Text = "Año del vehiculo";
+            // 
+            // textBoxAnioVehiculo
+            // 
+            textBoxAnioVehiculo.Location = new Point(11, 350);
+            textBoxAnioVehiculo.Name = "textBoxAnioVehiculo";
+            textBoxAnioVehiculo.Size = new Size(251, 23);
+            textBoxAnioVehiculo.TabIndex = 19;
+            // 
             // formAgregarInventario
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(403, 386);
+            ClientSize = new Size(402, 430);
+            Controls.Add(label9);
+            Controls.Add(textBoxAnioVehiculo);
             Controls.Add(label8);
             Controls.Add(button1);
             Controls.Add(buttonAgregar);
@@ -223,6 +243,7 @@
             Controls.Add(textBoxID);
             Name = "formAgregarInventario";
             Text = "Agregar al Inventario";
+            Load += formAgregarInventario_Load;
             ResumeLayout(false);
             PerformLayout();
         }
@@ -247,5 +268,7 @@
         private Button buttonAgregar;
         private Button button1;
         private Label label8;
+        private Label label9;
+        private TextBox textBoxAnioVehiculo;
     }
 }

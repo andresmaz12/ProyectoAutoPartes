@@ -6,6 +6,7 @@ using System.Text;
 using Microsoft.VisualBasic;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
+using System.Globalization;
 
 namespace ProyectoAutoPartes
 {
@@ -31,9 +32,8 @@ namespace ProyectoAutoPartes
             form.dataGridViewClientes.DataSource = dt;
         }
 
-        public void BuscarCliente()
-        {
-            string nombre = Interaction.InputBox("Ingrese el nombre", "Busqueda", " ");
+        public void BuscarCliente(string nombre)
+        { 
             if (string.IsNullOrWhiteSpace(nombre)) return; // Verifica que el campo de nombre no esté vacío
             using var conn = new MySqlConnection(connectionString);
             string query = "SELECT * FROM Clientes WHERE Nombre = ?";
@@ -45,30 +45,45 @@ namespace ProyectoAutoPartes
             conn.Close();
         }
 
-        public void GuardarCliente(string nombre, string telefono, string nit, string direccion)
+        public void GuardarCliente(string dpiCliente, string nit, string nombre, string tipoCliente,
+                              string direccion, int comprasEmpresa, string telefono, double descuentosFidelidad)
         {
-            // Verifica que todos los campos estén llenos antes de guardar
-            if (string.IsNullOrWhiteSpace(nombre) || string.IsNullOrWhiteSpace(telefono) ||
-                string.IsNullOrWhiteSpace(nit) || string.IsNullOrWhiteSpace(direccion))
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                MessageBox.Show("Todos los campos son obligatorios.");
-                return;
+                string query = "INSERT INTO Clientes (DPI_Cliente, NIT, Nombre, TipoCliente, Direccion, " +
+                              "ComprasEnLaEmpresa, NumeroTelefonico, DescuentosFidelidad) " +
+                              "VALUES (@DPI, @NIT, @Nombre, @TipoCliente, @Direccion, @Compras, @Telefono, @Descuentos)";
+
+                MySqlCommand command = new MySqlCommand(query, connection);
+
+                command.Parameters.AddWithValue("@DPI", dpiCliente);
+                command.Parameters.AddWithValue("@NIT", nit);
+                command.Parameters.AddWithValue("@Nombre", nombre);
+                command.Parameters.AddWithValue("@TipoCliente", tipoCliente);
+                command.Parameters.AddWithValue("@Direccion", direccion);
+                command.Parameters.AddWithValue("@Compras", comprasEmpresa);
+                command.Parameters.AddWithValue("@Telefono", telefono);
+                command.Parameters.AddWithValue("@Descuentos", descuentosFidelidad);
+
+                try
+                {
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                    MessageBox.Show("Cliente agregado con éxito!");
+                    CargarDatos();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error al agregar cliente: " + ex.Message);
+                }
             }
-
-            using var conn = new MySqlConnection(connectionString);
-            string query = "INSERT INTO Clientes (Nombre, Telefono, NIT, Direccion) VALUES (@nombre, @telefono, @nit, @direccion)";
-            MySqlCommand cmd = new MySqlCommand(query, conn);
-            cmd.Parameters.AddWithValue("@nombre", nombre);
-            cmd.Parameters.AddWithValue("@telefono", telefono);
-            cmd.Parameters.AddWithValue("@nit", nit);
-            cmd.Parameters.AddWithValue("@direccion", direccion);
-
-            conn.Open();
-            cmd.ExecuteNonQuery();
-            conn.Close();
-
-            CargarDatos(); // Refresca la lista de clientes en el DataGridView
-            MessageBox.Show("Cliente guardado con éxito.");
         }
+
+        public void EliminarClientes(string nombre)
+        {
+
+        }
+
+        
     }
 }
