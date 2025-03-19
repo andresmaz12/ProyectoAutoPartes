@@ -30,6 +30,8 @@
         {
             tabControl1 = new TabControl();
             tabPage1 = new TabPage();
+            button2 = new Button();
+            button1 = new Button();
             label8 = new Label();
             buttonBuscarInventario = new Button();
             buttonEliminarInventario = new Button();
@@ -97,7 +99,7 @@
             buttonAgregarEmpleado = new Button();
             buttonBuscarEmpleado = new Button();
             label12 = new Label();
-            dataGridView1 = new DataGridView();
+            dataGridViewRRHH = new DataGridView();
             label11 = new Label();
             tabPage5 = new TabPage();
             tabPage6 = new TabPage();
@@ -110,7 +112,7 @@
             tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewClientes).BeginInit();
             tabPage4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewRRHH).BeginInit();
             SuspendLayout();
             // 
             // tabControl1
@@ -132,6 +134,8 @@
             // tabPage1
             // 
             tabPage1.BackColor = Color.CornflowerBlue;
+            tabPage1.Controls.Add(button2);
+            tabPage1.Controls.Add(button1);
             tabPage1.Controls.Add(label8);
             tabPage1.Controls.Add(buttonBuscarInventario);
             tabPage1.Controls.Add(buttonEliminarInventario);
@@ -144,6 +148,24 @@
             tabPage1.Size = new Size(951, 414);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "Inventario";
+            // 
+            // button2
+            // 
+            button2.Location = new Point(609, 329);
+            button2.Name = "button2";
+            button2.Size = new Size(113, 49);
+            button2.TabIndex = 17;
+            button2.Text = "Agregar ";
+            button2.UseVisualStyleBackColor = true;
+            // 
+            // button1
+            // 
+            button1.Location = new Point(490, 329);
+            button1.Name = "button1";
+            button1.Size = new Size(113, 49);
+            button1.TabIndex = 16;
+            button1.Text = "Agregar ";
+            button1.UseVisualStyleBackColor = true;
             // 
             // label8
             // 
@@ -623,7 +645,7 @@
             tabPage4.Controls.Add(buttonAgregarEmpleado);
             tabPage4.Controls.Add(buttonBuscarEmpleado);
             tabPage4.Controls.Add(label12);
-            tabPage4.Controls.Add(dataGridView1);
+            tabPage4.Controls.Add(dataGridViewRRHH);
             tabPage4.Controls.Add(label11);
             tabPage4.Location = new Point(27, 4);
             tabPage4.Name = "tabPage4";
@@ -808,13 +830,13 @@
             label12.TabIndex = 17;
             label12.Text = "Agregar Empleado";
             // 
-            // dataGridView1
+            // dataGridViewRRHH
             // 
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(13, 72);
-            dataGridView1.Name = "dataGridView1";
-            dataGridView1.Size = new Size(539, 261);
-            dataGridView1.TabIndex = 16;
+            dataGridViewRRHH.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewRRHH.Location = new Point(13, 72);
+            dataGridViewRRHH.Name = "dataGridViewRRHH";
+            dataGridViewRRHH.Size = new Size(539, 261);
+            dataGridViewRRHH.TabIndex = 16;
             // 
             // label11
             // 
@@ -867,7 +889,7 @@
             ((System.ComponentModel.ISupportInitialize)dataGridViewClientes).EndInit();
             tabPage4.ResumeLayout(false);
             tabPage4.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewRRHH).EndInit();
             ResumeLayout(false);
         }
 
@@ -908,7 +930,7 @@
         private Button buttonAgregarEmpleado;
         private Button buttonBuscarEmpleado;
         private Label label12;
-        private DataGridView dataGridView1;
+        private DataGridView dataGridViewRRHH;
         private Label label11;
         private ComboBox comboBoxNombreProd;
         private NumericUpDown numericUpDownCantidad;
@@ -946,5 +968,7 @@
         private Button buttonFiltarSueldoEmpleado;
         private Button buttonEliminarEmpleado;
         private Button buttonFiltrarVentas;
+        private Button button2;
+        private Button button1;
     }
 }

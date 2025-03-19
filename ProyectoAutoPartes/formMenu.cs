@@ -29,14 +29,15 @@ namespace ProyectoAutoPartes
             this.ventas = new claseGestionVentas(connectionString, this);
             this.clientes = new claseClientes(connectionString, this);
             this.rRHH = new claseGestionRRHH(connectionString, this);
+            MoificarEsteticas();
         }
 
         #region Metodos internos
+
         public void MoificarEsteticas()
         {
             this.BackColor = System.Drawing.Color.MediumSeaGreen;
-            this.FormBorderStyle = FormBorderStyle.None;
-
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
         }
         #endregion
 
@@ -85,7 +86,6 @@ namespace ProyectoAutoPartes
             //Por medio del message box se obtiene el ID del producto a elminiar
             string elemento = Interaction.InputBox("Ingrese el ID del producto", "Eliminar producto", "Ej. 00");
             ventas.EliminiarElemento(elemento);
-            Console.WriteLine("Puto si me leen");
         }
 
         private void buttonRealizarVenta_Click(object sender, EventArgs e)
@@ -123,7 +123,7 @@ namespace ProyectoAutoPartes
 
         private void buttonEditarCompra_Click(object sender, EventArgs e)
         {
-
+            
         }
 
         private void buttonEliminarCompra_Click(object sender, EventArgs e)
@@ -162,7 +162,6 @@ namespace ProyectoAutoPartes
 
         //Modulo Recursos humanos
         #region RR HH
-
         private void buttonBuscarEmpleado_Click(object sender, EventArgs e)
         {
             //Metodo el cual modifica desde la claseRRHH el datagridviewRRHH para que se muestre al o empleados con el nombre que desea buscar
@@ -234,14 +233,12 @@ namespace ProyectoAutoPartes
         private void buttonFiltarSueldoEmpleado_Click(object sender, EventArgs e)
         {
             string resultado = Interaction.InputBox("Ingrese el salario a partir del cual desea filtrar", "Filtrar empleados por rango", "Ej. 3000");
-
             // Verificar si el usuario canceló
             if (string.IsNullOrEmpty(resultado))
             {
                 MessageBox.Show("Operación cancelada por el usuario", "Información");
                 return; // Salir del método sin continuar
             }
-
             // Si llegamos aquí, el usuario presionó OK
             if (int.TryParse(resultado, out int salario))
             {
@@ -251,7 +248,23 @@ namespace ProyectoAutoPartes
                 }
                 else
                 {
-                    rRHH.FiltrarSalario(salario);
+                    // Obtener los datos filtrados
+                    DataTable dtEmpleados = rRHH.FiltrarSalario(salario);
+
+                    // Verificar si se obtuvieron resultados
+                    if (dtEmpleados != null && dtEmpleados.Rows.Count > 0)
+                    {
+                        // Asignar los datos filtrados al DataGridView
+                        dataGridViewRRHH.DataSource = dtEmpleados;
+
+                        // Mostrar mensaje con la cantidad de registros encontrados
+                        MessageBox.Show($"Se encontraron {dtEmpleados.Rows.Count} empleados con salario mayor o igual a {salario}", "Resultados");
+                    }
+                    else
+                    {
+                        dataGridViewRRHH.DataSource = null;
+                        MessageBox.Show($"No se encontraron empleados con salario mayor o igual a {salario}", "Sin resultados");
+                    }
                 }
             }
             else
@@ -262,40 +275,75 @@ namespace ProyectoAutoPartes
 
         private void buttonFiltrarRol_Click(object sender, EventArgs e)
         {
-            string resultado = Interaction.InputBox("Ingrese el rol a partir del cual desea filtrar", "Filtrar empleados por rango", "Ej. Bodegista");
-
+            string resultado = Interaction.InputBox("Ingrese el rol a partir del cual desea filtrar", "Filtrar empleados por rol", "Ej. Bodegista");
             // Verificar si el usuario canceló
             if (string.IsNullOrEmpty(resultado))
             {
                 MessageBox.Show("Operación cancelada por el usuario", "Información");
                 return; // Salir del método sin continuar
             }
-
             // Si llegamos aquí, el usuario presionó OK
-          
+            if (!string.IsNullOrWhiteSpace(resultado))
+            {
+                // Obtener los datos filtrados por rol
+                DataTable dtEmpleados = rRHH.FiltrarPorRol(resultado);
+
+                // Verificar si se obtuvieron resultados
+                if (dtEmpleados != null && dtEmpleados.Rows.Count > 0)
+                {
+                    // Asignar los datos filtrados al DataGridView
+                    dataGridViewRRHH.DataSource = dtEmpleados;
+
+                    // Mostrar mensaje con la cantidad de registros encontrados
+                    MessageBox.Show($"Se encontraron {dtEmpleados.Rows.Count} empleados con el rol '{resultado}'", "Resultados");
+                }
+                else
+                {
+                    dataGridViewRRHH.DataSource = null;
+                    MessageBox.Show($"No se encontraron empleados con el rol '{resultado}'", "Sin resultados");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Debe ingresar un rol válido", "Error");
+            }
         }
 
         private void buttonFiltrarFaltas_Click(object sender, EventArgs e)
         {
-            string resultado = Interaction.InputBox("Ingrese el salario a partir del cual desea filtrar", "Filtrar empleados por rango", "Ej. 3000");
-
+            string resultado = Interaction.InputBox("Ingrese el número de faltas a partir del cual desea filtrar", "Filtrar empleados por faltas", "Ej. 3");
             // Verificar si el usuario canceló
             if (string.IsNullOrEmpty(resultado))
             {
                 MessageBox.Show("Operación cancelada por el usuario", "Información");
                 return; // Salir del método sin continuar
             }
-
             // Si llegamos aquí, el usuario presionó OK
-            if (int.TryParse(resultado, out int salario))
+            if (int.TryParse(resultado, out int faltas))
             {
-                if (salario <= 0)
+                if (faltas < 0)
                 {
-                    MessageBox.Show("No puede haber un salario negativo o igual a cero", "Error");
+                    MessageBox.Show("No puede haber un número de faltas negativo", "Error");
                 }
                 else
                 {
-                    rRHH.FiltrarSalario(salario);
+                    // Obtener los datos filtrados por número de faltas
+                    DataTable dtEmpleados = rRHH.FiltrarPorFaltas(faltas);
+
+                    // Verificar si se obtuvieron resultados
+                    if (dtEmpleados != null && dtEmpleados.Rows.Count > 0)
+                    {
+                        // Asignar los datos filtrados al DataGridView
+                        dataGridViewRRHH.DataSource = dtEmpleados;
+
+                        // Mostrar mensaje con la cantidad de registros encontrados
+                        MessageBox.Show($"Se encontraron {dtEmpleados.Rows.Count} empleados con {faltas} faltas o más", "Resultados");
+                    }
+                    else
+                    {
+                        dataGridViewRRHH.DataSource = null;
+                        MessageBox.Show($"No se encontraron empleados con {faltas} faltas o más", "Sin resultados");
+                    }
                 }
             }
             else
@@ -303,29 +351,42 @@ namespace ProyectoAutoPartes
                 MessageBox.Show("Debe ingresar un valor numérico válido", "Error");
             }
         }
-
 
         private void buttonFiltrarVentas_Click(object sender, EventArgs e)
         {
-            string resultado = Interaction.InputBox("Ingrese el salario a partir del cual desea filtrar", "Filtrar empleados por rango", "Ej. 3000");
-
+            string resultado = Interaction.InputBox("Ingrese el número de ventas a partir del cual desea filtrar", "Filtrar empleados por ventas", "Ej. 5");
             // Verificar si el usuario canceló
             if (string.IsNullOrEmpty(resultado))
             {
                 MessageBox.Show("Operación cancelada por el usuario", "Información");
                 return; // Salir del método sin continuar
             }
-
             // Si llegamos aquí, el usuario presionó OK
-            if (int.TryParse(resultado, out int salario))
+            if (int.TryParse(resultado, out int ventas))
             {
-                if (salario <= 0)
+                if (ventas < 0)
                 {
-                    MessageBox.Show("No puede haber un salario negativo o igual a cero", "Error");
+                    MessageBox.Show("No puede haber un número de ventas negativo", "Error");
                 }
                 else
                 {
-                    rRHH.FiltrarSalario(salario);
+                    // Obtener los datos filtrados por número de ventas
+                    DataTable dtEmpleados = rRHH.FiltrarPorVentas(ventas);
+
+                    // Verificar si se obtuvieron resultados
+                    if (dtEmpleados != null && dtEmpleados.Rows.Count > 0)
+                    {
+                        // Asignar los datos filtrados al DataGridView
+                        dataGridViewRRHH.DataSource = dtEmpleados;
+
+                        // Mostrar mensaje con la cantidad de registros encontrados
+                        MessageBox.Show($"Se encontraron {dtEmpleados.Rows.Count} empleados con {ventas} ventas o más", "Resultados");
+                    }
+                    else
+                    {
+                        dataGridViewRRHH.DataSource = null;
+                        MessageBox.Show($"No se encontraron empleados con {ventas} ventas o más", "Sin resultados");
+                    }
                 }
             }
             else
@@ -333,7 +394,6 @@ namespace ProyectoAutoPartes
                 MessageBox.Show("Debe ingresar un valor numérico válido", "Error");
             }
         }
-        #endregion
-
     }
+        #endregion
 }
