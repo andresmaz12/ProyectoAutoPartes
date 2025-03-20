@@ -66,6 +66,11 @@ namespace ProyectoAutoPartes
         {
             inventario.BuscarElemento();
         }
+
+        private void buttonComprarInventario_Click(object sender, EventArgs e)
+        {
+            inventario.ComprarInventario();
+        }
         #endregion
 
         // Modulo de ventas
@@ -120,15 +125,14 @@ namespace ProyectoAutoPartes
                 MessageBox.Show("No se cancelara la venta", "Cancelar venta", MessageBoxButtons.OK);
             }
         }
-
         private void buttonEditarCompra_Click(object sender, EventArgs e)
         {
-            
+            ventas.EditarVenta("", "", "" "");
         }
-
         private void buttonEliminarCompra_Click(object sender, EventArgs e)
         {
-
+            string idVenta = "";
+            ventas.EliminarVenta(idVenta);
         }
         #endregion
 
@@ -395,5 +399,5 @@ namespace ProyectoAutoPartes
             }
         }
     }
-        #endregion
+    #endregion
 }

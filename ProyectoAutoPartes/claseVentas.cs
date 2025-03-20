@@ -84,5 +84,64 @@ namespace ProyectoAutoPartes
         {
             facturas.EfecturarCompra();
         }
+        public void EditarVenta(int idVenta, string nuevoNoFactura, double nuevoPrecioTotal, DateTime nuevaFecha)
+        {
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    string query = "UPDATE Ventas SET NoFactura = @NoFactura, PrecioTotal = @PrecioTotal, Fecha = @Fecha WHERE ID_Venta = @ID_Venta";
+                    using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@NoFactura", nuevoNoFactura);
+                        cmd.Parameters.AddWithValue("@PrecioTotal", nuevoPrecioTotal);
+                        cmd.Parameters.AddWithValue("@Fecha", nuevaFecha);
+                        cmd.Parameters.AddWithValue("@ID_Venta", idVenta);
+
+                        int filasAfectadas = cmd.ExecuteNonQuery();
+                        if (filasAfectadas > 0)
+                            MessageBox.Show("Venta editada correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        else
+                            MessageBox.Show("No se encontró la venta a editar.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error al editar la venta: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        public void EliminarVenta(string idVenta)
+        {
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    string query = "DELETE FROM Ventas WHERE ID_Venta = @ID_Venta";
+                    using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@ID_Venta", idVenta);
+
+                        DialogResult result = MessageBox.Show("¿Estás seguro de que deseas eliminar esta venta?", "Confirmar eliminación", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                        if (result == DialogResult.Yes)
+                        {
+                            int filasAfectadas = cmd.ExecuteNonQuery();
+                            if (filasAfectadas > 0)
+                                MessageBox.Show("Venta eliminada correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            else
+                                MessageBox.Show("No se encontró la venta a eliminar.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error al eliminar la venta: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
     }
 }

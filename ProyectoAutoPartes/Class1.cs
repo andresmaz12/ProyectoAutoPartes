@@ -115,29 +115,55 @@ namespace ProyectoAutoPartes
             tamanio = 0;    // Restablecemos el tamaño a 0
         }
         private void AgregarVenta(string idProducto, string nit, string noFactura, string nombreProducto,
-                            int cantidadLlevada, DateTime fechaCompra, double pagoIndividual, double pagoTotal)
+                           int cantidadLlevada, DateTime fechaCompra, double pagoIndividual, double pagoTotal)
         {
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                string query = "INSERT INTO Ventas (NoFactura, PrecioTotal, Fecha) " +
-                              "VALUES (@NoFactura, @PrecioTotal, @Fecha)";
-                MySqlCommand command = new MySqlCommand(query, connection);
-                command.Parameters.AddWithValue("@NoFactura", noFactura);
-                command.Parameters.AddWithValue("@PrecioTotal", pagoTotal);
-                command.Parameters.AddWithValue("@Fecha", fechaCompra);
+                connection.Open();
+                MySqlTransaction transaction = connection.BeginTransaction();
 
                 try
                 {
-                    connection.Open();
-                    command.ExecuteNonQuery();
-                    MessageBox.Show("Venta registrada con éxito en la tabla Ventas!");
+                    // Insertar la venta en la tabla Ventas
+                    string insertVentaQuery = "INSERT INTO Ventas (NoFactura, PrecioTotal, Fecha) " +
+                                              "VALUES (@NoFactura, @PrecioTotal, @Fecha)";
+                    using (MySqlCommand cmdVenta = new MySqlCommand(insertVentaQuery, connection, transaction))
+                    {
+                        cmdVenta.Parameters.AddWithValue("@NoFactura", noFactura);
+                        cmdVenta.Parameters.AddWithValue("@PrecioTotal", pagoTotal);
+                        cmdVenta.Parameters.AddWithValue("@Fecha", fechaCompra);
+                        cmdVenta.ExecuteNonQuery();
+                    }
+
+                    // Descontar del inventario
+                    string updateInventarioQuery = "UPDATE Inventario " +
+                                                   "SET CantidadEnStock = CantidadEnStock - @Cantidad " +
+                                                   "WHERE ID_Producto = @ID_Producto AND CantidadEnStock >= @Cantidad";
+                    using (MySqlCommand cmdInventario = new MySqlCommand(updateInventarioQuery, connection, transaction))
+                    {
+                        cmdInventario.Parameters.AddWithValue("@Cantidad", cantidadLlevada);
+                        cmdInventario.Parameters.AddWithValue("@ID_Producto", idProducto);
+
+                        int filasAfectadas = cmdInventario.ExecuteNonQuery();
+
+                        if (filasAfectadas == 0)
+                        {
+                            throw new Exception("Stock insuficiente para realizar la venta.");
+                        }
+                    }
+
+                    // Confirmar la transacción
+                    transaction.Commit();
+                    MessageBox.Show("Venta registrada y stock actualizado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Error al registrar venta: " + ex.Message);
+                    transaction.Rollback();
+                    MessageBox.Show("Error al registrar la venta: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
+
     }
 }
 

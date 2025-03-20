@@ -30,8 +30,7 @@
         {
             tabControl1 = new TabControl();
             tabPage1 = new TabPage();
-            button2 = new Button();
-            button1 = new Button();
+            buttonComprarInventario = new Button();
             label8 = new Label();
             buttonBuscarInventario = new Button();
             buttonEliminarInventario = new Button();
@@ -134,8 +133,7 @@
             // tabPage1
             // 
             tabPage1.BackColor = Color.CornflowerBlue;
-            tabPage1.Controls.Add(button2);
-            tabPage1.Controls.Add(button1);
+            tabPage1.Controls.Add(buttonComprarInventario);
             tabPage1.Controls.Add(label8);
             tabPage1.Controls.Add(buttonBuscarInventario);
             tabPage1.Controls.Add(buttonEliminarInventario);
@@ -149,23 +147,15 @@
             tabPage1.TabIndex = 0;
             tabPage1.Text = "Inventario";
             // 
-            // button2
+            // buttonComprarInventario
             // 
-            button2.Location = new Point(609, 329);
-            button2.Name = "button2";
-            button2.Size = new Size(113, 49);
-            button2.TabIndex = 17;
-            button2.Text = "Agregar ";
-            button2.UseVisualStyleBackColor = true;
-            // 
-            // button1
-            // 
-            button1.Location = new Point(490, 329);
-            button1.Name = "button1";
-            button1.Size = new Size(113, 49);
-            button1.TabIndex = 16;
-            button1.Text = "Agregar ";
-            button1.UseVisualStyleBackColor = true;
+            buttonComprarInventario.Location = new Point(358, 329);
+            buttonComprarInventario.Name = "buttonComprarInventario";
+            buttonComprarInventario.Size = new Size(113, 49);
+            buttonComprarInventario.TabIndex = 16;
+            buttonComprarInventario.Text = "Comprar Inventario";
+            buttonComprarInventario.UseVisualStyleBackColor = true;
+            buttonComprarInventario.Click += buttonComprarInventario_Click;
             // 
             // label8
             // 
@@ -968,7 +958,6 @@
         private Button buttonFiltarSueldoEmpleado;
         private Button buttonEliminarEmpleado;
         private Button buttonFiltrarVentas;
-        private Button button2;
-        private Button button1;
+        private Button buttonComprarInventario;
     }
 }
