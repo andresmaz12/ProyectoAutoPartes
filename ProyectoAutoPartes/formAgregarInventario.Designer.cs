@@ -174,7 +174,7 @@
             // 
             // buttonAgregar
             // 
-            buttonAgregar.Location = new Point(294, 354);
+            buttonAgregar.Location = new Point(294, 380);
             buttonAgregar.Name = "buttonAgregar";
             buttonAgregar.Size = new Size(96, 38);
             buttonAgregar.TabIndex = 16;
@@ -184,7 +184,7 @@
             // 
             // button1
             // 
-            button1.Location = new Point(294, 307);
+            button1.Location = new Point(294, 333);
             button1.Name = "button1";
             button1.Size = new Size(96, 38);
             button1.TabIndex = 17;
@@ -220,6 +220,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(402, 430);
             Controls.Add(label9);
             Controls.Add(textBoxAnioVehiculo);
@@ -241,6 +242,8 @@
             Controls.Add(textBoxStock);
             Controls.Add(textBoxNombreProd);
             Controls.Add(textBoxID);
+            MaximizeBox = false;
+            MinimizeBox = false;
             Name = "formAgregarInventario";
             Text = "Agregar al Inventario";
             Load += formAgregarInventario_Load;

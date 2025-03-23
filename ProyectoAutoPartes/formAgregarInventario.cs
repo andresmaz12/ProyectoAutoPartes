@@ -20,7 +20,7 @@ namespace ProyectoAutoPartes
         public string Especificacion { get; set; }
         public double Costo { get; set; }
         public double Ganancia { get; set; }
-        public double Precio { get; set;}
+        public double Precio { get; set; }
         public int Anio { get; set; }
         public int Stock { get; set; }
         public string Ruta { get; set; }
@@ -100,6 +100,35 @@ namespace ProyectoAutoPartes
         private void formAgregarInventario_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void buttonCancelar_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void formAgregarInventario_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            // Si el usuario está intentando cerrar el formulario sin usar el botón Agregar
+            if (this.DialogResult != DialogResult.OK && e.CloseReason == CloseReason.UserClosing)
+            {
+                // Preguntar si realmente desea salir sin guardar
+                DialogResult result = MessageBox.Show("¿Está seguro que desea salir sin guardar los datos?",
+                                                     "Confirmar salida",
+                                                     MessageBoxButtons.YesNo,
+                                                     MessageBoxIcon.Question);
+
+                if (result == DialogResult.No)
+                {
+                    // Cancelar el cierre del formulario
+                    e.Cancel = true;
+                }
+                else
+                {
+                    // El usuario confirmó que desea salir sin guardar
+                    this.DialogResult = DialogResult.Cancel;
+                }
+            }
         }
     }
 }

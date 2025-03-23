@@ -6,11 +6,13 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using Microsoft.VisualBasic;
+using MySqlConnector.Authentication;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySqlX.XDevAPI.Common;
 using Org.BouncyCastle.Asn1;
 using Mysqlx.Cursor;
+using MySqlConnector;
 
 namespace ProyectoAutoPartes
 {
@@ -69,7 +71,8 @@ namespace ProyectoAutoPartes
 
         private void buttonComprarInventario_Click(object sender, EventArgs e)
         {
-            inventario.ComprarInventario();
+            int Cuento; 
+            inventario.ComprarInventario(Cuento, Cuento, Cuento);
         }
         #endregion
 
@@ -127,7 +130,8 @@ namespace ProyectoAutoPartes
         }
         private void buttonEditarCompra_Click(object sender, EventArgs e)
         {
-            ventas.EditarVenta("", "", "" "");
+            
+            ventas.EditarVenta(1, "", 0, "");
         }
         private void buttonEliminarCompra_Click(object sender, EventArgs e)
         {
@@ -398,6 +402,84 @@ namespace ProyectoAutoPartes
                 MessageBox.Show("Debe ingresar un valor numérico válido", "Error");
             }
         }
-    }
     #endregion
+
+    #region CargarDatos en los campos
+
+      // Método para cargar los elementos en el ComboBox desde MySQL
+        private void CargarComboBox()
+        {
+            try
+            {
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    // Consulta SQL para obtener los datos (ajusta la tabla y el campo según tu base de datos)
+                    string query = "SELECT ID, Nombre FROM Productos ORDER BY Nombre";
+
+                    MySqlCommand cmd = new MySqlCommand(query, connection);
+                    MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                    DataTable dt = new DataTable();
+                    adapter.Fill(dt);
+
+                    // Configurar el ComboBox
+                    comboBoxNombreProd.DisplayMember = "Nombre";  // Campo que se mostrará
+                    comboBoxNombreProd.ValueMember = "ID";       // Valor asociado (ID del producto)
+                    comboBoxNombreProd.DataSource = dt;           // Asignar origen de datos
+
+                    // Opcionalmente, agregar un elemento inicial
+                    // comboBoxProductos.SelectedIndex = -1;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al cargar los productos: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        // Evento que se dispara cuando cambia la selección en el ComboBox
+        private void ComboBoxProductos_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // Verificar que haya un elemento seleccionado
+            if (comboBoxNombreProd.SelectedValue == null)
+                return;
+
+            try
+            {
+                // Obtener el ID del elemento seleccionado
+                int productoID = Convert.ToInt32(comboBoxNombreProd.SelectedValue);
+
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    // Consulta para obtener todos los datos del producto seleccionado
+                    string query = @"SELECT Nombre, Descripcion, Especificacion, Costo, Ganancia, 
+                                Precio, Anio, Stock, Ruta 
+                                FROM Productos WHERE ID = @ID";
+
+                    MySqlCommand cmd = new MySqlCommand(query, connection);
+                    cmd.Parameters.AddWithValue("@ID", productoID);
+
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            // Actualizar los TextBox con los valores obtenidos
+                            textBoxID.Text = reader["Nombre"].ToString();
+                            textBoxNoFactura.Text = reader["Descripcion"].ToString();
+                            textBoxPrecio.Text = reader["Especificacion"].ToString();
+
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al cargar los detalles del producto: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        #endregion
+    }
 }
