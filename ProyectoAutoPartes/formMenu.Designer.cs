@@ -100,8 +100,25 @@
             label12 = new Label();
             dataGridViewRRHH = new DataGridView();
             label11 = new Label();
-            tabPage5 = new TabPage();
             tabPage6 = new TabPage();
+            buttonCambiarFechaLim = new Button();
+            chart1 = new FastReport.DataVisualization.Charting.Chart();
+            label25 = new Label();
+            label24 = new Label();
+            dateTimePicker1 = new DateTimePicker();
+            label26 = new Label();
+            label27 = new Label();
+            label28 = new Label();
+            label29 = new Label();
+            textBoxMultaMora = new TextBox();
+            textBoxRenta = new TextBox();
+            textBoxServiciosBasicos = new TextBox();
+            label30 = new Label();
+            label31 = new Label();
+            textBox1 = new TextBox();
+            textBox2 = new TextBox();
+            button1 = new Button();
+            button2 = new Button();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewInvetario).BeginInit();
@@ -112,6 +129,8 @@
             ((System.ComponentModel.ISupportInitialize)dataGridViewClientes).BeginInit();
             tabPage4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewRRHH).BeginInit();
+            tabPage6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)chart1).BeginInit();
             SuspendLayout();
             // 
             // tabControl1
@@ -121,7 +140,6 @@
             tabControl1.Controls.Add(tabPage2);
             tabControl1.Controls.Add(tabPage3);
             tabControl1.Controls.Add(tabPage4);
-            tabControl1.Controls.Add(tabPage5);
             tabControl1.Controls.Add(tabPage6);
             tabControl1.Location = new Point(-3, 31);
             tabControl1.Multiline = true;
@@ -838,23 +856,185 @@
             label11.TabIndex = 15;
             label11.Text = "Lista de empleados";
             // 
-            // tabPage5
-            // 
-            tabPage5.Location = new Point(27, 4);
-            tabPage5.Name = "tabPage5";
-            tabPage5.Size = new Size(951, 414);
-            tabPage5.TabIndex = 4;
-            tabPage5.Text = "Gestion WEB";
-            tabPage5.UseVisualStyleBackColor = true;
-            // 
             // tabPage6
             // 
+            tabPage6.BackColor = Color.CornflowerBlue;
+            tabPage6.Controls.Add(button2);
+            tabPage6.Controls.Add(button1);
+            tabPage6.Controls.Add(label30);
+            tabPage6.Controls.Add(label31);
+            tabPage6.Controls.Add(textBox1);
+            tabPage6.Controls.Add(textBox2);
+            tabPage6.Controls.Add(label27);
+            tabPage6.Controls.Add(label28);
+            tabPage6.Controls.Add(label29);
+            tabPage6.Controls.Add(textBoxMultaMora);
+            tabPage6.Controls.Add(textBoxRenta);
+            tabPage6.Controls.Add(textBoxServiciosBasicos);
+            tabPage6.Controls.Add(label26);
+            tabPage6.Controls.Add(dateTimePicker1);
+            tabPage6.Controls.Add(buttonCambiarFechaLim);
+            tabPage6.Controls.Add(chart1);
+            tabPage6.Controls.Add(label25);
+            tabPage6.Controls.Add(label24);
             tabPage6.Location = new Point(27, 4);
             tabPage6.Name = "tabPage6";
             tabPage6.Size = new Size(951, 414);
             tabPage6.TabIndex = 5;
             tabPage6.Text = "Finanzas";
-            tabPage6.UseVisualStyleBackColor = true;
+            // 
+            // buttonCambiarFechaLim
+            // 
+            buttonCambiarFechaLim.Location = new Point(14, 367);
+            buttonCambiarFechaLim.Name = "buttonCambiarFechaLim";
+            buttonCambiarFechaLim.Size = new Size(140, 33);
+            buttonCambiarFechaLim.TabIndex = 19;
+            buttonCambiarFechaLim.Text = "Cambiar Fecha Limite";
+            buttonCambiarFechaLim.UseVisualStyleBackColor = true;
+            // 
+            // chart1
+            // 
+            chart1.Location = new Point(14, 108);
+            chart1.Name = "chart1";
+            chart1.Size = new Size(416, 253);
+            chart1.TabIndex = 18;
+            chart1.Text = "chart1";
+            chart1.Click += chart1_Click;
+            // 
+            // label25
+            // 
+            label25.AutoSize = true;
+            label25.Font = new Font("Pivot Classic", 21.75F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
+            label25.Location = new Point(610, 243);
+            label25.Name = "label25";
+            label25.Size = new Size(327, 33);
+            label25.TabIndex = 17;
+            label25.Text = "Calculo de impuestos";
+            // 
+            // label24
+            // 
+            label24.AutoSize = true;
+            label24.Font = new Font("Pivot Classic", 21.75F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
+            label24.Location = new Point(94, 26);
+            label24.Name = "label24";
+            label24.Size = new Size(141, 33);
+            label24.TabIndex = 16;
+            label24.Text = "Finanzas";
+            // 
+            // dateTimePicker1
+            // 
+            dateTimePicker1.Location = new Point(18, 79);
+            dateTimePicker1.Name = "dateTimePicker1";
+            dateTimePicker1.Size = new Size(214, 23);
+            dateTimePicker1.TabIndex = 20;
+            // 
+            // label26
+            // 
+            label26.AutoSize = true;
+            label26.Font = new Font("Pivot Classic", 21.75F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
+            label26.Location = new Point(610, 26);
+            label26.Name = "label26";
+            label26.Size = new Size(293, 33);
+            label26.TabIndex = 21;
+            label26.Text = "Gastos Adicionales";
+            // 
+            // label27
+            // 
+            label27.AutoSize = true;
+            label27.Location = new Point(690, 147);
+            label27.Name = "label27";
+            label27.Size = new Size(150, 15);
+            label27.TabIndex = 27;
+            label27.Text = "Multas o Moras Pendientes";
+            // 
+            // label28
+            // 
+            label28.AutoSize = true;
+            label28.Location = new Point(690, 103);
+            label28.Name = "label28";
+            label28.Size = new Size(123, 15);
+            label28.TabIndex = 26;
+            label28.Text = "Total Servicios Basicos";
+            // 
+            // label29
+            // 
+            label29.AutoSize = true;
+            label29.Location = new Point(705, 59);
+            label29.Name = "label29";
+            label29.Size = new Size(96, 15);
+            label29.TabIndex = 25;
+            label29.Text = "Costo de la renta";
+            // 
+            // textBoxMultaMora
+            // 
+            textBoxMultaMora.Location = new Point(639, 165);
+            textBoxMultaMora.Name = "textBoxMultaMora";
+            textBoxMultaMora.Size = new Size(229, 23);
+            textBoxMultaMora.TabIndex = 24;
+            // 
+            // textBoxRenta
+            // 
+            textBoxRenta.Location = new Point(639, 77);
+            textBoxRenta.Name = "textBoxRenta";
+            textBoxRenta.Size = new Size(229, 23);
+            textBoxRenta.TabIndex = 23;
+            // 
+            // textBoxServiciosBasicos
+            // 
+            textBoxServiciosBasicos.Location = new Point(639, 121);
+            textBoxServiciosBasicos.Name = "textBoxServiciosBasicos";
+            textBoxServiciosBasicos.Size = new Size(229, 23);
+            textBoxServiciosBasicos.TabIndex = 22;
+            // 
+            // label30
+            // 
+            label30.AutoSize = true;
+            label30.Location = new Point(690, 323);
+            label30.Name = "label30";
+            label30.Size = new Size(123, 15);
+            label30.TabIndex = 31;
+            label30.Text = "Donaciones realizadas";
+            // 
+            // label31
+            // 
+            label31.AutoSize = true;
+            label31.Location = new Point(690, 279);
+            label31.Name = "label31";
+            label31.Size = new Size(140, 15);
+            label31.TabIndex = 30;
+            label31.Text = "Porcentaje de Impuestos ";
+            // 
+            // textBox1
+            // 
+            textBox1.Location = new Point(639, 297);
+            textBox1.Name = "textBox1";
+            textBox1.Size = new Size(229, 23);
+            textBox1.TabIndex = 29;
+            // 
+            // textBox2
+            // 
+            textBox2.Location = new Point(639, 341);
+            textBox2.Name = "textBox2";
+            textBox2.Size = new Size(229, 23);
+            textBox2.TabIndex = 28;
+            // 
+            // button1
+            // 
+            button1.Location = new Point(747, 367);
+            button1.Name = "button1";
+            button1.Size = new Size(121, 33);
+            button1.TabIndex = 32;
+            button1.Text = "Calcular";
+            button1.UseVisualStyleBackColor = true;
+            // 
+            // button2
+            // 
+            button2.Location = new Point(639, 194);
+            button2.Name = "button2";
+            button2.Size = new Size(121, 33);
+            button2.TabIndex = 33;
+            button2.Text = "Cambiar Valores";
+            button2.UseVisualStyleBackColor = true;
             // 
             // formMenu
             // 
@@ -880,6 +1060,9 @@
             tabPage4.ResumeLayout(false);
             tabPage4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewRRHH).EndInit();
+            tabPage6.ResumeLayout(false);
+            tabPage6.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)chart1).EndInit();
             ResumeLayout(false);
         }
 
@@ -890,7 +1073,6 @@
         private TabPage tabPage2;
         private TabPage tabPage3;
         private TabPage tabPage4;
-        private TabPage tabPage5;
         private Button buttonEditarInventario;
         private Button buttonAgregarInventario;
         private Button buttonBuscarInventario;
@@ -959,5 +1141,23 @@
         private Button buttonEliminarEmpleado;
         private Button buttonFiltrarVentas;
         private Button buttonComprarInventario;
+        private Label label25;
+        private Label label24;
+        private Button buttonCambiarFechaLim;
+        private FastReport.DataVisualization.Charting.Chart chart1;
+        private Label label26;
+        private DateTimePicker dateTimePicker1;
+        private Button button2;
+        private Button button1;
+        private Label label30;
+        private Label label31;
+        private TextBox textBox1;
+        private TextBox textBox2;
+        private Label label27;
+        private Label label28;
+        private Label label29;
+        private TextBox textBoxMultaMora;
+        private TextBox textBoxRenta;
+        private TextBox textBoxServiciosBasicos;
     }
 }

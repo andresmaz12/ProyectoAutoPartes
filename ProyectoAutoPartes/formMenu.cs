@@ -71,7 +71,7 @@ namespace ProyectoAutoPartes
 
         private void buttonComprarInventario_Click(object sender, EventArgs e)
         {
-            int Cuento; 
+            int Cuento;
             inventario.ComprarInventario(Cuento, Cuento, Cuento);
         }
         #endregion
@@ -130,7 +130,9 @@ namespace ProyectoAutoPartes
         }
         private void buttonEditarCompra_Click(object sender, EventArgs e)
         {
-            
+            formEditarVenta editar = new formEditarVenta();
+            editar.ShowDialog();
+            string ID = editar.IDVenta;
             ventas.EditarVenta(1, "", 0, "");
         }
         private void buttonEliminarCompra_Click(object sender, EventArgs e)
@@ -402,11 +404,11 @@ namespace ProyectoAutoPartes
                 MessageBox.Show("Debe ingresar un valor numérico válido", "Error");
             }
         }
-    #endregion
+        #endregion
 
-    #region CargarDatos en los campos
+        #region CargarDatos en los campos
 
-      // Método para cargar los elementos en el ComboBox desde MySQL
+        // Método para cargar los elementos en el ComboBox desde MySQL
         private void CargarComboBox()
         {
             try
@@ -479,6 +481,13 @@ namespace ProyectoAutoPartes
             {
                 MessageBox.Show("Error al cargar los detalles del producto: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+        #endregion
+
+        #region Finanzas
+        private void chart1_Click(object sender, EventArgs e)
+        {
+
         }
         #endregion
     }
