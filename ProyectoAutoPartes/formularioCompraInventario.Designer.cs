@@ -37,6 +37,7 @@
             ClientSize = new Size(547, 236);
             Name = "formularioCompraInventario";
             Text = "formularioCompraInventario";
+            Load += formularioCompraInventario_Load;
             ResumeLayout(false);
         }
 

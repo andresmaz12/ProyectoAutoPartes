@@ -26,7 +26,7 @@ namespace ProyectoAutoPartes
         public formMenu()
         {
             InitializeComponent();
-            string connectionString = @"D:\Base de datos VB\ProyectoAutoPartes\Avamce.... de proyecto.prueba6.mwb";
+            string connectionString = @"";
             this.inventario = new claseGestionInventario(connectionString, this);
             this.ventas = new claseGestionVentas(connectionString, this);
             this.clientes = new claseClientes(connectionString, this);
@@ -41,6 +41,63 @@ namespace ProyectoAutoPartes
             this.BackColor = System.Drawing.Color.MediumSeaGreen;
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
         }
+
+        //Metodo para que se valide si el usuario tiene permitidio usar la funcion 
+        private bool VerificarNivel1()
+        {
+            verificarUsuarioContrasenia ver = new verificarUsuarioContrasenia();
+            ver.ShowDialog();
+            if (ver.UsuarioValido == true && ver.NivelEmpleado <= 1)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private bool VerificarNivel2()
+        {
+            verificarUsuarioContrasenia ver = new verificarUsuarioContrasenia();
+            ver.ShowDialog();
+            if (ver.UsuarioValido == true && ver.NivelEmpleado <= 2)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private bool VerificarNivel3()
+        {
+            verificarUsuarioContrasenia ver = new verificarUsuarioContrasenia();
+            ver.ShowDialog();
+            if (ver.UsuarioValido == true && ver.NivelEmpleado <= 3)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private bool VerificarNivel4()
+        {
+            verificarUsuarioContrasenia ver = new verificarUsuarioContrasenia();
+            ver.ShowDialog();
+            if (ver.UsuarioValido == true && ver.NivelEmpleado <= 5)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
         #endregion
 
         //Modulo inventario
@@ -48,20 +105,41 @@ namespace ProyectoAutoPartes
 
         private void buttonAgregarInventario_Click(object sender, EventArgs e)
         {
-            formAgregarInventario agregar = new formAgregarInventario();
-            agregar.ShowDialog();
-            inventario.InsertarDatos(agregar.Nombre, agregar.Descripcion, agregar.Stock, agregar.Especificacion,
-                agregar.Costo, agregar.Ganancia, agregar.Precio, agregar.Anio);
+            if(VerificarNivel3() == true)
+            {
+                formAgregarInventario agregar = new formAgregarInventario();
+                agregar.ShowDialog();
+                inventario.InsertarDatos(agregar.Nombre, agregar.Descripcion, agregar.Stock, agregar.Especificacion,
+                    agregar.Costo, agregar.Ganancia, agregar.Precio, agregar.Anio);
+            }
+            else
+            {
+                MessageBox.Show("Error", "No cuenta con el nivel necesario para realizar la accion ");
+            }
         }
 
         private void buttonEditarInventario_Click(object sender, EventArgs e)
         {
-            inventario.EditarDatos();
+            if(VerificarNivel2()==true)
+            {
+                inventario.EditarDatos();
+            }
+            else
+            {
+                MessageBox.Show("Error", "No cuenta con el nivel necesario para realizar la accion ");
+            }
         }
 
         private void buttonEliminarInventario_Click(object sender, EventArgs e)
         {
-            inventario.EliminarDatos();
+            if (VerificarNivel2() == true)
+            {
+                inventario.EliminarDatos();
+            }
+            else
+            {
+                MessageBox.Show("Error", "No cuenta con el nivel necesario para realizar la accion ");
+            }
         }
 
         private void buttonBuscarInventario_Click(object sender, EventArgs e)
@@ -71,8 +149,17 @@ namespace ProyectoAutoPartes
 
         private void buttonComprarInventario_Click(object sender, EventArgs e)
         {
-            int Cuento;
-            inventario.ComprarInventario(Cuento, Cuento, Cuento);
+            
+            if (VerificarNivel1() == true)
+            {
+                formularioCompraInventario compraInventario = new formularioCompraInventario();
+                compraInventario.ShowDialog();
+                inventario.ComprarInventario(compraInventario.IdProducto, compraInventario.CantComprada, compraInventario.Proveedor, compraInventario.PrecioUnitario);
+            }
+            else
+            {
+                MessageBox.Show("No cuenta con el nivel necesario para realizar la accion ", "Error", MessageBoxButtons.OK);
+            }
         }
         #endregion
 
@@ -130,10 +217,13 @@ namespace ProyectoAutoPartes
         }
         private void buttonEditarCompra_Click(object sender, EventArgs e)
         {
-            formEditarVenta editar = new formEditarVenta();
-            editar.ShowDialog();
-            string ID = editar.IDVenta;
-            ventas.EditarVenta(1, "", 0, "");
+            if(VerificarNivel2()==true)
+            {
+                formEditarVenta editar = new formEditarVenta();
+                editar.ShowDialog();
+                string ID = editar.IDVenta;
+            }
+            
         }
         private void buttonEliminarCompra_Click(object sender, EventArgs e)
         {
@@ -413,7 +503,7 @@ namespace ProyectoAutoPartes
         {
             try
             {
-                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                using (MySqlConnection connection = new MySqlConnection())
                 {
                     connection.Open();
 
@@ -452,7 +542,7 @@ namespace ProyectoAutoPartes
                 // Obtener el ID del elemento seleccionado
                 int productoID = Convert.ToInt32(comboBoxNombreProd.SelectedValue);
 
-                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                using (MySqlConnection connection = new MySqlConnection())
                 {
                     connection.Open();
 

@@ -165,7 +165,7 @@ namespace ProyectoAutoPartes
                 }
             }
         }
-        public void ComprarInventario(int idProducto, int cantidadComprada, double costoUnitario)
+        public void ComprarInventario(string idProducto, int cantidadComprada, string proovedeor,double costoUnitario)
         {
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
