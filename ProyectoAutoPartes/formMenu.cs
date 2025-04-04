@@ -22,6 +22,7 @@ namespace ProyectoAutoPartes
         private claseGestionVentas ventas;
         private claseClientes clientes;
         private claseGestionRRHH rRHH;
+        private claseGestionFinanciera financiera;
 
         public formMenu()
         {
@@ -31,6 +32,7 @@ namespace ProyectoAutoPartes
             this.ventas = new claseGestionVentas(connectionString, this);
             this.clientes = new claseClientes(connectionString, this);
             this.rRHH = new claseGestionRRHH(connectionString, this);
+            this.financiera = new claseGestionFinanciera(connectionString, this);
             MoificarEsteticas();
         }
 
@@ -105,7 +107,7 @@ namespace ProyectoAutoPartes
 
         private void buttonAgregarInventario_Click(object sender, EventArgs e)
         {
-            if(VerificarNivel3() == true)
+            if (VerificarNivel3() == true)
             {
                 formAgregarInventario agregar = new formAgregarInventario();
                 agregar.ShowDialog();
@@ -120,7 +122,7 @@ namespace ProyectoAutoPartes
 
         private void buttonEditarInventario_Click(object sender, EventArgs e)
         {
-            if(VerificarNivel2()==true)
+            if (VerificarNivel2() == true)
             {
                 inventario.EditarDatos();
             }
@@ -149,7 +151,7 @@ namespace ProyectoAutoPartes
 
         private void buttonComprarInventario_Click(object sender, EventArgs e)
         {
-            
+
             if (VerificarNivel1() == true)
             {
                 formularioCompraInventario compraInventario = new formularioCompraInventario();
@@ -217,13 +219,13 @@ namespace ProyectoAutoPartes
         }
         private void buttonEditarCompra_Click(object sender, EventArgs e)
         {
-            if(VerificarNivel2()==true)
+            if (VerificarNivel2() == true)
             {
                 formEditarVenta editar = new formEditarVenta();
                 editar.ShowDialog();
                 string ID = editar.IDVenta;
             }
-            
+
         }
         private void buttonEliminarCompra_Click(object sender, EventArgs e)
         {
@@ -578,6 +580,23 @@ namespace ProyectoAutoPartes
         private void chart1_Click(object sender, EventArgs e)
         {
 
+        }
+
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            int porcentImp = Convert.ToInt32(textBoxImpuestos.Text);
+            int donacionesReal = Convert.ToInt32(textBoxDonaciones.Text);
+            int ganancias = 0;
+            int impuestosTotales = financiera.CalculoImpuestos(porcentImp, ganancias, donacionesReal);
+            if (impuestosTotales > 0)
+            {
+                MessageBox.Show($"Tiene que pagar {impuestosTotales} por sus ingresos de <fecha> a <fecha>");
+            }
+            else if(impuestosTotales <= 0)
+            {
+                MessageBox.Show("No tiene que pagar impuestos", "Calculo de impuestos", MessageBoxButtons.OK);
+            }
         }
         #endregion
     }

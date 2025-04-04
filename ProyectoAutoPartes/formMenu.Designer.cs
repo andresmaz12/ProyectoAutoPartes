@@ -101,24 +101,24 @@
             dataGridViewRRHH = new DataGridView();
             label11 = new Label();
             tabPage6 = new TabPage();
-            buttonCambiarFechaLim = new Button();
-            chart1 = new FastReport.DataVisualization.Charting.Chart();
-            label25 = new Label();
-            label24 = new Label();
-            dateTimePicker1 = new DateTimePicker();
-            label26 = new Label();
+            button2 = new Button();
+            button1 = new Button();
+            label30 = new Label();
+            label31 = new Label();
+            textBoxImpuestos = new TextBox();
+            textBoxDonaciones = new TextBox();
             label27 = new Label();
             label28 = new Label();
             label29 = new Label();
             textBoxMultaMora = new TextBox();
             textBoxRenta = new TextBox();
             textBoxServiciosBasicos = new TextBox();
-            label30 = new Label();
-            label31 = new Label();
-            textBox1 = new TextBox();
-            textBox2 = new TextBox();
-            button1 = new Button();
-            button2 = new Button();
+            label26 = new Label();
+            dateTimePicker1 = new DateTimePicker();
+            buttonCambiarFechaLim = new Button();
+            chart1 = new FastReport.DataVisualization.Charting.Chart();
+            label25 = new Label();
+            label24 = new Label();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewInvetario).BeginInit();
@@ -863,8 +863,8 @@
             tabPage6.Controls.Add(button1);
             tabPage6.Controls.Add(label30);
             tabPage6.Controls.Add(label31);
-            tabPage6.Controls.Add(textBox1);
-            tabPage6.Controls.Add(textBox2);
+            tabPage6.Controls.Add(textBoxImpuestos);
+            tabPage6.Controls.Add(textBoxDonaciones);
             tabPage6.Controls.Add(label27);
             tabPage6.Controls.Add(label28);
             tabPage6.Controls.Add(label29);
@@ -883,60 +883,56 @@
             tabPage6.TabIndex = 5;
             tabPage6.Text = "Finanzas";
             // 
-            // buttonCambiarFechaLim
+            // button2
             // 
-            buttonCambiarFechaLim.Location = new Point(14, 367);
-            buttonCambiarFechaLim.Name = "buttonCambiarFechaLim";
-            buttonCambiarFechaLim.Size = new Size(140, 33);
-            buttonCambiarFechaLim.TabIndex = 19;
-            buttonCambiarFechaLim.Text = "Cambiar Fecha Limite";
-            buttonCambiarFechaLim.UseVisualStyleBackColor = true;
+            button2.Location = new Point(639, 194);
+            button2.Name = "button2";
+            button2.Size = new Size(121, 33);
+            button2.TabIndex = 33;
+            button2.Text = "Cambiar Valores";
+            button2.UseVisualStyleBackColor = true;
             // 
-            // chart1
+            // button1
             // 
-            chart1.Location = new Point(14, 108);
-            chart1.Name = "chart1";
-            chart1.Size = new Size(416, 253);
-            chart1.TabIndex = 18;
-            chart1.Text = "chart1";
-            chart1.Click += chart1_Click;
+            button1.Location = new Point(747, 367);
+            button1.Name = "button1";
+            button1.Size = new Size(121, 33);
+            button1.TabIndex = 32;
+            button1.Text = "Calcular";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
             // 
-            // label25
+            // label30
             // 
-            label25.AutoSize = true;
-            label25.Font = new Font("Pivot Classic", 21.75F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
-            label25.Location = new Point(610, 243);
-            label25.Name = "label25";
-            label25.Size = new Size(327, 33);
-            label25.TabIndex = 17;
-            label25.Text = "Calculo de impuestos";
+            label30.AutoSize = true;
+            label30.Location = new Point(690, 323);
+            label30.Name = "label30";
+            label30.Size = new Size(123, 15);
+            label30.TabIndex = 31;
+            label30.Text = "Donaciones realizadas";
             // 
-            // label24
+            // label31
             // 
-            label24.AutoSize = true;
-            label24.Font = new Font("Pivot Classic", 21.75F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
-            label24.Location = new Point(94, 26);
-            label24.Name = "label24";
-            label24.Size = new Size(141, 33);
-            label24.TabIndex = 16;
-            label24.Text = "Finanzas";
+            label31.AutoSize = true;
+            label31.Location = new Point(690, 279);
+            label31.Name = "label31";
+            label31.Size = new Size(140, 15);
+            label31.TabIndex = 30;
+            label31.Text = "Porcentaje de Impuestos ";
             // 
-            // dateTimePicker1
+            // textBoxImpuestos
             // 
-            dateTimePicker1.Location = new Point(18, 79);
-            dateTimePicker1.Name = "dateTimePicker1";
-            dateTimePicker1.Size = new Size(214, 23);
-            dateTimePicker1.TabIndex = 20;
+            textBoxImpuestos.Location = new Point(639, 297);
+            textBoxImpuestos.Name = "textBoxImpuestos";
+            textBoxImpuestos.Size = new Size(229, 23);
+            textBoxImpuestos.TabIndex = 29;
             // 
-            // label26
+            // textBoxDonaciones
             // 
-            label26.AutoSize = true;
-            label26.Font = new Font("Pivot Classic", 21.75F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
-            label26.Location = new Point(610, 26);
-            label26.Name = "label26";
-            label26.Size = new Size(293, 33);
-            label26.TabIndex = 21;
-            label26.Text = "Gastos Adicionales";
+            textBoxDonaciones.Location = new Point(639, 341);
+            textBoxDonaciones.Name = "textBoxDonaciones";
+            textBoxDonaciones.Size = new Size(229, 23);
+            textBoxDonaciones.TabIndex = 28;
             // 
             // label27
             // 
@@ -986,55 +982,60 @@
             textBoxServiciosBasicos.Size = new Size(229, 23);
             textBoxServiciosBasicos.TabIndex = 22;
             // 
-            // label30
+            // label26
             // 
-            label30.AutoSize = true;
-            label30.Location = new Point(690, 323);
-            label30.Name = "label30";
-            label30.Size = new Size(123, 15);
-            label30.TabIndex = 31;
-            label30.Text = "Donaciones realizadas";
+            label26.AutoSize = true;
+            label26.Font = new Font("Pivot Classic", 21.75F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
+            label26.Location = new Point(610, 26);
+            label26.Name = "label26";
+            label26.Size = new Size(293, 33);
+            label26.TabIndex = 21;
+            label26.Text = "Gastos Adicionales";
             // 
-            // label31
+            // dateTimePicker1
             // 
-            label31.AutoSize = true;
-            label31.Location = new Point(690, 279);
-            label31.Name = "label31";
-            label31.Size = new Size(140, 15);
-            label31.TabIndex = 30;
-            label31.Text = "Porcentaje de Impuestos ";
+            dateTimePicker1.Location = new Point(18, 79);
+            dateTimePicker1.Name = "dateTimePicker1";
+            dateTimePicker1.Size = new Size(214, 23);
+            dateTimePicker1.TabIndex = 20;
             // 
-            // textBox1
+            // buttonCambiarFechaLim
             // 
-            textBox1.Location = new Point(639, 297);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(229, 23);
-            textBox1.TabIndex = 29;
+            buttonCambiarFechaLim.Location = new Point(14, 367);
+            buttonCambiarFechaLim.Name = "buttonCambiarFechaLim";
+            buttonCambiarFechaLim.Size = new Size(140, 33);
+            buttonCambiarFechaLim.TabIndex = 19;
+            buttonCambiarFechaLim.Text = "Cambiar Fecha Limite";
+            buttonCambiarFechaLim.UseVisualStyleBackColor = true;
             // 
-            // textBox2
+            // chart1
             // 
-            textBox2.Location = new Point(639, 341);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(229, 23);
-            textBox2.TabIndex = 28;
+            chart1.Location = new Point(14, 108);
+            chart1.Name = "chart1";
+            chart1.Size = new Size(416, 253);
+            chart1.TabIndex = 18;
+            chart1.Text = "chart1";
+            chart1.Click += chart1_Click;
             // 
-            // button1
+            // label25
             // 
-            button1.Location = new Point(747, 367);
-            button1.Name = "button1";
-            button1.Size = new Size(121, 33);
-            button1.TabIndex = 32;
-            button1.Text = "Calcular";
-            button1.UseVisualStyleBackColor = true;
+            label25.AutoSize = true;
+            label25.Font = new Font("Pivot Classic", 21.75F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
+            label25.Location = new Point(610, 243);
+            label25.Name = "label25";
+            label25.Size = new Size(327, 33);
+            label25.TabIndex = 17;
+            label25.Text = "Calculo de impuestos";
             // 
-            // button2
+            // label24
             // 
-            button2.Location = new Point(639, 194);
-            button2.Name = "button2";
-            button2.Size = new Size(121, 33);
-            button2.TabIndex = 33;
-            button2.Text = "Cambiar Valores";
-            button2.UseVisualStyleBackColor = true;
+            label24.AutoSize = true;
+            label24.Font = new Font("Pivot Classic", 21.75F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
+            label24.Location = new Point(94, 26);
+            label24.Name = "label24";
+            label24.Size = new Size(141, 33);
+            label24.TabIndex = 16;
+            label24.Text = "Finanzas";
             // 
             // formMenu
             // 
@@ -1151,8 +1152,8 @@
         private Button button1;
         private Label label30;
         private Label label31;
-        private TextBox textBox1;
-        private TextBox textBox2;
+        private TextBox textBoxImpuestos;
+        private TextBox textBoxDonaciones;
         private Label label27;
         private Label label28;
         private Label label29;
