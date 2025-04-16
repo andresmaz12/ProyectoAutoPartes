@@ -11,7 +11,7 @@ using System.Windows.Forms;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Globalization;
 
-namespace ProyectoAutoPartes
+namespace ProyectoAutoPartes 
 {
     public class claseGestionRRHH
     {
