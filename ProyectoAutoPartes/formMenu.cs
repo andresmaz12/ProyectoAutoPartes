@@ -593,11 +593,16 @@ namespace ProyectoAutoPartes
             {
                 MessageBox.Show($"Tiene que pagar {impuestosTotales} por sus ingresos de <fecha> a <fecha>");
             }
-            else if(impuestosTotales <= 0)
+            else if (impuestosTotales <= 0)
             {
                 MessageBox.Show("No tiene que pagar impuestos", "Calculo de impuestos", MessageBoxButtons.OK);
             }
         }
         #endregion
+
+        private void radioButton2_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
