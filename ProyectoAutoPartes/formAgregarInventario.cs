@@ -130,5 +130,12 @@ namespace ProyectoAutoPartes
                 }
             }
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            formAniadirImagen formAniadir = new();
+            formAniadir.ShowDialog();
+            textBoxRuta.Text = formAniadir.RutaImagen;
+        }
     }
 }
