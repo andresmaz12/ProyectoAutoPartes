@@ -309,3 +309,139 @@ body {
       margin-bottom: 10px;
     }
   }
+  .product-details-container {
+    max-width: 1000px;
+    margin: 40px auto;
+    background-color: rgba(17, 34, 64, 0.8);
+    border-radius: 10px;
+    padding: 20px;
+    backdrop-filter: blur(5px);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+  }
+  
+  .product-image {
+    width: 100%;
+    border-radius: 10px;
+    object-fit: cover;
+  }
+
+  .product-info-detail h2 {
+    color: #64ffda;
+    margin-bottom: 15px;
+    font-size: 28px;
+  }
+
+  .product-meta {
+    margin-bottom: 20px;
+  }
+
+  .meta-item {
+    display: flex;
+    margin-bottom: 10px;
+  }
+
+  .meta-label {
+    width: 120px;
+    color: #64ffda;
+    font-weight: bold;
+  }
+
+  .meta-value {
+    color: #ccd6f6;
+  }
+
+  .price-detail {
+    font-size: 24px;
+    color: #64ffda;
+    margin: 20px 0;
+  }
+
+  .stock-info {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin: 10px 0;
+  }
+
+  .in-stock {
+    background-color: rgba(100, 255, 128, 0.2);
+    color: #64ff80;
+  }
+
+  .low-stock {
+    background-color: rgba(255, 200, 0, 0.2);
+    color: #ffc800;
+  }
+
+  .out-of-stock {
+    background-color: rgba(255, 76, 76, 0.2);
+    color: #ff4c4c;
+  }
+
+  .back-button {
+    display: inline-block;
+    padding: 12px 25px;
+    background-color: #64ffda;
+    color: #0a192f;
+    border-radius: 5px;
+    text-decoration: none;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+  }
+
+  .back-button:hover {
+    background-color: #52d1b2;
+  }
+
+  .cotizacion-form {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(100, 255, 218, 0.3);
+  }
+
+  .cotizacion-form h3 {
+    color: #64ffda;
+    margin-bottom: 15px;
+  }
+
+  .form-group {
+    margin-bottom: 15px;
+  }
+
+  .form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #ccd6f6;
+  }
+
+  .form-group input, 
+  .form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #64ffda;
+    background-color: rgba(17, 34, 64, 0.5);
+    color: #ccd6f6;
+  }
+
+  .cotizar-button {
+    padding: 12px 25px;
+    background-color: #64ffda;
+    color: #0a192f;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .cotizar-button:hover {
+    background-color: #52d1b2;
+  }
+
+  @media (max-width: 768px) {
+    .product-details-container {
+      grid-template-columns: 1fr;
+    }
+  }

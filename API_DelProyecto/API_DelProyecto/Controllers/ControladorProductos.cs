@@ -1,263 +1,209 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ProyectoAutoPartes.Data;
 using ProyectoAutoPartes.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 
 namespace ProyectoAutoPartes.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductosController : ControllerBase
+    public class SemillaController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
-        private readonly ILogger<ProductosController> _logger;
+        private readonly ILogger<SemillaController> _logger;
 
-        public ProductosController(ApplicationDbContext context, ILogger<ProductosController> logger)
+        public SemillaController(ApplicationDbContext context, ILogger<SemillaController> logger)
         {
             _context = context;
             _logger = logger;
         }
 
-        // Obtener todos los productos
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Producto>>> GetProductos()
+        // Endpoint para inicializar la base de datos con datos de ejemplo
+        [HttpPost("inicializar")]
+        public async Task<IActionResult> InicializarBaseDatos()
         {
             try
             {
-                var productos = await _context.Productos.ToListAsync();
-                return Ok(productos);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error al obtener productos");
-                return StatusCode(500, "Error interno del servidor al obtener productos");
-            }
-        }
-
-        // Obtener un producto por ID
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Producto>> GetProducto(int id)
-        {
-            try
-            {
-                var producto = await _context.Productos.FindAsync(id);
-                if (producto == null)
+                // Verificar si ya hay productos en la base de datos
+                if (_context.Productos.Any())
                 {
-                    return NotFound($"Producto con ID {id} no encontrado");
-                }
-                return Ok(producto);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, $"Error al obtener producto con ID {id}");
-                return StatusCode(500, "Error interno del servidor al obtener el producto");
-            }
-        }
-
-        // Filtrar productos por criterios
-        [HttpGet("filtrar")]
-        public async Task<ActionResult<IEnumerable<Producto>>> FiltrarProductos(
-            [FromQuery] string? nombre, 
-            [FromQuery] string? marca, 
-            [FromQuery] string? año, 
-            [FromQuery] string? modelo)
-        {
-            try
-            {
-                var query = _context.Productos.AsQueryable();
-
-                if (!string.IsNullOrEmpty(nombre))
-                {
-                    query = query.Where(p => p.Nombre.Contains(nombre));
+                    return BadRequest("La base de datos ya ha sido inicializada");
                 }
 
-                if (!string.IsNullOrEmpty(marca))
+                // Crear algunos productos de ejemplo
+                var productos = new List<Producto>
                 {
-                    query = query.Where(p => p.Marca == marca);
-                }
+                    new Producto
+                    {
+                        Nombre = "Amortiguador delantero",
+                        Precio = 350.00M,
+                        Stock = 15,
+                        Marca = "Monroe",
+                        Año = "2020-2023",
+                        Modelo = "Toyota Corolla",
+                        Imagen = "amortiguador_delantero.jpg"
+                    },
+                    new Producto
+                    {
+                        Nombre = "Filtro de aceite",
+                        Precio = 85.75M,
+                        Stock = 30,
+                        Marca = "Fram",
+                        Año = "2018-2023",
+                        Modelo = "Honda Civic",
+                        Imagen = "filtro_aceite.jpg"
+                    },
+                    new Producto
+                    {
+                        Nombre = "Pastillas de freno",
+                        Precio = 225.50M,
+                        Stock = 20,
+                        Marca = "Brembo",
+                        Año = "2019-2023",
+                        Modelo = "Mazda 3",
+                        Imagen = "pastillas_freno.jpg"
+                    },
+                    new Producto
+                    {
+                        Nombre = "Batería 12V",
+                        Precio = 875.00M,
+                        Stock = 8,
+                        Marca = "Bosch",
+                        Año = "2018-2023",
+                        Modelo = "Nissan Sentra",
+                        Imagen = "bateria.jpg"
+                    },
+                    new Producto
+                    {
+                        Nombre = "Kit de embrague",
+                        Precio = 1250.00M,
+                        Stock = 5,
+                        Marca = "LUK",
+                        Año = "2017-2022",
+                        Modelo = "Hyundai Elantra",
+                        Imagen = "kit_embrague.jpg"
+                    },
+                    new Producto
+                    {
+                        Nombre = "Radiador",
+                        Precio = 950.75M,
+                        Stock = 7,
+                        Marca = "Valeo",
+                        Año = "2019-2023",
+                        Modelo = "Kia Forte",
+                        Imagen = "radiador.jpg"
+                    },
+                    new Producto
+                    {
+                        Nombre = "Bomba de agua",
+                        Precio = 540.25M,
+                        Stock = 12,
+                        Marca = "GMB",
+                        Año = "2018-2022",
+                        Modelo = "Volkswagen Golf",
+                        Imagen = "bomba_agua.jpg"
+                    },
+                    new Producto
+                    {
+                        Nombre = "Alternador",
+                        Precio = 1650.00M,
+                        Stock = 6,
+                        Marca = "Denso",
+                        Año = "2019-2023",
+                        Modelo = "Ford Focus",
+                        Imagen = "alternador.jpg"
+                    },
+                    new Producto
+                    {
+                        Nombre = "Bujías de encendido (set 4)",
+                        Precio = 175.50M,
+                        Stock = 25,
+                        Marca = "NGK",
+                        Año = "2017-2023",
+                        Modelo = "Chevrolet Cruze",
+                        Imagen = "bujias.jpg"
+                    },
+                    new Producto
+                    {
+                        Nombre = "Correa de distribución",
+                        Precio = 320.75M,
+                        Stock = 14,
+                        Marca = "Gates",
+                        Año = "2018-2022",
+                        Modelo = "Subaru Impreza",
+                        Imagen = "correa_distribucion.jpg"
+                    },
+                    new Producto
+                    {
+                        Nombre = "Sensor de oxígeno",
+                        Precio = 195.25M,
+                        Stock = 18,
+                        Marca = "Delphi",
+                        Año = "2019-2023",
+                        Modelo = "Mitsubishi Lancer",
+                        Imagen = "sensor_oxigeno.jpg"
+                    },
+                    new Producto
+                    {
+                        Nombre = "Termostato",
+                        Precio = 125.00M,
+                        Stock = 22,
+                        Marca = "Stant",
+                        Año = "2017-2023",
+                        Modelo = "Suzuki Swift",
+                        Imagen = "termostato.jpg"
+                    }
+                };
 
-                if (!string.IsNullOrEmpty(año))
-                {
-                    query = query.Where(p => p.Año == año);
-                }
-
-                if (!string.IsNullOrEmpty(modelo))
-                {
-                    query = query.Where(p => p.Modelo == modelo);
-                }
-
-                var productos = await query.ToListAsync();
-                return Ok(productos);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error al filtrar productos");
-                return StatusCode(500, "Error interno del servidor al filtrar productos");
-            }
-        }
-
-        // Obtener marcas únicas
-        [HttpGet("marcas")]
-        public async Task<ActionResult<IEnumerable<string>>> GetMarcas()
-        {
-            try
-            {
-                var marcas = await _context.Productos
-                    .Select(p => p.Marca)
-                    .Distinct()
-                    .Where(m => !string.IsNullOrEmpty(m))
-                    .ToListAsync();
-                
-                return Ok(marcas);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error al obtener marcas");
-                return StatusCode(500, "Error interno del servidor al obtener marcas");
-            }
-        }
-
-        // Obtener años únicos
-        [HttpGet("años")]
-        public async Task<ActionResult<IEnumerable<string>>> GetAños()
-        {
-            try
-            {
-                var años = await _context.Productos
-                    .Select(p => p.Año)
-                    .Distinct()
-                    .Where(a => !string.IsNullOrEmpty(a))
-                    .ToListAsync();
-                
-                return Ok(años);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error al obtener años");
-                return StatusCode(500, "Error interno del servidor al obtener años");
-            }
-        }
-
-        // Obtener modelos únicos
-        [HttpGet("modelos")]
-        public async Task<ActionResult<IEnumerable<string>>> GetModelos()
-        {
-            try
-            {
-                var modelos = await _context.Productos
-                    .Select(p => p.Modelo)
-                    .Distinct()
-                    .Where(m => !string.IsNullOrEmpty(m))
-                    .ToListAsync();
-                
-                return Ok(modelos);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error al obtener modelos");
-                return StatusCode(500, "Error interno del servidor al obtener modelos");
-            }
-        }
-
-        // Agregar un producto
-        [HttpPost]
-        public async Task<ActionResult<Producto>> PostProducto(Producto producto)
-        {
-            try
-            {
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest(ModelState);
-                }
-
-                _context.Productos.Add(producto);
+                await _context.Productos.AddRangeAsync(productos);
                 await _context.SaveChangesAsync();
 
-                return CreatedAtAction(nameof(GetProducto), new { id = producto.Id }, producto);
+                return Ok("Base de datos inicializada correctamente con productos de ejemplo");
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al crear producto");
-                return StatusCode(500, "Error interno del servidor al crear el producto");
+                _logger.LogError(ex, "Error al inicializar la base de datos");
+                return StatusCode(500, "Error interno del servidor al inicializar la base de datos");
             }
         }
 
-        // Actualizar un producto
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutProducto(int id, Producto producto)
+        // Endpoint para verificar la conexión a la base de datos
+        [HttpGet("verificar-conexion")]
+        public IActionResult VerificarConexion()
         {
             try
             {
-                if (id != producto.Id)
-                {
-                    return BadRequest("El ID del producto no coincide");
-                }
+                // Intentar conectarse a la base de datos
+                _context.Database.OpenConnection();
+                _context.Database.CloseConnection();
 
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest(ModelState);
-                }
-
-                var existingProduct = await _context.Productos.FindAsync(id);
-                if (existingProduct == null)
-                {
-                    return NotFound($"Producto con ID {id} no encontrado");
-                }
-
-                _context.Entry(producto).State = EntityState.Modified;
-                await _context.SaveChangesAsync();
-
-                return NoContent();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ProductoExists(id))
-                {
-                    return NotFound($"Producto con ID {id} no encontrado");
-                }
-                else
-                {
-                    throw;
-                }
+                return Ok("Conexión a la base de datos establecida correctamente");
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Error al actualizar producto con ID {id}");
-                return StatusCode(500, "Error interno del servidor al actualizar el producto");
+                _logger.LogError(ex, "Error al verificar la conexión a la base de datos");
+                return StatusCode(500, $"Error al conectar con la base de datos: {ex.Message}");
             }
         }
 
-        // Eliminar un producto
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteProducto(int id)
+        // Endpoint para crear/actualizar el esquema de la base de datos
+        [HttpPost("migrar")]
+        public IActionResult MigrarBaseDatos()
         {
             try
             {
-                var producto = await _context.Productos.FindAsync(id);
-                if (producto == null)
-                {
-                    return NotFound($"Producto con ID {id} no encontrado");
-                }
-
-                _context.Productos.Remove(producto);
-                await _context.SaveChangesAsync();
-
-                return NoContent();
+                _context.Database.Migrate();
+                return Ok("Migración de la base de datos completada correctamente");
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Error al eliminar producto con ID {id}");
-                return StatusCode(500, "Error interno del servidor al eliminar el producto");
+                _logger.LogError(ex, "Error al migrar la base de datos");
+                return StatusCode(500, $"Error al migrar la base de datos: {ex.Message}");
             }
-        }
-
-        private bool ProductoExists(int id)
-        {
-            return _context.Productos.Any(e => e.Id == id);
         }
     }
 }
