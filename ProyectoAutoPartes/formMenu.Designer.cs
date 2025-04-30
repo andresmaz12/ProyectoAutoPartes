@@ -1186,7 +1186,7 @@
             // 
             groupBoxProveedor.Controls.Add(radioButtonProveedorNO);
             groupBoxProveedor.Controls.Add(radioButtonProveedorSI);
-            groupBoxProveedor.Location = new Point(92, 324);
+            groupBoxProveedor.Location = new Point(20, 324);
             groupBoxProveedor.Name = "groupBoxProveedor";
             groupBoxProveedor.Size = new Size(171, 36);
             groupBoxProveedor.TabIndex = 61;
@@ -1247,6 +1247,7 @@
             radioButtonInventario.TabStop = true;
             radioButtonInventario.Text = "Comprar Inventario";
             radioButtonInventario.UseVisualStyleBackColor = true;
+            radioButtonInventario.CheckedChanged += radioButtonInventario_CheckedChanged;
             // 
             // button3
             // 

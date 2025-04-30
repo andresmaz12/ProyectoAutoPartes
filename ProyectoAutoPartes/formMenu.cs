@@ -598,11 +598,18 @@ namespace ProyectoAutoPartes
                 MessageBox.Show("No tiene que pagar impuestos", "Calculo de impuestos", MessageBoxButtons.OK);
             }
         }
+
+
+        private void radioButtonInventario_CheckedChanged(object sender, EventArgs e)
+        {
+            radioButtonInsumos.
+        }
         #endregion
 
         private void radioButton2_CheckedChanged(object sender, EventArgs e)
         {
 
         }
+
     }
 }
