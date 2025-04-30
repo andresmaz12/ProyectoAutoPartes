@@ -49,49 +49,6 @@
     </div>
   </footer>
   
-  <script>
-    function enviarCotizacion(event, productoId) {
-  event.preventDefault();
-  
-  const formData = {
-    productoId: productoId,
-    nombre: document.getElementById('nombre').value,
-    email: document.getElementById('email').value,
-    telefono: document.getElementById('telefono').value,
-    cantidad: parseInt(document.getElementById('cantidad').value),
-    mensaje: document.getElementById('mensaje').value
-  };
-  
-  // Mostrar cargando
-  mostrarCargando(true);
-  
-  // Enviar petición a la API
-  fetch(`${API_URL}/Cotizaciones`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(formData)
-  })
-  .then(response => {
-    if (!response.ok) {
-      return response.text().then(text => {
-        throw new Error(text || 'Error al enviar la cotización');
-      });
-    }
-    return response.json();
-  })
-  .then(data => {
-    mostrarCargando(false);
-    alert('Cotización enviada con éxito. Nos pondremos en contacto contigo pronto.');
-    document.getElementById('cotizacion-form').reset();
-  })
-  .catch(error => {
-    mostrarCargando(false);
-    console.error('Error:', error);
-    mostrarError('Error al enviar la cotización: ' + error.message);
-  });
-}
-  </script>
+  <script src="detalles.js"></script>
 </body>
 </html>
