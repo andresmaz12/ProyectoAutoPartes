@@ -5,113 +5,113 @@ body {
     color: #ccd6f6;
     margin: 0;
     padding: 0;
-}
-
-.container {
+  }
+  
+  .container {
     width: 90%;
     max-width: 1200px;
     margin: 0 auto;
-}
-
-/* Header */
-.header {
+  }
+  
+  /* Header */
+  .header {
     background-color: rgba(17, 34, 64, 0.9);
     padding: 15px 0;
     backdrop-filter: blur(10px);
     position: sticky;
     top: 0;
     z-index: 1000;
-}
-
-.logo-section {
+  }
+  
+  .logo-section {
     display: flex;
     align-items: center;
     gap: 10px;
-}
-
-.logo-img {
+  }
+  
+  .logo-img {
     width: 50px;
     height: 50px;
     border-radius: 50%;
-}
-
-.logo {
+  }
+  
+  .logo {
     font-size: 18px;
     font-weight: bold;
     color: #64ffda;
     margin: 0;
-}
-
-.user-section {
+  }
+  
+  .user-section {
     display: flex;
     align-items: center;
     gap: 20px;
     margin-left: auto;
-}
-
-.social-links {
+  }
+  
+  .social-links {
     display: flex;
     gap: 10px;
-}
-
-.social-links a {
+  }
+  
+  .social-links a {
     color: #64ffda;
     font-size: 18px;
     transition: color 0.3s ease;
-}
-
-.social-links a:hover {
+  }
+  
+  .social-links a:hover {
     color: #52d1b2;
-}
-
-.profile i {
+  }
+  
+  .profile i {
     font-size: 24px;
     color: #64ffda;
     cursor: pointer;
-}
-
-/* Navegación */
-.navbar {
+  }
+  
+  /* Navegación */
+  .navbar {
     background-color: rgba(17, 34, 64, 0.8);
     padding: 10px 0;
     backdrop-filter: blur(5px);
-}
-
-.navbar ul {
+  }
+  
+  .navbar ul {
     display: flex;
     justify-content: center;
     gap: 20px;
     list-style: none;
     margin: 0;
     padding: 0;
-}
-
-.navbar a {
+  }
+  
+  .navbar a {
     color: #ccd6f6;
     text-decoration: none;
     font-size: 16px;
     transition: color 0.3s ease;
-}
-
-.navbar a:hover {
+  }
+  
+  .navbar a:hover {
     color: #64ffda;
-}
-
-/* Buscador y filtros */
-.search-section {
+  }
+  
+  /* Filtros */
+  .search-section {
     padding: 20px 0;
     background-color: rgba(17, 34, 64, 0.8);
     backdrop-filter: blur(5px);
-}
-
-.search-filters {
+  }
+  
+  .search-filters {
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
-}
-
-.search-filters input,
-.search-filters select {
+  }
+  
+  .search-filters input,
+  .search-filters select {
     padding: 15px;
     border: 1px solid #64ffda;
     border-radius: 5px;
@@ -119,9 +119,9 @@ body {
     color: #ccd6f6;
     flex: 1;
     min-width: 200px;
-}
-
-.search-filters button {
+  }
+  
+  .search-filters button {
     padding: 15px 30px;
     background-color: #64ffda;
     border: none;
@@ -129,60 +129,56 @@ body {
     color: #0a192f;
     cursor: pointer;
     transition: background-color 0.3s ease;
-}
-
-.search-filters button:hover {
+  }
+  
+  .search-filters button:hover {
     background-color: #52d1b2;
-}
-
-.catalog {
+  }
+  
+  /* Catálogo dinámico */
+  .catalog {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 10px;
-    padding: 20px 0;
-}
-
-.catalog div {
-    padding: 20px;
-    text-align: center;
-}
-
-.product {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 40px 0;
+  }
+  
+  .product {
     background-color: rgba(17, 34, 64, 0.8);
     border-radius: 10px;
     overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     backdrop-filter: blur(5px);
-}
-
-.product:hover {
+    text-align: center;
+  }
+  
+  .product:hover {
     transform: translateY(-10px);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-}
-
-.product img {
+  }
+  
+  .product img {
     width: 100%;
-    height: 250px; /* Imágenes más grandes */
+    height: 250px;
     object-fit: cover;
-}
-
-.product-info {
+  }
+  
+  .product-info {
     padding: 20px;
-    text-align: center;
-}
-
-.product-info h3 {
+  }
+  
+  .product-info h3 {
     font-size: 20px;
     margin-bottom: 10px;
-}
-
-.product-info .price {
+  }
+  
+  .product-info .price {
     font-size: 18px;
     color: #64ffda;
     margin-bottom: 15px;
-}
-
-.btn-details {
+  }
+  
+  .btn-details {
     padding: 10px 20px;
     background-color: #64ffda;
     border: none;
@@ -190,35 +186,35 @@ body {
     color: #0a192f;
     cursor: pointer;
     transition: background-color 0.3s ease;
-}
-
-.btn-details:hover {
+  }
+  
+  .btn-details:hover {
     background-color: #52d1b2;
-}
-
-/* Footer */
-.footer {
+  }
+  
+  /* Footer */
+  .footer {
     background-color: rgba(17, 34, 64, 0.9);
     padding: 20px 0;
     text-align: center;
     margin-top: 40px;
     backdrop-filter: blur(10px);
-}
-
-.whatsapp-contact {
+  }
+  
+  .whatsapp-contact {
     margin-bottom: 10px;
-}
-
-.whatsapp-contact a {
+  }
+  
+  .whatsapp-contact a {
     color: #64ffda;
     text-decoration: none;
-}
-
-.whatsapp-contact a:hover {
+  }
+  
+  .whatsapp-contact a:hover {
     text-decoration: underline;
-}
-
-.copyright {
+  }
+  
+  .copyright {
     font-size: 14px;
     color: #8892b0;
-}
+  }  
