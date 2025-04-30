@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ProyectoAutoPartes.Models; // Asegúrate de que este `using` esté presente
+using ProyectoAutoPartes.Models;
 
 namespace ProyectoAutoPartes.Data
 {
@@ -7,15 +7,22 @@ namespace ProyectoAutoPartes.Data
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
-        // Agregar aquí los DbSet para cada modelo
         public DbSet<Producto> Productos { get; set; }
+        public DbSet<Cotizacion> Cotizaciones { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
+            // Configuración para Productos
             modelBuilder.Entity<Producto>().ToTable("Productos");
+            modelBuilder.Entity<Producto>().Property(p => p.Nombre).IsRequired().HasMaxLength(100);
+            modelBuilder.Entity<Producto>().Property(p => p.Precio).HasPrecision(10, 2);
+            modelBuilder.Entity<Producto>().Property(p => p.Marca).HasMaxLength(50);
+            modelBuilder.Entity<Producto>().Property(p => p.Año).HasMaxLength(20);
+            modelBuilder.Entity<Producto>().Property(p => p.Modelo).HasMaxLength(100);
+            modelBuilder.Entity<Producto>().Property(p => p.Imagen).HasMaxLength(255);
         }
     }
-}
+}       
 
