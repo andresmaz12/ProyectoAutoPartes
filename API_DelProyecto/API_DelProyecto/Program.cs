@@ -1,12 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using ProyectoAutoPartes.Data;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configurar la conexi�n a MySQL
+// Configurar la conexión a MySQL
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"),
                      ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection"))));
@@ -45,4 +43,3 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
-
