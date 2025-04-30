@@ -88,8 +88,6 @@ namespace ProyectoAutoPartes
                 }
             }
         }
-
-
         // Método para editar datos (Migrado de Access a MySQL)
         // Se reemplazaron OleDb por MySql en conexiones y comandos
         public void EditarDatos()
@@ -121,8 +119,6 @@ namespace ProyectoAutoPartes
                 }
             }
         }
-
-
         // Método para eliminar datos (Migrado de Access a MySQL)
         // Se ajustaron comandos para que sean compatibles con MySQL
         public void EliminarDatos()
@@ -169,6 +165,44 @@ namespace ProyectoAutoPartes
                 }
             }
         }
+        public void ComprarInventario(string idProducto, int cantidadComprada, string proovedeor,double costoUnitario)
+        {
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                connection.Open();
+                MySqlTransaction transaction = connection.BeginTransaction();
 
+                try
+                {
+                    // Insertar la compra en la tabla Compras
+                    string insertCompraQuery = "INSERT INTO Compras (ID_Producto, Cantidad, CostoUnitario, FechaCompra) VALUES (@ID_Producto, @Cantidad, @CostoUnitario, NOW())";
+                    using (MySqlCommand cmdCompra = new MySqlCommand(insertCompraQuery, connection, transaction))
+                    {
+                        cmdCompra.Parameters.AddWithValue("@ID_Producto", idProducto);
+                        cmdCompra.Parameters.AddWithValue("@Cantidad", cantidadComprada);
+                        cmdCompra.Parameters.AddWithValue("@CostoUnitario", costoUnitario);
+                        cmdCompra.ExecuteNonQuery();
+                    }
+
+                    // Actualizar el stock en la tabla Inventario
+                    string updateInventarioQuery = "UPDATE Inventario SET CantidadEnStock = CantidadEnStock + @Cantidad WHERE ID_Producto = @ID_Producto";
+                    using (MySqlCommand cmdInventario = new MySqlCommand(updateInventarioQuery, connection, transaction))
+                    {
+                        cmdInventario.Parameters.AddWithValue("@Cantidad", cantidadComprada);
+                        cmdInventario.Parameters.AddWithValue("@ID_Producto", idProducto);
+                        cmdInventario.ExecuteNonQuery();
+                    }
+
+                    // Confirmar la transacción
+                    transaction.Commit();
+                    MessageBox.Show("Compra realizada y stock actualizado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    MessageBox.Show("Error al registrar la compra: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
     }
 }

@@ -11,7 +11,7 @@ using System.Windows.Forms;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Globalization;
 
-namespace ProyectoAutoPartes
+namespace ProyectoAutoPartes 
 {
     public class claseGestionRRHH
     {
@@ -146,10 +146,246 @@ namespace ProyectoAutoPartes
             DateTime fechaConvertida;
             return DateTime.TryParseExact(fecha, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out fechaConvertida);
         }
-        
-       public void FiltrarSalario(int salario)
-        {
 
+        /// <summary>
+        /// Filtra empleados por salario mayor o igual al especificado
+        /// </summary>
+        /// <param name="salarioMinimo">Salario mínimo para filtrar</param>
+        /// <returns>DataTable con los empleados que cumplen el criterio</returns>
+        public DataTable FiltrarSalario(int salarioMinimo)
+        {
+            DataTable dtResultado = new DataTable();
+
+            try
+            {
+                using (MySqlConnection conexion = new MySqlConnection(connectionString))
+                {
+                    string query = @"SELECT 
+                                    ID, 
+                                    Nombre, 
+                                    Apellido, 
+                                    Rol, 
+                                    Salario, 
+                                    FechaContratacion, 
+                                    NumeroFaltas, 
+                                    NumeroVentas
+                                FROM 
+                                    Empleados 
+                                WHERE 
+                                    Salario >= @SalarioMinimo
+                                ORDER BY 
+                                    Salario DESC";
+
+                    using (MySqlCommand comando = new MySqlCommand(query, conexion))
+                    {
+                        comando.Parameters.AddWithValue("@SalarioMinimo", salarioMinimo);
+
+                        conexion.Open();
+                        MySqlDataAdapter adaptador = new MySqlDataAdapter(comando);
+                        adaptador.Fill(dtResultado);
+                    }
+                }
+
+                return dtResultado;
+            }
+            catch (Exception ex)
+            {
+                // Registrar error en log
+                Console.WriteLine($"Error al filtrar por salario: {ex.Message}");
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Filtra empleados por rol específico
+        /// </summary>
+        /// <param name="rol">Rol para filtrar</param>
+        /// <returns>DataTable con los empleados que cumplen el criterio</returns>
+        public DataTable FiltrarPorRol(string rol)
+        {
+            DataTable dtResultado = new DataTable();
+
+            try
+            {
+                using (MySqlConnection conexion = new MySqlConnection(connectionString))
+                {
+                    string query = @"SELECT 
+                                    ID, 
+                                    Nombre, 
+                                    Apellido, 
+                                    Rol, 
+                                    Salario, 
+                                    FechaContratacion, 
+                                    NumeroFaltas, 
+                                    NumeroVentas
+                                FROM 
+                                    Empleados 
+                                WHERE 
+                                    Rol LIKE @Rol
+                                ORDER BY 
+                                    Apellido, Nombre";
+
+                    using (MySqlCommand comando = new MySqlCommand(query, conexion))
+                    {
+                        // Usamos LIKE para buscar coincidencias parciales
+                        comando.Parameters.AddWithValue("@Rol", "%" + rol + "%");
+
+                        conexion.Open();
+                        MySqlDataAdapter adaptador = new MySqlDataAdapter(comando);
+                        adaptador.Fill(dtResultado);
+                    }
+                }
+
+                return dtResultado;
+            }
+            catch (Exception ex)
+            {
+                // Registrar error en log
+                Console.WriteLine($"Error al filtrar por rol: {ex.Message}");
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Filtra empleados por número de faltas mayor o igual al especificado
+        /// </summary>
+        /// <param name="faltasMinimo">Número mínimo de faltas para filtrar</param>
+        /// <returns>DataTable con los empleados que cumplen el criterio</returns>
+        public DataTable FiltrarPorFaltas(int faltasMinimo)
+        {
+            DataTable dtResultado = new DataTable();
+
+            try
+            {
+                using (MySqlConnection conexion = new MySqlConnection(connectionString))
+                {
+                    string query = @"SELECT 
+                                    ID, 
+                                    Nombre, 
+                                    Apellido, 
+                                    Rol, 
+                                    Salario, 
+                                    FechaContratacion, 
+                                    NumeroFaltas, 
+                                    NumeroVentas
+                                FROM 
+                                    Empleados 
+                                WHERE 
+                                    NumeroFaltas >= @FaltasMinimo
+                                ORDER BY 
+                                    NumeroFaltas DESC";
+
+                    using (MySqlCommand comando = new MySqlCommand(query, conexion))
+                    {
+                        comando.Parameters.AddWithValue("@FaltasMinimo", faltasMinimo);
+
+                        conexion.Open();
+                        MySqlDataAdapter adaptador = new MySqlDataAdapter(comando);
+                        adaptador.Fill(dtResultado);
+                    }
+                }
+
+                return dtResultado;
+            }
+            catch (Exception ex)
+            {
+                // Registrar error en log
+                Console.WriteLine($"Error al filtrar por faltas: {ex.Message}");
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Filtra empleados por número de ventas mayor o igual al especificado
+        /// </summary>
+        /// <param name="ventasMinimo">Número mínimo de ventas para filtrar</param>
+        /// <returns>DataTable con los empleados que cumplen el criterio</returns>
+        public DataTable FiltrarPorVentas(int ventasMinimo)
+        {
+            DataTable dtResultado = new DataTable();
+
+            try
+            {
+                using (MySqlConnection conexion = new MySqlConnection(connectionString))
+                {
+                    string query = @"SELECT 
+                                    ID, 
+                                    Nombre, 
+                                    Apellido, 
+                                    Rol, 
+                                    Salario, 
+                                    FechaContratacion, 
+                                    NumeroFaltas, 
+                                    NumeroVentas
+                                FROM 
+                                    Empleados 
+                                WHERE 
+                                    NumeroVentas >= @VentasMinimo
+                                ORDER BY 
+                                    NumeroVentas DESC";
+
+                    using (MySqlCommand comando = new MySqlCommand(query, conexion))
+                    {
+                        comando.Parameters.AddWithValue("@VentasMinimo", ventasMinimo);
+
+                        conexion.Open();
+                        MySqlDataAdapter adaptador = new MySqlDataAdapter(comando);
+                        adaptador.Fill(dtResultado);
+                    }
+                }
+
+                return dtResultado;
+            }
+            catch (Exception ex)
+            {
+                // Registrar error en log
+                Console.WriteLine($"Error al filtrar por ventas: {ex.Message}");
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Método adicional para cargar todos los empleados
+        /// </summary>
+        /// <returns>DataTable con todos los empleados</returns>
+        public DataTable CargarTodosEmpleados()
+        {
+            DataTable dtResultado = new DataTable();
+
+            try
+            {
+                using (MySqlConnection conexion = new MySqlConnection(connectionString))
+                {
+                    string query = @"SELECT 
+                                    ID, 
+                                    Nombre, 
+                                    Apellido, 
+                                    Rol, 
+                                    Salario, 
+                                    FechaContratacion, 
+                                    NumeroFaltas, 
+                                    NumeroVentas
+                                FROM 
+                                    Empleados
+                                ORDER BY 
+                                    Apellido, Nombre";
+
+                    using (MySqlCommand comando = new MySqlCommand(query, conexion))
+                    {
+                        conexion.Open();
+                        MySqlDataAdapter adaptador = new MySqlDataAdapter(comando);
+                        adaptador.Fill(dtResultado);
+                    }
+                }
+
+                return dtResultado;
+            }
+            catch (Exception ex)
+            {
+                // Registrar error en log
+                Console.WriteLine($"Error al cargar todos los empleados: {ex.Message}");
+                return null;
+            }
         }
     }
 }

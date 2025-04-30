@@ -30,6 +30,7 @@
         {
             tabControl1 = new TabControl();
             tabPage1 = new TabPage();
+            buttonComprarInventario = new Button();
             label8 = new Label();
             buttonBuscarInventario = new Button();
             buttonEliminarInventario = new Button();
@@ -37,6 +38,12 @@
             buttonAgregarInventario = new Button();
             dataGridViewInvetario = new DataGridView();
             tabPage2 = new TabPage();
+            groupBox1 = new GroupBox();
+            radioButtonClienteRegNo = new RadioButton();
+            radioButtonClienteRegSi = new RadioButton();
+            groupBox2 = new GroupBox();
+            radioButton3 = new RadioButton();
+            radioButton4 = new RadioButton();
             buttonEditarCompra = new Button();
             buttonEliminarCompra = new Button();
             buttonBusquedaFactura = new Button();
@@ -97,19 +104,74 @@
             buttonAgregarEmpleado = new Button();
             buttonBuscarEmpleado = new Button();
             label12 = new Label();
-            dataGridView1 = new DataGridView();
+            dataGridViewRRHH = new DataGridView();
             label11 = new Label();
-            tabPage5 = new TabPage();
             tabPage6 = new TabPage();
+            button2 = new Button();
+            button1 = new Button();
+            label30 = new Label();
+            label31 = new Label();
+            textBoxImpuestos = new TextBox();
+            textBoxDonaciones = new TextBox();
+            label27 = new Label();
+            label28 = new Label();
+            label29 = new Label();
+            textBoxMultaMora = new TextBox();
+            textBoxRenta = new TextBox();
+            textBoxServiciosBasicos = new TextBox();
+            label26 = new Label();
+            dateTimePicker1 = new DateTimePicker();
+            buttonCambiarFechaLim = new Button();
+            chart1 = new FastReport.DataVisualization.Charting.Chart();
+            label25 = new Label();
+            label24 = new Label();
+            tabPage5 = new TabPage();
+            groupBoxProveedor = new GroupBox();
+            radioButtonProveedorNO = new RadioButton();
+            radioButtonProveedorSI = new RadioButton();
+            groupBoxDestionCompra = new GroupBox();
+            radioButtonInsumos = new RadioButton();
+            radioButtonInventario = new RadioButton();
+            button3 = new Button();
+            button4 = new Button();
+            button5 = new Button();
+            button6 = new Button();
+            listBox2 = new ListBox();
+            label32 = new Label();
+            label33 = new Label();
+            label34 = new Label();
+            label35 = new Label();
+            label36 = new Label();
+            comboBox1 = new ComboBox();
+            numericUpDown1 = new NumericUpDown();
+            textBox1 = new TextBox();
+            textBox2 = new TextBox();
+            textBoxCompraInventario = new TextBox();
+            button7 = new Button();
+            button8 = new Button();
+            button9 = new Button();
+            label37 = new Label();
+            label38 = new Label();
+            dateTimePicker2 = new DateTimePicker();
+            dataGridView1 = new DataGridView();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewInvetario).BeginInit();
             tabPage2.SuspendLayout();
+            groupBox1.SuspendLayout();
+            groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDownCantidad).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridViewVentas).BeginInit();
             tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewClientes).BeginInit();
             tabPage4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewRRHH).BeginInit();
+            tabPage6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)chart1).BeginInit();
+            tabPage5.SuspendLayout();
+            groupBoxProveedor.SuspendLayout();
+            groupBoxDestionCompra.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
@@ -120,8 +182,8 @@
             tabControl1.Controls.Add(tabPage2);
             tabControl1.Controls.Add(tabPage3);
             tabControl1.Controls.Add(tabPage4);
-            tabControl1.Controls.Add(tabPage5);
             tabControl1.Controls.Add(tabPage6);
+            tabControl1.Controls.Add(tabPage5);
             tabControl1.Location = new Point(-3, 31);
             tabControl1.Multiline = true;
             tabControl1.Name = "tabControl1";
@@ -132,6 +194,7 @@
             // tabPage1
             // 
             tabPage1.BackColor = Color.CornflowerBlue;
+            tabPage1.Controls.Add(buttonComprarInventario);
             tabPage1.Controls.Add(label8);
             tabPage1.Controls.Add(buttonBuscarInventario);
             tabPage1.Controls.Add(buttonEliminarInventario);
@@ -144,6 +207,16 @@
             tabPage1.Size = new Size(951, 414);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "Inventario";
+            // 
+            // buttonComprarInventario
+            // 
+            buttonComprarInventario.Location = new Point(358, 329);
+            buttonComprarInventario.Name = "buttonComprarInventario";
+            buttonComprarInventario.Size = new Size(113, 49);
+            buttonComprarInventario.TabIndex = 16;
+            buttonComprarInventario.Text = "Comprar Inventario";
+            buttonComprarInventario.UseVisualStyleBackColor = true;
+            buttonComprarInventario.Click += buttonComprarInventario_Click;
             // 
             // label8
             // 
@@ -206,6 +279,8 @@
             // tabPage2
             // 
             tabPage2.BackColor = Color.CornflowerBlue;
+            tabPage2.Controls.Add(groupBox1);
+            tabPage2.Controls.Add(groupBox2);
             tabPage2.Controls.Add(buttonEditarCompra);
             tabPage2.Controls.Add(buttonEliminarCompra);
             tabPage2.Controls.Add(buttonBusquedaFactura);
@@ -234,6 +309,73 @@
             tabPage2.Size = new Size(951, 414);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "Ventas";
+            // 
+            // groupBox1
+            // 
+            groupBox1.Controls.Add(radioButtonClienteRegNo);
+            groupBox1.Controls.Add(radioButtonClienteRegSi);
+            groupBox1.Location = new Point(71, 327);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Size = new Size(171, 36);
+            groupBox1.TabIndex = 63;
+            groupBox1.TabStop = false;
+            groupBox1.Text = "El cliente esta registrado";
+            // 
+            // radioButtonClienteRegNo
+            // 
+            radioButtonClienteRegNo.AutoSize = true;
+            radioButtonClienteRegNo.Location = new Point(123, 17);
+            radioButtonClienteRegNo.Name = "radioButtonClienteRegNo";
+            radioButtonClienteRegNo.Size = new Size(44, 19);
+            radioButtonClienteRegNo.TabIndex = 64;
+            radioButtonClienteRegNo.TabStop = true;
+            radioButtonClienteRegNo.Text = " No";
+            radioButtonClienteRegNo.UseVisualStyleBackColor = true;
+            // 
+            // radioButtonClienteRegSi
+            // 
+            radioButtonClienteRegSi.AutoSize = true;
+            radioButtonClienteRegSi.Location = new Point(0, 17);
+            radioButtonClienteRegSi.Name = "radioButtonClienteRegSi";
+            radioButtonClienteRegSi.Size = new Size(34, 19);
+            radioButtonClienteRegSi.TabIndex = 63;
+            radioButtonClienteRegSi.TabStop = true;
+            radioButtonClienteRegSi.Text = "Si";
+            radioButtonClienteRegSi.UseVisualStyleBackColor = true;
+            radioButtonClienteRegSi.CheckedChanged += radioButton2_CheckedChanged;
+            // 
+            // groupBox2
+            // 
+            groupBox2.Controls.Add(radioButton3);
+            groupBox2.Controls.Add(radioButton4);
+            groupBox2.Location = new Point(71, 285);
+            groupBox2.Name = "groupBox2";
+            groupBox2.Size = new Size(175, 36);
+            groupBox2.TabIndex = 62;
+            groupBox2.TabStop = false;
+            groupBox2.Text = "Realizar Factura";
+            // 
+            // radioButton3
+            // 
+            radioButton3.AutoSize = true;
+            radioButton3.Location = new Point(123, 17);
+            radioButton3.Name = "radioButton3";
+            radioButton3.Size = new Size(41, 19);
+            radioButton3.TabIndex = 63;
+            radioButton3.TabStop = true;
+            radioButton3.Text = "No";
+            radioButton3.UseVisualStyleBackColor = true;
+            // 
+            // radioButton4
+            // 
+            radioButton4.AutoSize = true;
+            radioButton4.Location = new Point(0, 17);
+            radioButton4.Name = "radioButton4";
+            radioButton4.Size = new Size(34, 19);
+            radioButton4.TabIndex = 62;
+            radioButton4.TabStop = true;
+            radioButton4.Text = "Si";
+            radioButton4.UseVisualStyleBackColor = true;
             // 
             // buttonEditarCompra
             // 
@@ -623,7 +765,7 @@
             tabPage4.Controls.Add(buttonAgregarEmpleado);
             tabPage4.Controls.Add(buttonBuscarEmpleado);
             tabPage4.Controls.Add(label12);
-            tabPage4.Controls.Add(dataGridView1);
+            tabPage4.Controls.Add(dataGridViewRRHH);
             tabPage4.Controls.Add(label11);
             tabPage4.Location = new Point(27, 4);
             tabPage4.Name = "tabPage4";
@@ -808,13 +950,13 @@
             label12.TabIndex = 17;
             label12.Text = "Agregar Empleado";
             // 
-            // dataGridView1
+            // dataGridViewRRHH
             // 
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(13, 72);
-            dataGridView1.Name = "dataGridView1";
-            dataGridView1.Size = new Size(539, 261);
-            dataGridView1.TabIndex = 16;
+            dataGridViewRRHH.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewRRHH.Location = new Point(13, 72);
+            dataGridViewRRHH.Name = "dataGridViewRRHH";
+            dataGridViewRRHH.Size = new Size(539, 261);
+            dataGridViewRRHH.TabIndex = 16;
             // 
             // label11
             // 
@@ -826,23 +968,477 @@
             label11.TabIndex = 15;
             label11.Text = "Lista de empleados";
             // 
-            // tabPage5
-            // 
-            tabPage5.Location = new Point(27, 4);
-            tabPage5.Name = "tabPage5";
-            tabPage5.Size = new Size(951, 414);
-            tabPage5.TabIndex = 4;
-            tabPage5.Text = "Gestion WEB";
-            tabPage5.UseVisualStyleBackColor = true;
-            // 
             // tabPage6
             // 
+            tabPage6.BackColor = Color.CornflowerBlue;
+            tabPage6.Controls.Add(button2);
+            tabPage6.Controls.Add(button1);
+            tabPage6.Controls.Add(label30);
+            tabPage6.Controls.Add(label31);
+            tabPage6.Controls.Add(textBoxImpuestos);
+            tabPage6.Controls.Add(textBoxDonaciones);
+            tabPage6.Controls.Add(label27);
+            tabPage6.Controls.Add(label28);
+            tabPage6.Controls.Add(label29);
+            tabPage6.Controls.Add(textBoxMultaMora);
+            tabPage6.Controls.Add(textBoxRenta);
+            tabPage6.Controls.Add(textBoxServiciosBasicos);
+            tabPage6.Controls.Add(label26);
+            tabPage6.Controls.Add(dateTimePicker1);
+            tabPage6.Controls.Add(buttonCambiarFechaLim);
+            tabPage6.Controls.Add(chart1);
+            tabPage6.Controls.Add(label25);
+            tabPage6.Controls.Add(label24);
             tabPage6.Location = new Point(27, 4);
             tabPage6.Name = "tabPage6";
             tabPage6.Size = new Size(951, 414);
             tabPage6.TabIndex = 5;
             tabPage6.Text = "Finanzas";
-            tabPage6.UseVisualStyleBackColor = true;
+            // 
+            // button2
+            // 
+            button2.Location = new Point(639, 194);
+            button2.Name = "button2";
+            button2.Size = new Size(121, 33);
+            button2.TabIndex = 33;
+            button2.Text = "Cambiar Valores";
+            button2.UseVisualStyleBackColor = true;
+            // 
+            // button1
+            // 
+            button1.Location = new Point(747, 367);
+            button1.Name = "button1";
+            button1.Size = new Size(121, 33);
+            button1.TabIndex = 32;
+            button1.Text = "Calcular";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
+            // 
+            // label30
+            // 
+            label30.AutoSize = true;
+            label30.Location = new Point(690, 323);
+            label30.Name = "label30";
+            label30.Size = new Size(123, 15);
+            label30.TabIndex = 31;
+            label30.Text = "Donaciones realizadas";
+            // 
+            // label31
+            // 
+            label31.AutoSize = true;
+            label31.Location = new Point(690, 279);
+            label31.Name = "label31";
+            label31.Size = new Size(140, 15);
+            label31.TabIndex = 30;
+            label31.Text = "Porcentaje de Impuestos ";
+            // 
+            // textBoxImpuestos
+            // 
+            textBoxImpuestos.Location = new Point(639, 297);
+            textBoxImpuestos.Name = "textBoxImpuestos";
+            textBoxImpuestos.Size = new Size(229, 23);
+            textBoxImpuestos.TabIndex = 29;
+            // 
+            // textBoxDonaciones
+            // 
+            textBoxDonaciones.Location = new Point(639, 341);
+            textBoxDonaciones.Name = "textBoxDonaciones";
+            textBoxDonaciones.Size = new Size(229, 23);
+            textBoxDonaciones.TabIndex = 28;
+            // 
+            // label27
+            // 
+            label27.AutoSize = true;
+            label27.Location = new Point(690, 147);
+            label27.Name = "label27";
+            label27.Size = new Size(150, 15);
+            label27.TabIndex = 27;
+            label27.Text = "Multas o Moras Pendientes";
+            // 
+            // label28
+            // 
+            label28.AutoSize = true;
+            label28.Location = new Point(690, 103);
+            label28.Name = "label28";
+            label28.Size = new Size(123, 15);
+            label28.TabIndex = 26;
+            label28.Text = "Total Servicios Basicos";
+            // 
+            // label29
+            // 
+            label29.AutoSize = true;
+            label29.Location = new Point(705, 59);
+            label29.Name = "label29";
+            label29.Size = new Size(96, 15);
+            label29.TabIndex = 25;
+            label29.Text = "Costo de la renta";
+            // 
+            // textBoxMultaMora
+            // 
+            textBoxMultaMora.Location = new Point(639, 165);
+            textBoxMultaMora.Name = "textBoxMultaMora";
+            textBoxMultaMora.Size = new Size(229, 23);
+            textBoxMultaMora.TabIndex = 24;
+            // 
+            // textBoxRenta
+            // 
+            textBoxRenta.Location = new Point(639, 77);
+            textBoxRenta.Name = "textBoxRenta";
+            textBoxRenta.Size = new Size(229, 23);
+            textBoxRenta.TabIndex = 23;
+            // 
+            // textBoxServiciosBasicos
+            // 
+            textBoxServiciosBasicos.Location = new Point(639, 121);
+            textBoxServiciosBasicos.Name = "textBoxServiciosBasicos";
+            textBoxServiciosBasicos.Size = new Size(229, 23);
+            textBoxServiciosBasicos.TabIndex = 22;
+            // 
+            // label26
+            // 
+            label26.AutoSize = true;
+            label26.Font = new Font("Pivot Classic", 21.75F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
+            label26.Location = new Point(610, 26);
+            label26.Name = "label26";
+            label26.Size = new Size(293, 33);
+            label26.TabIndex = 21;
+            label26.Text = "Gastos Adicionales";
+            // 
+            // dateTimePicker1
+            // 
+            dateTimePicker1.Location = new Point(18, 79);
+            dateTimePicker1.Name = "dateTimePicker1";
+            dateTimePicker1.Size = new Size(214, 23);
+            dateTimePicker1.TabIndex = 20;
+            // 
+            // buttonCambiarFechaLim
+            // 
+            buttonCambiarFechaLim.Location = new Point(14, 367);
+            buttonCambiarFechaLim.Name = "buttonCambiarFechaLim";
+            buttonCambiarFechaLim.Size = new Size(140, 33);
+            buttonCambiarFechaLim.TabIndex = 19;
+            buttonCambiarFechaLim.Text = "Cambiar Fecha Limite";
+            buttonCambiarFechaLim.UseVisualStyleBackColor = true;
+            // 
+            // chart1
+            // 
+            chart1.Location = new Point(14, 108);
+            chart1.Name = "chart1";
+            chart1.Size = new Size(416, 253);
+            chart1.TabIndex = 18;
+            chart1.Text = "chart1";
+            chart1.Click += chart1_Click;
+            // 
+            // label25
+            // 
+            label25.AutoSize = true;
+            label25.Font = new Font("Pivot Classic", 21.75F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
+            label25.Location = new Point(610, 243);
+            label25.Name = "label25";
+            label25.Size = new Size(327, 33);
+            label25.TabIndex = 17;
+            label25.Text = "Calculo de impuestos";
+            // 
+            // label24
+            // 
+            label24.AutoSize = true;
+            label24.Font = new Font("Pivot Classic", 21.75F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
+            label24.Location = new Point(94, 26);
+            label24.Name = "label24";
+            label24.Size = new Size(141, 33);
+            label24.TabIndex = 16;
+            label24.Text = "Finanzas";
+            // 
+            // tabPage5
+            // 
+            tabPage5.BackColor = Color.CornflowerBlue;
+            tabPage5.Controls.Add(groupBoxProveedor);
+            tabPage5.Controls.Add(groupBoxDestionCompra);
+            tabPage5.Controls.Add(button3);
+            tabPage5.Controls.Add(button4);
+            tabPage5.Controls.Add(button5);
+            tabPage5.Controls.Add(button6);
+            tabPage5.Controls.Add(listBox2);
+            tabPage5.Controls.Add(label32);
+            tabPage5.Controls.Add(label33);
+            tabPage5.Controls.Add(label34);
+            tabPage5.Controls.Add(label35);
+            tabPage5.Controls.Add(label36);
+            tabPage5.Controls.Add(comboBox1);
+            tabPage5.Controls.Add(numericUpDown1);
+            tabPage5.Controls.Add(textBox1);
+            tabPage5.Controls.Add(textBox2);
+            tabPage5.Controls.Add(textBoxCompraInventario);
+            tabPage5.Controls.Add(button7);
+            tabPage5.Controls.Add(button8);
+            tabPage5.Controls.Add(button9);
+            tabPage5.Controls.Add(label37);
+            tabPage5.Controls.Add(label38);
+            tabPage5.Controls.Add(dateTimePicker2);
+            tabPage5.Controls.Add(dataGridView1);
+            tabPage5.Location = new Point(27, 4);
+            tabPage5.Name = "tabPage5";
+            tabPage5.Size = new Size(951, 414);
+            tabPage5.TabIndex = 6;
+            tabPage5.Text = "Compras";
+            // 
+            // groupBoxProveedor
+            // 
+            groupBoxProveedor.Controls.Add(radioButtonProveedorNO);
+            groupBoxProveedor.Controls.Add(radioButtonProveedorSI);
+            groupBoxProveedor.Location = new Point(92, 324);
+            groupBoxProveedor.Name = "groupBoxProveedor";
+            groupBoxProveedor.Size = new Size(171, 36);
+            groupBoxProveedor.TabIndex = 61;
+            groupBoxProveedor.TabStop = false;
+            groupBoxProveedor.Text = "El proveedor esta registrado";
+            // 
+            // radioButtonProveedorNO
+            // 
+            radioButtonProveedorNO.AutoSize = true;
+            radioButtonProveedorNO.Location = new Point(123, 17);
+            radioButtonProveedorNO.Name = "radioButtonProveedorNO";
+            radioButtonProveedorNO.Size = new Size(44, 19);
+            radioButtonProveedorNO.TabIndex = 64;
+            radioButtonProveedorNO.TabStop = true;
+            radioButtonProveedorNO.Text = " No";
+            radioButtonProveedorNO.UseVisualStyleBackColor = true;
+            // 
+            // radioButtonProveedorSI
+            // 
+            radioButtonProveedorSI.AutoSize = true;
+            radioButtonProveedorSI.Location = new Point(0, 17);
+            radioButtonProveedorSI.Name = "radioButtonProveedorSI";
+            radioButtonProveedorSI.Size = new Size(34, 19);
+            radioButtonProveedorSI.TabIndex = 63;
+            radioButtonProveedorSI.TabStop = true;
+            radioButtonProveedorSI.Text = "Si";
+            radioButtonProveedorSI.UseVisualStyleBackColor = true;
+            // 
+            // groupBoxDestionCompra
+            // 
+            groupBoxDestionCompra.Controls.Add(radioButtonInsumos);
+            groupBoxDestionCompra.Controls.Add(radioButtonInventario);
+            groupBoxDestionCompra.Location = new Point(20, 282);
+            groupBoxDestionCompra.Name = "groupBoxDestionCompra";
+            groupBoxDestionCompra.Size = new Size(243, 36);
+            groupBoxDestionCompra.TabIndex = 60;
+            groupBoxDestionCompra.TabStop = false;
+            groupBoxDestionCompra.Text = "Motivo de compra";
+            // 
+            // radioButtonInsumos
+            // 
+            radioButtonInsumos.AutoSize = true;
+            radioButtonInsumos.Location = new Point(123, 17);
+            radioButtonInsumos.Name = "radioButtonInsumos";
+            radioButtonInsumos.Size = new Size(120, 19);
+            radioButtonInsumos.TabIndex = 63;
+            radioButtonInsumos.TabStop = true;
+            radioButtonInsumos.Text = "Comprar Insumos";
+            radioButtonInsumos.UseVisualStyleBackColor = true;
+            // 
+            // radioButtonInventario
+            // 
+            radioButtonInventario.AutoSize = true;
+            radioButtonInventario.Location = new Point(0, 17);
+            radioButtonInventario.Name = "radioButtonInventario";
+            radioButtonInventario.Size = new Size(128, 19);
+            radioButtonInventario.TabIndex = 62;
+            radioButtonInventario.TabStop = true;
+            radioButtonInventario.Text = "Comprar Inventario";
+            radioButtonInventario.UseVisualStyleBackColor = true;
+            // 
+            // button3
+            // 
+            button3.Location = new Point(580, 309);
+            button3.Name = "button3";
+            button3.Size = new Size(103, 41);
+            button3.TabIndex = 59;
+            button3.Text = "Editar Compra";
+            button3.UseVisualStyleBackColor = true;
+            // 
+            // button4
+            // 
+            button4.Location = new Point(689, 309);
+            button4.Name = "button4";
+            button4.Size = new Size(103, 41);
+            button4.TabIndex = 58;
+            button4.Text = "Eliminar Compra";
+            button4.UseVisualStyleBackColor = true;
+            // 
+            // button5
+            // 
+            button5.Location = new Point(798, 309);
+            button5.Name = "button5";
+            button5.Size = new Size(103, 41);
+            button5.TabIndex = 57;
+            button5.Text = "Buscar por Factura";
+            button5.UseVisualStyleBackColor = true;
+            // 
+            // button6
+            // 
+            button6.Location = new Point(378, 366);
+            button6.Name = "button6";
+            button6.Size = new Size(103, 41);
+            button6.TabIndex = 56;
+            button6.Text = "Cancelar Venta";
+            button6.UseVisualStyleBackColor = true;
+            // 
+            // listBox2
+            // 
+            listBox2.FormattingEnabled = true;
+            listBox2.ItemHeight = 15;
+            listBox2.Location = new Point(269, 48);
+            listBox2.Name = "listBox2";
+            listBox2.Size = new Size(196, 304);
+            listBox2.TabIndex = 55;
+            // 
+            // label32
+            // 
+            label32.AutoSize = true;
+            label32.Location = new Point(111, 232);
+            label32.Name = "label32";
+            label32.Size = new Size(95, 15);
+            label32.TabIndex = 54;
+            label32.Text = "Cantidad llevada";
+            // 
+            // label33
+            // 
+            label33.AutoSize = true;
+            label33.Location = new Point(111, 183);
+            label33.Name = "label33";
+            label33.Size = new Size(111, 15);
+            label33.TabIndex = 53;
+            label33.Text = "Precio del Producto";
+            // 
+            // label34
+            // 
+            label34.AutoSize = true;
+            label34.Location = new Point(111, 139);
+            label34.Name = "label34";
+            label34.Size = new Size(122, 15);
+            label34.TabIndex = 52;
+            label34.Text = "Nombre del Producto";
+            // 
+            // label35
+            // 
+            label35.AutoSize = true;
+            label35.Location = new Point(128, 94);
+            label35.Name = "label35";
+            label35.Size = new Size(63, 15);
+            label35.TabIndex = 51;
+            label35.Text = "No factura";
+            // 
+            // label36
+            // 
+            label36.AutoSize = true;
+            label36.Location = new Point(111, 50);
+            label36.Name = "label36";
+            label36.Size = new Size(89, 15);
+            label36.TabIndex = 50;
+            label36.Text = "ID del Producto";
+            // 
+            // comboBox1
+            // 
+            comboBox1.FormattingEnabled = true;
+            comboBox1.Location = new Point(54, 157);
+            comboBox1.Name = "comboBox1";
+            comboBox1.Size = new Size(209, 23);
+            comboBox1.TabIndex = 49;
+            // 
+            // numericUpDown1
+            // 
+            numericUpDown1.Location = new Point(54, 250);
+            numericUpDown1.Name = "numericUpDown1";
+            numericUpDown1.Size = new Size(209, 23);
+            numericUpDown1.TabIndex = 48;
+            // 
+            // textBox1
+            // 
+            textBox1.Location = new Point(54, 201);
+            textBox1.Name = "textBox1";
+            textBox1.Size = new Size(209, 23);
+            textBox1.TabIndex = 47;
+            textBox1.Text = "Se llenara solo";
+            // 
+            // textBox2
+            // 
+            textBox2.Enabled = false;
+            textBox2.Location = new Point(54, 112);
+            textBox2.Name = "textBox2";
+            textBox2.Size = new Size(209, 23);
+            textBox2.TabIndex = 46;
+            textBox2.Text = "Se llenara solo";
+            // 
+            // textBoxCompraInventario
+            // 
+            textBoxCompraInventario.Location = new Point(54, 68);
+            textBoxCompraInventario.Name = "textBoxCompraInventario";
+            textBoxCompraInventario.Size = new Size(209, 23);
+            textBoxCompraInventario.TabIndex = 45;
+            textBoxCompraInventario.Text = "Llene si es inventario";
+            // 
+            // button7
+            // 
+            button7.Location = new Point(269, 366);
+            button7.Name = "button7";
+            button7.Size = new Size(103, 41);
+            button7.TabIndex = 44;
+            button7.Text = "Realizar Venta";
+            button7.UseVisualStyleBackColor = true;
+            // 
+            // button8
+            // 
+            button8.Location = new Point(160, 366);
+            button8.Name = "button8";
+            button8.Size = new Size(103, 41);
+            button8.TabIndex = 43;
+            button8.Text = "Eliminar Producto";
+            button8.UseVisualStyleBackColor = true;
+            // 
+            // button9
+            // 
+            button9.Location = new Point(51, 366);
+            button9.Name = "button9";
+            button9.Size = new Size(103, 41);
+            button9.TabIndex = 42;
+            button9.Text = "Agregar Producto";
+            button9.UseVisualStyleBackColor = true;
+            // 
+            // label37
+            // 
+            label37.AutoSize = true;
+            label37.Font = new Font("Pivot Classic", 21.75F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
+            label37.Location = new Point(567, 12);
+            label37.Name = "label37";
+            label37.Size = new Size(303, 33);
+            label37.TabIndex = 41;
+            label37.Text = "Historial de Compra";
+            // 
+            // label38
+            // 
+            label38.AutoSize = true;
+            label38.Font = new Font("Pivot Classic", 21.75F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
+            label38.Location = new Point(46, 12);
+            label38.Name = "label38";
+            label38.Size = new Size(382, 33);
+            label38.TabIndex = 40;
+            label38.Text = "Hacer una compra nueva";
+            // 
+            // dateTimePicker2
+            // 
+            dateTimePicker2.Location = new Point(569, 56);
+            dateTimePicker2.Name = "dateTimePicker2";
+            dateTimePicker2.Size = new Size(336, 23);
+            dateTimePicker2.TabIndex = 39;
+            // 
+            // dataGridView1
+            // 
+            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView1.Location = new Point(567, 85);
+            dataGridView1.Name = "dataGridView1";
+            dataGridView1.Size = new Size(338, 218);
+            dataGridView1.TabIndex = 38;
             // 
             // formMenu
             // 
@@ -860,6 +1456,10 @@
             ((System.ComponentModel.ISupportInitialize)dataGridViewInvetario).EndInit();
             tabPage2.ResumeLayout(false);
             tabPage2.PerformLayout();
+            groupBox1.ResumeLayout(false);
+            groupBox1.PerformLayout();
+            groupBox2.ResumeLayout(false);
+            groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDownCantidad).EndInit();
             ((System.ComponentModel.ISupportInitialize)dataGridViewVentas).EndInit();
             tabPage3.ResumeLayout(false);
@@ -867,6 +1467,17 @@
             ((System.ComponentModel.ISupportInitialize)dataGridViewClientes).EndInit();
             tabPage4.ResumeLayout(false);
             tabPage4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewRRHH).EndInit();
+            tabPage6.ResumeLayout(false);
+            tabPage6.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)chart1).EndInit();
+            tabPage5.ResumeLayout(false);
+            tabPage5.PerformLayout();
+            groupBoxProveedor.ResumeLayout(false);
+            groupBoxProveedor.PerformLayout();
+            groupBoxDestionCompra.ResumeLayout(false);
+            groupBoxDestionCompra.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown1).EndInit();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ResumeLayout(false);
         }
@@ -878,7 +1489,6 @@
         private TabPage tabPage2;
         private TabPage tabPage3;
         private TabPage tabPage4;
-        private TabPage tabPage5;
         private Button buttonEditarInventario;
         private Button buttonAgregarInventario;
         private Button buttonBuscarInventario;
@@ -908,7 +1518,7 @@
         private Button buttonAgregarEmpleado;
         private Button buttonBuscarEmpleado;
         private Label label12;
-        private DataGridView dataGridView1;
+        private DataGridView dataGridViewRRHH;
         private Label label11;
         private ComboBox comboBoxNombreProd;
         private NumericUpDown numericUpDownCantidad;
@@ -946,5 +1556,59 @@
         private Button buttonFiltarSueldoEmpleado;
         private Button buttonEliminarEmpleado;
         private Button buttonFiltrarVentas;
+        private Button buttonComprarInventario;
+        private Label label25;
+        private Label label24;
+        private Button buttonCambiarFechaLim;
+        private FastReport.DataVisualization.Charting.Chart chart1;
+        private Label label26;
+        private DateTimePicker dateTimePicker1;
+        private Button button2;
+        private Button button1;
+        private Label label30;
+        private Label label31;
+        private TextBox textBoxImpuestos;
+        private TextBox textBoxDonaciones;
+        private Label label27;
+        private Label label28;
+        private Label label29;
+        private TextBox textBoxMultaMora;
+        private TextBox textBoxRenta;
+        private TextBox textBoxServiciosBasicos;
+        private TabPage tabPage5;
+        private Button button3;
+        private Button button4;
+        private Button button5;
+        private Button button6;
+        private ListBox listBox2;
+        private Label label32;
+        private Label label33;
+        private Label label34;
+        private Label label35;
+        private Label label36;
+        private ComboBox comboBox1;
+        private NumericUpDown numericUpDown1;
+        private TextBox textBox1;
+        private TextBox textBox2;
+        private TextBox textBoxCompraInventario;
+        private Button button7;
+        public Button button8;
+        private Button button9;
+        private Label label37;
+        private Label label38;
+        public DateTimePicker dateTimePicker2;
+        public DataGridView dataGridView1;
+        private GroupBox groupBoxProveedor;
+        private RadioButton radioButtonProveedorNO;
+        private RadioButton radioButtonProveedorSI;
+        private GroupBox groupBoxDestionCompra;
+        private RadioButton radioButtonInsumos;
+        private RadioButton radioButtonInventario;
+        private GroupBox groupBox1;
+        private RadioButton radioButtonClienteRegNo;
+        private RadioButton radioButtonClienteRegSi;
+        private GroupBox groupBox2;
+        private RadioButton radioButton3;
+        private RadioButton radioButton4;
     }
 }

@@ -6,11 +6,13 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using Microsoft.VisualBasic;
+using MySqlConnector.Authentication;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySqlX.XDevAPI.Common;
 using Org.BouncyCastle.Asn1;
 using Mysqlx.Cursor;
+using MySqlConnector;
 
 namespace ProyectoAutoPartes
 {
@@ -20,23 +22,83 @@ namespace ProyectoAutoPartes
         private claseGestionVentas ventas;
         private claseClientes clientes;
         private claseGestionRRHH rRHH;
+        private claseGestionFinanciera financiera;
 
         public formMenu()
         {
             InitializeComponent();
-            string connectionString = @"D:\Base de datos VB\ProyectoAutoPartes\Avamce.... de proyecto.prueba6.mwb";
+            string connectionString = @"";
             this.inventario = new claseGestionInventario(connectionString, this);
             this.ventas = new claseGestionVentas(connectionString, this);
             this.clientes = new claseClientes(connectionString, this);
             this.rRHH = new claseGestionRRHH(connectionString, this);
+            this.financiera = new claseGestionFinanciera(connectionString, this);
+            MoificarEsteticas();
         }
 
         #region Metodos internos
+
         public void MoificarEsteticas()
         {
             this.BackColor = System.Drawing.Color.MediumSeaGreen;
-            this.FormBorderStyle = FormBorderStyle.None;
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
+        }
 
+        //Metodo para que se valide si el usuario tiene permitidio usar la funcion 
+        private bool VerificarNivel1()
+        {
+            verificarUsuarioContrasenia ver = new verificarUsuarioContrasenia();
+            ver.ShowDialog();
+            if (ver.UsuarioValido == true && ver.NivelEmpleado <= 1)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private bool VerificarNivel2()
+        {
+            verificarUsuarioContrasenia ver = new verificarUsuarioContrasenia();
+            ver.ShowDialog();
+            if (ver.UsuarioValido == true && ver.NivelEmpleado <= 2)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private bool VerificarNivel3()
+        {
+            verificarUsuarioContrasenia ver = new verificarUsuarioContrasenia();
+            ver.ShowDialog();
+            if (ver.UsuarioValido == true && ver.NivelEmpleado <= 3)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private bool VerificarNivel4()
+        {
+            verificarUsuarioContrasenia ver = new verificarUsuarioContrasenia();
+            ver.ShowDialog();
+            if (ver.UsuarioValido == true && ver.NivelEmpleado <= 5)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
         #endregion
 
@@ -45,25 +107,61 @@ namespace ProyectoAutoPartes
 
         private void buttonAgregarInventario_Click(object sender, EventArgs e)
         {
-            formAgregarInventario agregar = new formAgregarInventario();
-            agregar.ShowDialog();
-            inventario.InsertarDatos(agregar.Nombre, agregar.Descripcion, agregar.Stock, agregar.Especificacion,
-                agregar.Costo, agregar.Ganancia, agregar.Precio, agregar.Anio);
+            if (VerificarNivel3() == true)
+            {
+                formAgregarInventario agregar = new formAgregarInventario();
+                agregar.ShowDialog();
+                inventario.InsertarDatos(agregar.Nombre, agregar.Descripcion, agregar.Stock, agregar.Especificacion,
+                    agregar.Costo, agregar.Ganancia, agregar.Precio, agregar.Anio);
+            }
+            else
+            {
+                MessageBox.Show("Error", "No cuenta con el nivel necesario para realizar la accion ");
+            }
         }
 
         private void buttonEditarInventario_Click(object sender, EventArgs e)
         {
-            inventario.EditarDatos();
+            if (VerificarNivel2() == true)
+            {
+                inventario.EditarDatos();
+            }
+            else
+            {
+                MessageBox.Show("Error", "No cuenta con el nivel necesario para realizar la accion ");
+            }
         }
 
         private void buttonEliminarInventario_Click(object sender, EventArgs e)
         {
-            inventario.EliminarDatos();
+            if (VerificarNivel2() == true)
+            {
+                inventario.EliminarDatos();
+            }
+            else
+            {
+                MessageBox.Show("Error", "No cuenta con el nivel necesario para realizar la accion ");
+            }
         }
 
         private void buttonBuscarInventario_Click(object sender, EventArgs e)
         {
             inventario.BuscarElemento();
+        }
+
+        private void buttonComprarInventario_Click(object sender, EventArgs e)
+        {
+
+            if (VerificarNivel1() == true)
+            {
+                formularioCompraInventario compraInventario = new formularioCompraInventario();
+                compraInventario.ShowDialog();
+                inventario.ComprarInventario(compraInventario.IdProducto, compraInventario.CantComprada, compraInventario.Proveedor, compraInventario.PrecioUnitario);
+            }
+            else
+            {
+                MessageBox.Show("No cuenta con el nivel necesario para realizar la accion ", "Error", MessageBoxButtons.OK);
+            }
         }
         #endregion
 
@@ -85,7 +183,6 @@ namespace ProyectoAutoPartes
             //Por medio del message box se obtiene el ID del producto a elminiar
             string elemento = Interaction.InputBox("Ingrese el ID del producto", "Eliminar producto", "Ej. 00");
             ventas.EliminiarElemento(elemento);
-            Console.WriteLine("Puto si me leen");
         }
 
         private void buttonRealizarVenta_Click(object sender, EventArgs e)
@@ -120,15 +217,20 @@ namespace ProyectoAutoPartes
                 MessageBox.Show("No se cancelara la venta", "Cancelar venta", MessageBoxButtons.OK);
             }
         }
-
         private void buttonEditarCompra_Click(object sender, EventArgs e)
         {
+            if (VerificarNivel2() == true)
+            {
+                formEditarVenta editar = new formEditarVenta();
+                editar.ShowDialog();
+                string ID = editar.IDVenta;
+            }
 
         }
-
         private void buttonEliminarCompra_Click(object sender, EventArgs e)
         {
-
+            string idVenta = "";
+            ventas.EliminarVenta(idVenta);
         }
         #endregion
 
@@ -162,7 +264,6 @@ namespace ProyectoAutoPartes
 
         //Modulo Recursos humanos
         #region RR HH
-
         private void buttonBuscarEmpleado_Click(object sender, EventArgs e)
         {
             //Metodo el cual modifica desde la claseRRHH el datagridviewRRHH para que se muestre al o empleados con el nombre que desea buscar
@@ -234,14 +335,12 @@ namespace ProyectoAutoPartes
         private void buttonFiltarSueldoEmpleado_Click(object sender, EventArgs e)
         {
             string resultado = Interaction.InputBox("Ingrese el salario a partir del cual desea filtrar", "Filtrar empleados por rango", "Ej. 3000");
-
             // Verificar si el usuario canceló
             if (string.IsNullOrEmpty(resultado))
             {
                 MessageBox.Show("Operación cancelada por el usuario", "Información");
                 return; // Salir del método sin continuar
             }
-
             // Si llegamos aquí, el usuario presionó OK
             if (int.TryParse(resultado, out int salario))
             {
@@ -251,7 +350,23 @@ namespace ProyectoAutoPartes
                 }
                 else
                 {
-                    rRHH.FiltrarSalario(salario);
+                    // Obtener los datos filtrados
+                    DataTable dtEmpleados = rRHH.FiltrarSalario(salario);
+
+                    // Verificar si se obtuvieron resultados
+                    if (dtEmpleados != null && dtEmpleados.Rows.Count > 0)
+                    {
+                        // Asignar los datos filtrados al DataGridView
+                        dataGridViewRRHH.DataSource = dtEmpleados;
+
+                        // Mostrar mensaje con la cantidad de registros encontrados
+                        MessageBox.Show($"Se encontraron {dtEmpleados.Rows.Count} empleados con salario mayor o igual a {salario}", "Resultados");
+                    }
+                    else
+                    {
+                        dataGridViewRRHH.DataSource = null;
+                        MessageBox.Show($"No se encontraron empleados con salario mayor o igual a {salario}", "Sin resultados");
+                    }
                 }
             }
             else
@@ -262,40 +377,75 @@ namespace ProyectoAutoPartes
 
         private void buttonFiltrarRol_Click(object sender, EventArgs e)
         {
-            string resultado = Interaction.InputBox("Ingrese el rol a partir del cual desea filtrar", "Filtrar empleados por rango", "Ej. Bodegista");
-
+            string resultado = Interaction.InputBox("Ingrese el rol a partir del cual desea filtrar", "Filtrar empleados por rol", "Ej. Bodegista");
             // Verificar si el usuario canceló
             if (string.IsNullOrEmpty(resultado))
             {
                 MessageBox.Show("Operación cancelada por el usuario", "Información");
                 return; // Salir del método sin continuar
             }
-
             // Si llegamos aquí, el usuario presionó OK
-          
+            if (!string.IsNullOrWhiteSpace(resultado))
+            {
+                // Obtener los datos filtrados por rol
+                DataTable dtEmpleados = rRHH.FiltrarPorRol(resultado);
+
+                // Verificar si se obtuvieron resultados
+                if (dtEmpleados != null && dtEmpleados.Rows.Count > 0)
+                {
+                    // Asignar los datos filtrados al DataGridView
+                    dataGridViewRRHH.DataSource = dtEmpleados;
+
+                    // Mostrar mensaje con la cantidad de registros encontrados
+                    MessageBox.Show($"Se encontraron {dtEmpleados.Rows.Count} empleados con el rol '{resultado}'", "Resultados");
+                }
+                else
+                {
+                    dataGridViewRRHH.DataSource = null;
+                    MessageBox.Show($"No se encontraron empleados con el rol '{resultado}'", "Sin resultados");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Debe ingresar un rol válido", "Error");
+            }
         }
 
         private void buttonFiltrarFaltas_Click(object sender, EventArgs e)
         {
-            string resultado = Interaction.InputBox("Ingrese el salario a partir del cual desea filtrar", "Filtrar empleados por rango", "Ej. 3000");
-
+            string resultado = Interaction.InputBox("Ingrese el número de faltas a partir del cual desea filtrar", "Filtrar empleados por faltas", "Ej. 3");
             // Verificar si el usuario canceló
             if (string.IsNullOrEmpty(resultado))
             {
                 MessageBox.Show("Operación cancelada por el usuario", "Información");
                 return; // Salir del método sin continuar
             }
-
             // Si llegamos aquí, el usuario presionó OK
-            if (int.TryParse(resultado, out int salario))
+            if (int.TryParse(resultado, out int faltas))
             {
-                if (salario <= 0)
+                if (faltas < 0)
                 {
-                    MessageBox.Show("No puede haber un salario negativo o igual a cero", "Error");
+                    MessageBox.Show("No puede haber un número de faltas negativo", "Error");
                 }
                 else
                 {
-                    rRHH.FiltrarSalario(salario);
+                    // Obtener los datos filtrados por número de faltas
+                    DataTable dtEmpleados = rRHH.FiltrarPorFaltas(faltas);
+
+                    // Verificar si se obtuvieron resultados
+                    if (dtEmpleados != null && dtEmpleados.Rows.Count > 0)
+                    {
+                        // Asignar los datos filtrados al DataGridView
+                        dataGridViewRRHH.DataSource = dtEmpleados;
+
+                        // Mostrar mensaje con la cantidad de registros encontrados
+                        MessageBox.Show($"Se encontraron {dtEmpleados.Rows.Count} empleados con {faltas} faltas o más", "Resultados");
+                    }
+                    else
+                    {
+                        dataGridViewRRHH.DataSource = null;
+                        MessageBox.Show($"No se encontraron empleados con {faltas} faltas o más", "Sin resultados");
+                    }
                 }
             }
             else
@@ -304,28 +454,41 @@ namespace ProyectoAutoPartes
             }
         }
 
-
         private void buttonFiltrarVentas_Click(object sender, EventArgs e)
         {
-            string resultado = Interaction.InputBox("Ingrese el salario a partir del cual desea filtrar", "Filtrar empleados por rango", "Ej. 3000");
-
+            string resultado = Interaction.InputBox("Ingrese el número de ventas a partir del cual desea filtrar", "Filtrar empleados por ventas", "Ej. 5");
             // Verificar si el usuario canceló
             if (string.IsNullOrEmpty(resultado))
             {
                 MessageBox.Show("Operación cancelada por el usuario", "Información");
                 return; // Salir del método sin continuar
             }
-
             // Si llegamos aquí, el usuario presionó OK
-            if (int.TryParse(resultado, out int salario))
+            if (int.TryParse(resultado, out int ventas))
             {
-                if (salario <= 0)
+                if (ventas < 0)
                 {
-                    MessageBox.Show("No puede haber un salario negativo o igual a cero", "Error");
+                    MessageBox.Show("No puede haber un número de ventas negativo", "Error");
                 }
                 else
                 {
-                    rRHH.FiltrarSalario(salario);
+                    // Obtener los datos filtrados por número de ventas
+                    DataTable dtEmpleados = rRHH.FiltrarPorVentas(ventas);
+
+                    // Verificar si se obtuvieron resultados
+                    if (dtEmpleados != null && dtEmpleados.Rows.Count > 0)
+                    {
+                        // Asignar los datos filtrados al DataGridView
+                        dataGridViewRRHH.DataSource = dtEmpleados;
+
+                        // Mostrar mensaje con la cantidad de registros encontrados
+                        MessageBox.Show($"Se encontraron {dtEmpleados.Rows.Count} empleados con {ventas} ventas o más", "Resultados");
+                    }
+                    else
+                    {
+                        dataGridViewRRHH.DataSource = null;
+                        MessageBox.Show($"No se encontraron empleados con {ventas} ventas o más", "Sin resultados");
+                    }
                 }
             }
             else
@@ -335,5 +498,111 @@ namespace ProyectoAutoPartes
         }
         #endregion
 
+        #region CargarDatos en los campos
+
+        // Método para cargar los elementos en el ComboBox desde MySQL
+        private void CargarComboBox()
+        {
+            try
+            {
+                using (MySqlConnection connection = new MySqlConnection())
+                {
+                    connection.Open();
+
+                    // Consulta SQL para obtener los datos (ajusta la tabla y el campo según tu base de datos)
+                    string query = "SELECT ID, Nombre FROM Productos ORDER BY Nombre";
+
+                    MySqlCommand cmd = new MySqlCommand(query, connection);
+                    MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                    DataTable dt = new DataTable();
+                    adapter.Fill(dt);
+
+                    // Configurar el ComboBox
+                    comboBoxNombreProd.DisplayMember = "Nombre";  // Campo que se mostrará
+                    comboBoxNombreProd.ValueMember = "ID";       // Valor asociado (ID del producto)
+                    comboBoxNombreProd.DataSource = dt;           // Asignar origen de datos
+
+                    // Opcionalmente, agregar un elemento inicial
+                    // comboBoxProductos.SelectedIndex = -1;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al cargar los productos: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        // Evento que se dispara cuando cambia la selección en el ComboBox
+        private void ComboBoxProductos_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // Verificar que haya un elemento seleccionado
+            if (comboBoxNombreProd.SelectedValue == null)
+                return;
+
+            try
+            {
+                // Obtener el ID del elemento seleccionado
+                int productoID = Convert.ToInt32(comboBoxNombreProd.SelectedValue);
+
+                using (MySqlConnection connection = new MySqlConnection())
+                {
+                    connection.Open();
+
+                    // Consulta para obtener todos los datos del producto seleccionado
+                    string query = @"SELECT Nombre, Descripcion, Especificacion, Costo, Ganancia, 
+                                Precio, Anio, Stock, Ruta 
+                                FROM Productos WHERE ID = @ID";
+
+                    MySqlCommand cmd = new MySqlCommand(query, connection);
+                    cmd.Parameters.AddWithValue("@ID", productoID);
+
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            // Actualizar los TextBox con los valores obtenidos
+                            textBoxID.Text = reader["Nombre"].ToString();
+                            textBoxNoFactura.Text = reader["Descripcion"].ToString();
+                            textBoxPrecio.Text = reader["Especificacion"].ToString();
+
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al cargar los detalles del producto: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        #endregion
+
+        #region Finanzas
+        private void chart1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            int porcentImp = Convert.ToInt32(textBoxImpuestos.Text);
+            int donacionesReal = Convert.ToInt32(textBoxDonaciones.Text);
+            int ganancias = 0;
+            int impuestosTotales = financiera.CalculoImpuestos(porcentImp, ganancias, donacionesReal);
+            if (impuestosTotales > 0)
+            {
+                MessageBox.Show($"Tiene que pagar {impuestosTotales} por sus ingresos de <fecha> a <fecha>");
+            }
+            else if (impuestosTotales <= 0)
+            {
+                MessageBox.Show("No tiene que pagar impuestos", "Calculo de impuestos", MessageBoxButtons.OK);
+            }
+        }
+        #endregion
+
+        private void radioButton2_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -36,17 +36,15 @@ namespace ProyectoAutoPartes
         }
     }
 
-    public class linkedListFacturas 
+    public class linkedListFacturas
     {
         private string connectionString = "Server=localHost; ";
         private Nodo cabeza;
         private int tamanio = 0;
-
         public linkedListFacturas()
         {
             cabeza = null;
         }
-
         public void AgregarDatosFactura(string idproducto, string nombreproducto, string nitcliente, int cantidadllevada, string nofactura, DateTime fechacompra, double pagoindividual, double pagototal)
         {
             Nodo nuevoNodo = new(idproducto, nombreproducto, nitcliente, cantidadllevada, nofactura, fechacompra, pagoindividual, pagototal);
@@ -54,7 +52,7 @@ namespace ProyectoAutoPartes
             {
                 cabeza = nuevoNodo;
                 tamanio += 1;
-                    
+
             }
             else
             {
@@ -64,33 +62,45 @@ namespace ProyectoAutoPartes
                     actual = actual.siguiente;
                 }
                 actual.siguiente = nuevoNodo;
+                tamanio += 1; // Incrementamos el tamaño aquí también
             }
         }
-
         public void EliminarProducto(string elementoBorrar)
         {
-            Nodo actual = cabeza;
-            int contador = 0;
-            while(actual.idProducto != elementoBorrar && actual.siguiente != null)
-            {
-                actual = actual.siguiente;
-                contador++;
-            }
+            if (cabeza == null)
+                return;
 
-            if(contador == tamanio)
+            // Si el elemento a borrar está en la cabeza
+            if (cabeza.idProducto == elementoBorrar)
             {
-                MessageBox.Show("Elemento no presente en la factura o escrito de manera incorrecta", "Remover de factura", MessageBoxButtons.OK);
+                cabeza = cabeza.siguiente;
+                tamanio--;
                 return;
             }
 
-            cabeza = cabeza.siguiente;
-        }
+            // Buscar el elemento en el resto de la lista
+            Nodo actual = cabeza;
+            while (actual.siguiente != null && actual.siguiente.idProducto != elementoBorrar)
+            {
+                actual = actual.siguiente;
+            }
 
+            // Si se encontró el elemento
+            if (actual.siguiente != null)
+            {
+                actual.siguiente = actual.siguiente.siguiente;
+                tamanio--;
+            }
+            else
+            {
+                MessageBox.Show("Elemento no presente en la factura o escrito de manera incorrecta", "Remover de factura", MessageBoxButtons.OK);
+            }
+        }
         public void EfecturarCompra()
         {
             Nodo actual = cabeza;
-            
-            while (tamanio != 0)
+
+            while (actual != null && tamanio > 0)
             {
                 AgregarVenta(actual.idProducto, actual.nitCliente, actual.noFactura, actual.nombreProducto, actual.cantidadLlevada,
                     actual.fechaCompra, actual.pagoIndividual, actual.pagoTotal);
@@ -99,45 +109,61 @@ namespace ProyectoAutoPartes
             }
             VaciarLista();
         }
-
         public void VaciarLista()
         {
             cabeza = null;  // Eliminamos la referencia a la cabeza
             tamanio = 0;    // Restablecemos el tamaño a 0
         }
-
         private void AgregarVenta(string idProducto, string nit, string noFactura, string nombreProducto,
-                            int cantidadLlevada, DateTime fechaCompra, double pagoIndividual, double pagoTotal)
+                           int cantidadLlevada, DateTime fechaCompra, double pagoIndividual, double pagoTotal)
         {
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
-                string query = "INSERT INTO Ventas (ID_Producto, NIT, No_Factura, NombreProducto, " +
-                              "CantidadLlevada, FechaCompra, PagoIndividual, PagoTotal) " +
-                              "VALUES (@ID, @NIT, @NoFactura, @Nombre, @Cantidad, @Fecha, @PagoInd, @PagoTotal)";
-
-                MySqlCommand command = new MySqlCommand(query, connection);
-
-                command.Parameters.AddWithValue("@ID", idProducto);
-                command.Parameters.AddWithValue("@NIT", nit);
-                command.Parameters.AddWithValue("@NoFactura", noFactura);
-                command.Parameters.AddWithValue("@Nombre", nombreProducto);
-                command.Parameters.AddWithValue("@Cantidad", cantidadLlevada);
-                command.Parameters.AddWithValue("@Fecha", fechaCompra);
-                command.Parameters.AddWithValue("@PagoInd", pagoIndividual);
-                command.Parameters.AddWithValue("@PagoTotal", pagoTotal);
+                connection.Open();
+                MySqlTransaction transaction = connection.BeginTransaction();
 
                 try
                 {
-                    connection.Open();
-                    command.ExecuteNonQuery();
-                    MessageBox.Show("Venta registrada con éxito!");
+                    // Insertar la venta en la tabla Ventas
+                    string insertVentaQuery = "INSERT INTO Ventas (NoFactura, PrecioTotal, Fecha) " +
+                                              "VALUES (@NoFactura, @PrecioTotal, @Fecha)";
+                    using (MySqlCommand cmdVenta = new MySqlCommand(insertVentaQuery, connection, transaction))
+                    {
+                        cmdVenta.Parameters.AddWithValue("@NoFactura", noFactura);
+                        cmdVenta.Parameters.AddWithValue("@PrecioTotal", pagoTotal);
+                        cmdVenta.Parameters.AddWithValue("@Fecha", fechaCompra);
+                        cmdVenta.ExecuteNonQuery();
+                    }
+
+                    // Descontar del inventario
+                    string updateInventarioQuery = "UPDATE Inventario " +
+                                                   "SET CantidadEnStock = CantidadEnStock - @Cantidad " +
+                                                   "WHERE ID_Producto = @ID_Producto AND CantidadEnStock >= @Cantidad";
+                    using (MySqlCommand cmdInventario = new MySqlCommand(updateInventarioQuery, connection, transaction))
+                    {
+                        cmdInventario.Parameters.AddWithValue("@Cantidad", cantidadLlevada);
+                        cmdInventario.Parameters.AddWithValue("@ID_Producto", idProducto);
+
+                        int filasAfectadas = cmdInventario.ExecuteNonQuery();
+
+                        if (filasAfectadas == 0)
+                        {
+                            throw new Exception("Stock insuficiente para realizar la venta.");
+                        }
+                    }
+
+                    // Confirmar la transacción
+                    transaction.Commit();
+                    MessageBox.Show("Venta registrada y stock actualizado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Error al registrar venta: " + ex.Message);
+                    transaction.Rollback();
+                    MessageBox.Show("Error al registrar la venta: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
 
     }
 }
+

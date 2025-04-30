@@ -14,6 +14,8 @@ namespace ProyectoAutoPartes
     {
         public string Usuario { get; set; }
         public string Contrasenia { get; set; }
+        public bool UsuarioValido { get; set; }
+        public int NivelEmpleado { get; set; }
 
         public verificarUsuarioContrasenia()
         {
@@ -24,6 +26,11 @@ namespace ProyectoAutoPartes
         {
             Usuario = textBox1.Text;
             Contrasenia = textBox2.Text;
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
