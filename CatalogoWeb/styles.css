@@ -445,3 +445,66 @@ body {
       grid-template-columns: 1fr;
     }
   }
+  /* Estilos para validación de formularios */
+.form-group {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.form-group input,
+.form-group textarea {
+  transition: border-color 0.3s ease;
+}
+
+.form-group input.invalid,
+.form-group textarea.invalid {
+  border-color: #ff4c4c;
+  animation: shake 0.5s;
+}
+
+.form-group .error-message {
+  color: #ff4c4c;
+  font-size: 12px;
+  margin-top: 5px;
+  display: none;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+/* Mensaje de éxito */
+.success-message {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(100, 255, 128, 0.9);
+  color: #0a192f;
+  padding: 15px 20px;
+  border-radius: 5px;
+  z-index: 2000;
+  animation: fadeIn 0.3s, fadeOut 0.3s 4.7s;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Indicador de campo requerido */
+.form-group label:after {
+  content: "*";
+  color: #ff4c4c;
+  margin-left: 3px;
+}
+
+.form-group label[for="mensaje"]:after {
+  content: none;
+}
+
+/* Retroalimentación visual al enfocar */
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: #64ffda;
+  box-shadow: 0 0 5px rgba(100, 255, 218, 0.5);
+  outline: none;
+}

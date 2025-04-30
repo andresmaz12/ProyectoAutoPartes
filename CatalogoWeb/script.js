@@ -148,7 +148,7 @@ async function filtrarProductos() {
 // Función para mostrar detalles de un producto
 function mostrarDetalles(productoId) {
     // Redireccionar a la página de detalles o mostrar un modal
-    window.location.href = `detalle.html?id=${productoId}`;
+    window.location.href = `detalles.html?id=${productoId}`;
 }
 
 // Función para mostrar indicador de carga
