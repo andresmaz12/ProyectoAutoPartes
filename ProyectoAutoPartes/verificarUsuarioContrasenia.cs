@@ -24,8 +24,24 @@ namespace ProyectoAutoPartes
 
         private void buttonIngresar_Click(object sender, EventArgs e)
         {
-            Usuario = textBox1.Text;
-            Contrasenia = textBox2.Text;
+            if(string.IsNullOrEmpty(textBox1.Text))
+            {
+                MessageBox.Show("Ingrese un valor valido para el usuario", "Error", MessageBoxButtons.OK);
+            }
+            else
+            {
+                Usuario = textBox1.Text;
+            }
+
+            if (string.IsNullOrEmpty(textBox2.Text))
+            {
+                MessageBox.Show("Ingrese un valor valido para el usuario", "Error", MessageBoxButtons.OK);
+            }
+            else
+            {
+                Contrasenia = textBox2.Text;
+            }
+            this.Close();
         }
 
         private void label3_Click(object sender, EventArgs e)

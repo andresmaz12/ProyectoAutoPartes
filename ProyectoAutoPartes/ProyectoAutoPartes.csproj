@@ -21,8 +21,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Devart.Data" Version="6.0.235" />
     <PackageReference Include="FastReport.DataVisualization" Version="2025.1.21" />
-    <PackageReference Include="MySql.Data" Version="9.2.0" />
+    <PackageReference Include="MySql.Data" Version="9.3.0" />
     <PackageReference Include="MySqlConnector" Version="2.4.0" />
   </ItemGroup>
 

@@ -232,6 +232,26 @@ namespace ProyectoAutoPartes
             string idVenta = "";
             ventas.EliminarVenta(idVenta);
         }
+
+        private void radioButtonClienteRegNo_CheckedChanged(object sender, EventArgs e)
+        {
+            radioButtonClienteRegSi.Checked = false;
+        }
+
+        private void radioButton2_CheckedChanged(object sender, EventArgs e)
+        {
+            radioButtonClienteRegNo.Checked = false;
+            DialogResult registrar = MessageBox.Show("Desea registralo", "Registro de clientes", MessageBoxButtons.YesNoCancel);
+            if(registrar == DialogResult.Yes)
+            {
+                formularioAgregarCliente agregarCliente = new();
+                agregarCliente.ShowDialog();
+            }
+            else if(registrar == DialogResult.No)
+            {
+                MessageBox.Show("Ok", "Registro de clientes", MessageBoxButtons.OK);
+            }
+        }
         #endregion
 
         // Modulo clientes
@@ -241,7 +261,7 @@ namespace ProyectoAutoPartes
         {
             //Datos obtenidos por medio de los textBox en la pestaña/tab "Clientes"
             string dpiCliente = textBoxDPI.Text;
-            string telefonoCliente = "";
+            string telefonoCliente = textBoxTelefonoCliente.Text;
             string nitCliente = textBoxNit.Text;
             string nombreCliente = textBoxNombreCliente.Text;
             string tipoCliente = comboBoxTipoClientes.Text;
@@ -600,16 +620,34 @@ namespace ProyectoAutoPartes
         }
 
 
+        #endregion
+
+        #region Compras
+
         private void radioButtonInventario_CheckedChanged(object sender, EventArgs e)
         {
-            radioButtonInsumos.
+            radioButtonInsumos.Checked = false;
+        }
+
+
+        private void radioButtonInsumos_CheckedChanged(object sender, EventArgs e)
+        {
+            radioButtonInventario.Checked = false;
+        }
+
+        private void radioButtonProveedorSI_CheckedChanged(object sender, EventArgs e)
+        {
+            radioButtonProveedorNO.Checked = false;
+            
+        }
+
+        private void radioButtonProveedorNO_CheckedChanged(object sender, EventArgs e)
+        {
+            radioButtonProveedorSI.Checked = false;
+
         }
         #endregion
 
-        private void radioButton2_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
 
     }
 }

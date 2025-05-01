@@ -41,9 +41,6 @@
             groupBox1 = new GroupBox();
             radioButtonClienteRegNo = new RadioButton();
             radioButtonClienteRegSi = new RadioButton();
-            groupBox2 = new GroupBox();
-            radioButton3 = new RadioButton();
-            radioButton4 = new RadioButton();
             buttonEditarCompra = new Button();
             buttonEliminarCompra = new Button();
             buttonBusquedaFactura = new Button();
@@ -154,12 +151,13 @@
             label38 = new Label();
             dateTimePicker2 = new DateTimePicker();
             dataGridView1 = new DataGridView();
+            label39 = new Label();
+            textBoxTelefonoCliente = new TextBox();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewInvetario).BeginInit();
             tabPage2.SuspendLayout();
             groupBox1.SuspendLayout();
-            groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDownCantidad).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridViewVentas).BeginInit();
             tabPage3.SuspendLayout();
@@ -280,7 +278,6 @@
             // 
             tabPage2.BackColor = Color.CornflowerBlue;
             tabPage2.Controls.Add(groupBox1);
-            tabPage2.Controls.Add(groupBox2);
             tabPage2.Controls.Add(buttonEditarCompra);
             tabPage2.Controls.Add(buttonEliminarCompra);
             tabPage2.Controls.Add(buttonBusquedaFactura);
@@ -314,9 +311,9 @@
             // 
             groupBox1.Controls.Add(radioButtonClienteRegNo);
             groupBox1.Controls.Add(radioButtonClienteRegSi);
-            groupBox1.Location = new Point(71, 327);
+            groupBox1.Location = new Point(33, 315);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(171, 36);
+            groupBox1.Size = new Size(201, 36);
             groupBox1.TabIndex = 63;
             groupBox1.TabStop = false;
             groupBox1.Text = "El cliente esta registrado";
@@ -343,39 +340,6 @@
             radioButtonClienteRegSi.Text = "Si";
             radioButtonClienteRegSi.UseVisualStyleBackColor = true;
             radioButtonClienteRegSi.CheckedChanged += radioButton2_CheckedChanged;
-            // 
-            // groupBox2
-            // 
-            groupBox2.Controls.Add(radioButton3);
-            groupBox2.Controls.Add(radioButton4);
-            groupBox2.Location = new Point(71, 285);
-            groupBox2.Name = "groupBox2";
-            groupBox2.Size = new Size(175, 36);
-            groupBox2.TabIndex = 62;
-            groupBox2.TabStop = false;
-            groupBox2.Text = "Realizar Factura";
-            // 
-            // radioButton3
-            // 
-            radioButton3.AutoSize = true;
-            radioButton3.Location = new Point(123, 17);
-            radioButton3.Name = "radioButton3";
-            radioButton3.Size = new Size(41, 19);
-            radioButton3.TabIndex = 63;
-            radioButton3.TabStop = true;
-            radioButton3.Text = "No";
-            radioButton3.UseVisualStyleBackColor = true;
-            // 
-            // radioButton4
-            // 
-            radioButton4.AutoSize = true;
-            radioButton4.Location = new Point(0, 17);
-            radioButton4.Name = "radioButton4";
-            radioButton4.Size = new Size(34, 19);
-            radioButton4.TabIndex = 62;
-            radioButton4.TabStop = true;
-            radioButton4.Text = "Si";
-            radioButton4.UseVisualStyleBackColor = true;
             // 
             // buttonEditarCompra
             // 
@@ -579,6 +543,8 @@
             // tabPage3
             // 
             tabPage3.BackColor = Color.CornflowerBlue;
+            tabPage3.Controls.Add(label39);
+            tabPage3.Controls.Add(textBoxTelefonoCliente);
             tabPage3.Controls.Add(buttonEliminiarCliente);
             tabPage3.Controls.Add(label7);
             tabPage3.Controls.Add(label6);
@@ -604,7 +570,7 @@
             // 
             // buttonEliminiarCliente
             // 
-            buttonEliminiarCliente.Location = new Point(770, 360);
+            buttonEliminiarCliente.Location = new Point(153, 360);
             buttonEliminiarCliente.Name = "buttonEliminiarCliente";
             buttonEliminiarCliente.Size = new Size(133, 40);
             buttonEliminiarCliente.TabIndex = 16;
@@ -644,7 +610,7 @@
             // 
             // buttonGuardarCliente
             // 
-            buttonGuardarCliente.Location = new Point(770, 314);
+            buttonGuardarCliente.Location = new Point(809, 360);
             buttonGuardarCliente.Name = "buttonGuardarCliente";
             buttonGuardarCliente.Size = new Size(133, 40);
             buttonGuardarCliente.TabIndex = 12;
@@ -1188,7 +1154,7 @@
             groupBoxProveedor.Controls.Add(radioButtonProveedorSI);
             groupBoxProveedor.Location = new Point(20, 324);
             groupBoxProveedor.Name = "groupBoxProveedor";
-            groupBoxProveedor.Size = new Size(171, 36);
+            groupBoxProveedor.Size = new Size(243, 36);
             groupBoxProveedor.TabIndex = 61;
             groupBoxProveedor.TabStop = false;
             groupBoxProveedor.Text = "El proveedor esta registrado";
@@ -1196,7 +1162,7 @@
             // radioButtonProveedorNO
             // 
             radioButtonProveedorNO.AutoSize = true;
-            radioButtonProveedorNO.Location = new Point(123, 17);
+            radioButtonProveedorNO.Location = new Point(127, 17);
             radioButtonProveedorNO.Name = "radioButtonProveedorNO";
             radioButtonProveedorNO.Size = new Size(44, 19);
             radioButtonProveedorNO.TabIndex = 64;
@@ -1441,6 +1407,22 @@
             dataGridView1.Size = new Size(338, 218);
             dataGridView1.TabIndex = 38;
             // 
+            // label39
+            // 
+            label39.AutoSize = true;
+            label39.Location = new Point(740, 300);
+            label39.Name = "label39";
+            label39.Size = new Size(111, 15);
+            label39.TabIndex = 18;
+            label39.Text = "Telefono del Cliente";
+            // 
+            // textBoxTelefonoCliente
+            // 
+            textBoxTelefonoCliente.Location = new Point(674, 318);
+            textBoxTelefonoCliente.Name = "textBoxTelefonoCliente";
+            textBoxTelefonoCliente.Size = new Size(229, 23);
+            textBoxTelefonoCliente.TabIndex = 17;
+            // 
             // formMenu
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -1459,8 +1441,6 @@
             tabPage2.PerformLayout();
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
-            groupBox2.ResumeLayout(false);
-            groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDownCantidad).EndInit();
             ((System.ComponentModel.ISupportInitialize)dataGridViewVentas).EndInit();
             tabPage3.ResumeLayout(false);
@@ -1608,8 +1588,7 @@
         private GroupBox groupBox1;
         private RadioButton radioButtonClienteRegNo;
         private RadioButton radioButtonClienteRegSi;
-        private GroupBox groupBox2;
-        private RadioButton radioButton3;
-        private RadioButton radioButton4;
+        private Label label39;
+        private TextBox textBoxTelefonoCliente;
     }
 }
