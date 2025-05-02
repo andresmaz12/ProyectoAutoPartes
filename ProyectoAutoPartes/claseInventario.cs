@@ -10,7 +10,7 @@ using System.Windows.Forms; // Asegurar el uso de MessageBox
 
 namespace ProyectoAutoPartes
 {
-    public class claseGestionInventario
+    public class claseGestionInventario // comentario xd 
     {
         private string connectionString;
         private formMenu form;
