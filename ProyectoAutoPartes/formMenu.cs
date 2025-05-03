@@ -23,6 +23,7 @@ namespace ProyectoAutoPartes
         private claseClientes clientes;
         private claseGestionRRHH rRHH;
         private claseGestionFinanciera financiera;
+        private verificarUsuarioContrasenia verificarUsuario;
 
         public formMenu()
         {
@@ -33,6 +34,7 @@ namespace ProyectoAutoPartes
             this.clientes = new claseClientes(connectionString, this);
             this.rRHH = new claseGestionRRHH(connectionString, this);
             this.financiera = new claseGestionFinanciera(connectionString, this);
+            this.verificarUsuario = new verificarUsuarioContrasenia(connectionString, this);
             MoificarEsteticas();
         }
 
@@ -47,9 +49,9 @@ namespace ProyectoAutoPartes
         //Metodo para que se valide si el usuario tiene permitidio usar la funcion 
         private bool VerificarNivel1()
         {
-            verificarUsuarioContrasenia ver = new verificarUsuarioContrasenia();
-            ver.ShowDialog();
-            if (ver.UsuarioValido == true && ver.NivelEmpleado <= 1)
+            verificarUsuarioContrasenia verificar = new verificarUsuarioContrasenia();
+            verificar.ShowDialog();
+            if (verificar.UsuarioValido == true && verificar.NivelEmpleado <= 1)
             {
                 return true;
             }
@@ -61,9 +63,9 @@ namespace ProyectoAutoPartes
 
         private bool VerificarNivel2()
         {
-            verificarUsuarioContrasenia ver = new verificarUsuarioContrasenia();
-            ver.ShowDialog();
-            if (ver.UsuarioValido == true && ver.NivelEmpleado <= 2)
+            verificarUsuarioContrasenia verificar = new verificarUsuarioContrasenia();
+            verificar.ShowDialog();
+            if (verificar.UsuarioValido == true && verificar.NivelEmpleado <= 2)
             {
                 return true;
             }
@@ -75,9 +77,9 @@ namespace ProyectoAutoPartes
 
         private bool VerificarNivel3()
         {
-            verificarUsuarioContrasenia ver = new verificarUsuarioContrasenia();
-            ver.ShowDialog();
-            if (ver.UsuarioValido == true && ver.NivelEmpleado <= 3)
+            verificarUsuarioContrasenia verificar = new verificarUsuarioContrasenia();
+            verificar.ShowDialog();
+            if (verificar.UsuarioValido == true && verificar.NivelEmpleado <= 3)
             {
                 return true;
             }
@@ -89,9 +91,9 @@ namespace ProyectoAutoPartes
 
         private bool VerificarNivel4()
         {
-            verificarUsuarioContrasenia ver = new verificarUsuarioContrasenia();
-            ver.ShowDialog();
-            if (ver.UsuarioValido == true && ver.NivelEmpleado <= 5)
+            verificarUsuarioContrasenia verificar = new verificarUsuarioContrasenia();
+            verificar.ShowDialog();
+            if (verificar.UsuarioValido == true && verificar.NivelEmpleado <= 5)
             {
                 return true;
             }
@@ -646,6 +648,10 @@ namespace ProyectoAutoPartes
             radioButtonProveedorSI.Checked = false;
 
         }
+        #endregion
+
+        #region Proveedores
+
         #endregion
 
 

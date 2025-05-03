@@ -64,6 +64,8 @@
             dateTimePickerVentas = new DateTimePicker();
             dataGridViewVentas = new DataGridView();
             tabPage3 = new TabPage();
+            label39 = new Label();
+            textBoxTelefonoCliente = new TextBox();
             buttonEliminiarCliente = new Button();
             label7 = new Label();
             label6 = new Label();
@@ -151,8 +153,23 @@
             label38 = new Label();
             dateTimePicker2 = new DateTimePicker();
             dataGridView1 = new DataGridView();
-            label39 = new Label();
-            textBoxTelefonoCliente = new TextBox();
+            tabPage7 = new TabPage();
+            label40 = new Label();
+            textBox3 = new TextBox();
+            label41 = new Label();
+            label42 = new Label();
+            label43 = new Label();
+            label44 = new Label();
+            label45 = new Label();
+            label46 = new Label();
+            comboBox2 = new ComboBox();
+            textBox4 = new TextBox();
+            textBox5 = new TextBox();
+            textBox7 = new TextBox();
+            dataGridViewProovedores = new DataGridView();
+            button10 = new Button();
+            button11 = new Button();
+            button12 = new Button();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewInvetario).BeginInit();
@@ -171,6 +188,8 @@
             groupBoxDestionCompra.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            tabPage7.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewProovedores).BeginInit();
             SuspendLayout();
             // 
             // tabControl1
@@ -182,6 +201,7 @@
             tabControl1.Controls.Add(tabPage4);
             tabControl1.Controls.Add(tabPage6);
             tabControl1.Controls.Add(tabPage5);
+            tabControl1.Controls.Add(tabPage7);
             tabControl1.Location = new Point(-3, 31);
             tabControl1.Multiline = true;
             tabControl1.Name = "tabControl1";
@@ -567,6 +587,22 @@
             tabPage3.Size = new Size(951, 414);
             tabPage3.TabIndex = 2;
             tabPage3.Text = "Clientes";
+            // 
+            // label39
+            // 
+            label39.AutoSize = true;
+            label39.Location = new Point(740, 300);
+            label39.Name = "label39";
+            label39.Size = new Size(111, 15);
+            label39.TabIndex = 18;
+            label39.Text = "Telefono del Cliente";
+            // 
+            // textBoxTelefonoCliente
+            // 
+            textBoxTelefonoCliente.Location = new Point(674, 318);
+            textBoxTelefonoCliente.Name = "textBoxTelefonoCliente";
+            textBoxTelefonoCliente.Size = new Size(229, 23);
+            textBoxTelefonoCliente.TabIndex = 17;
             // 
             // buttonEliminiarCliente
             // 
@@ -1407,27 +1443,173 @@
             dataGridView1.Size = new Size(338, 218);
             dataGridView1.TabIndex = 38;
             // 
-            // label39
+            // tabPage7
             // 
-            label39.AutoSize = true;
-            label39.Location = new Point(740, 300);
-            label39.Name = "label39";
-            label39.Size = new Size(111, 15);
-            label39.TabIndex = 18;
-            label39.Text = "Telefono del Cliente";
+            tabPage7.BackColor = Color.CornflowerBlue;
+            tabPage7.Controls.Add(button10);
+            tabPage7.Controls.Add(button11);
+            tabPage7.Controls.Add(button12);
+            tabPage7.Controls.Add(label40);
+            tabPage7.Controls.Add(textBox3);
+            tabPage7.Controls.Add(label41);
+            tabPage7.Controls.Add(label42);
+            tabPage7.Controls.Add(label43);
+            tabPage7.Controls.Add(label44);
+            tabPage7.Controls.Add(label45);
+            tabPage7.Controls.Add(label46);
+            tabPage7.Controls.Add(comboBox2);
+            tabPage7.Controls.Add(textBox4);
+            tabPage7.Controls.Add(textBox5);
+            tabPage7.Controls.Add(textBox7);
+            tabPage7.Controls.Add(dataGridViewProovedores);
+            tabPage7.Location = new Point(27, 4);
+            tabPage7.Name = "tabPage7";
+            tabPage7.Size = new Size(951, 414);
+            tabPage7.TabIndex = 7;
+            tabPage7.Text = "Proveedores";
             // 
-            // textBoxTelefonoCliente
+            // label40
             // 
-            textBoxTelefonoCliente.Location = new Point(674, 318);
-            textBoxTelefonoCliente.Name = "textBoxTelefonoCliente";
-            textBoxTelefonoCliente.Size = new Size(229, 23);
-            textBoxTelefonoCliente.TabIndex = 17;
+            label40.AutoSize = true;
+            label40.Location = new Point(761, 251);
+            label40.Name = "label40";
+            label40.Size = new Size(111, 15);
+            label40.TabIndex = 33;
+            label40.Text = "Telefono del Cliente";
+            // 
+            // textBox3
+            // 
+            textBox3.Location = new Point(695, 269);
+            textBox3.Name = "textBox3";
+            textBox3.Size = new Size(229, 23);
+            textBox3.TabIndex = 32;
+            // 
+            // label41
+            // 
+            label41.AutoSize = true;
+            label41.Font = new Font("Pivot Classic", 21.75F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
+            label41.Location = new Point(645, 16);
+            label41.Name = "label41";
+            label41.Size = new Size(297, 33);
+            label41.TabIndex = 31;
+            label41.Text = "Agregar Proveedor";
+            // 
+            // label42
+            // 
+            label42.AutoSize = true;
+            label42.Font = new Font("Pivot Classic", 21.75F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
+            label42.Location = new Point(131, 16);
+            label42.Name = "label42";
+            label42.Size = new Size(333, 33);
+            label42.TabIndex = 30;
+            label42.Text = "Lista de Proveedores";
+            // 
+            // label43
+            // 
+            label43.AutoSize = true;
+            label43.Location = new Point(761, 198);
+            label43.Name = "label43";
+            label43.Size = new Size(116, 15);
+            label43.TabIndex = 29;
+            label43.Text = "Direccion del Cliente";
+            // 
+            // label44
+            // 
+            label44.AutoSize = true;
+            label44.Location = new Point(768, 150);
+            label44.Name = "label44";
+            label44.Size = new Size(89, 15);
+            label44.TabIndex = 28;
+            label44.Text = "Tipo del Cliente";
+            // 
+            // label45
+            // 
+            label45.AutoSize = true;
+            label45.Location = new Point(761, 106);
+            label45.Name = "label45";
+            label45.Size = new Size(110, 15);
+            label45.TabIndex = 27;
+            label45.Text = "Nombre del Cliente";
+            // 
+            // label46
+            // 
+            label46.AutoSize = true;
+            label46.Location = new Point(773, 62);
+            label46.Name = "label46";
+            label46.Size = new Size(84, 15);
+            label46.TabIndex = 26;
+            label46.Text = "NIT del Cliente";
+            // 
+            // comboBox2
+            // 
+            comboBox2.FormattingEnabled = true;
+            comboBox2.Items.AddRange(new object[] { "Mayorista", "Cliente comun" });
+            comboBox2.Location = new Point(695, 168);
+            comboBox2.Name = "comboBox2";
+            comboBox2.Size = new Size(229, 23);
+            comboBox2.TabIndex = 24;
+            // 
+            // textBox4
+            // 
+            textBox4.Location = new Point(695, 216);
+            textBox4.Name = "textBox4";
+            textBox4.Size = new Size(229, 23);
+            textBox4.TabIndex = 23;
+            // 
+            // textBox5
+            // 
+            textBox5.Location = new Point(695, 124);
+            textBox5.Name = "textBox5";
+            textBox5.Size = new Size(229, 23);
+            textBox5.TabIndex = 22;
+            // 
+            // textBox7
+            // 
+            textBox7.Location = new Point(695, 80);
+            textBox7.Name = "textBox7";
+            textBox7.Size = new Size(229, 23);
+            textBox7.TabIndex = 20;
+            // 
+            // dataGridViewProovedores
+            // 
+            dataGridViewProovedores.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewProovedores.Location = new Point(13, 52);
+            dataGridViewProovedores.Name = "dataGridViewProovedores";
+            dataGridViewProovedores.Size = new Size(516, 302);
+            dataGridViewProovedores.TabIndex = 19;
+            // 
+            // button10
+            // 
+            button10.Location = new Point(174, 360);
+            button10.Name = "button10";
+            button10.Size = new Size(133, 40);
+            button10.TabIndex = 36;
+            button10.Text = "Eliminar Cliente";
+            button10.UseVisualStyleBackColor = true;
+            // 
+            // button11
+            // 
+            button11.Location = new Point(35, 360);
+            button11.Name = "button11";
+            button11.Size = new Size(133, 40);
+            button11.TabIndex = 35;
+            button11.Text = "Buscar cliente";
+            button11.UseVisualStyleBackColor = true;
+            // 
+            // button12
+            // 
+            button12.Location = new Point(785, 360);
+            button12.Name = "button12";
+            button12.Size = new Size(133, 40);
+            button12.TabIndex = 34;
+            button12.Text = "Guardar cliente";
+            button12.UseVisualStyleBackColor = true;
             // 
             // formMenu
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.LawnGreen;
+            BackColor = Color.DimGray;
             ClientSize = new Size(978, 447);
             Controls.Add(tabControl1);
             MaximizeBox = false;
@@ -1460,6 +1642,9 @@
             groupBoxDestionCompra.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).EndInit();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            tabPage7.ResumeLayout(false);
+            tabPage7.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewProovedores).EndInit();
             ResumeLayout(false);
         }
 
@@ -1590,5 +1775,22 @@
         private RadioButton radioButtonClienteRegSi;
         private Label label39;
         private TextBox textBoxTelefonoCliente;
+        private TabPage tabPage7;
+        private Label label40;
+        private TextBox textBox3;
+        private Label label41;
+        private Label label42;
+        private Label label43;
+        private Label label44;
+        private Label label45;
+        private Label label46;
+        private ComboBox comboBox2;
+        private TextBox textBox4;
+        private TextBox textBox5;
+        private TextBox textBox7;
+        public DataGridView dataGridViewProovedores;
+        private Button button10;
+        private Button button11;
+        private Button button12;
     }
 }
