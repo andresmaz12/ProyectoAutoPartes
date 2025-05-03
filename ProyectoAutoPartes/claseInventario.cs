@@ -10,7 +10,7 @@ using System.Windows.Forms; // Asegurar el uso de MessageBox
 
 namespace ProyectoAutoPartes
 {
-    public class claseGestionInventario // comentario xd 
+    public class claseGestionInventario // ya aprece la base de datos o no?
     {
         private string connectionString;
         private formMenu form;
@@ -200,7 +200,7 @@ namespace ProyectoAutoPartes
                 catch (Exception ex)
                 {
                     transaction.Rollback();
-                    MessageBox.Show("Error al registrar la compra: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Error al realizar la compra: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
