@@ -1476,6 +1476,7 @@
             buttonEliminarProveedor.TabIndex = 36;
             buttonEliminarProveedor.Text = "Eliminar Proveedor";
             buttonEliminarProveedor.UseVisualStyleBackColor = true;
+            buttonEliminarProveedor.Click += buttonEliminarProveedor_Click;
             // 
             // buttonBuscarProveedor
             // 

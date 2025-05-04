@@ -38,6 +38,7 @@ namespace ProyectoAutoPartes
             this.verificarUsuario = new verificarUsuarioContrasenia(connectionString, this);
             this.proveedores = new classeProveedores(connectionString, this);
             MoificarEsteticas();
+            CargarDatosProveedores();
         }
 
         #region Metodos internos
@@ -687,7 +688,20 @@ namespace ProyectoAutoPartes
 
         }
 
+        private void buttonEliminarProveedor_Click(object sender, EventArgs e)
+        {
+            if (VerificarNivel2())
+            {
+                string valor = Interaction.InputBox("Ingrese el nombre del proveedor", "Eliminar proveedores");
+                proveedores.EliminarProveedorPorNombre(valor);
+            }
+            else
+            {
+                MessageBox.Show("Solicite apoyo de un superior", "Error");
+            }
+        }
 
         #endregion
+
     }
 }

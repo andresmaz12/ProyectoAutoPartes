@@ -160,5 +160,51 @@ namespace ProyectoAutoPartes
 
             return rowsAffected > 0;
         }
+
+        public bool EliminarProveedorPorNombre(string nombreProveedor)
+        {
+            // Primero pedimos confirmación al usuario
+            DialogResult confirmacion = MessageBox.Show(
+                $"¿Está seguro que desea eliminar al proveedor '{nombreProveedor}'?",
+                "Confirmar Eliminación",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning);
+
+            if (confirmacion != DialogResult.Yes)
+            {
+                return false; // El usuario canceló la eliminación
+            }
+
+            int rowsAffected = 0;
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                conn.Open();
+                string query = "DELETE FROM proveedores WHERE nombre = @Nombre";
+
+                using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@Nombre", nombreProveedor);
+                    rowsAffected = cmd.ExecuteNonQuery();
+                }
+            }
+
+            if (rowsAffected > 0)
+            {
+                MessageBox.Show($"Proveedor '{nombreProveedor}' eliminado correctamente.",
+                              "Eliminación Exitosa",
+                              MessageBoxButtons.OK,
+                              MessageBoxIcon.Information);
+                return true;
+            }
+            else
+            {
+                MessageBox.Show($"No se encontró el proveedor '{nombreProveedor}'.",
+                              "Proveedor No Encontrado",
+                              MessageBoxButtons.OK,
+                              MessageBoxIcon.Warning);
+                return false;
+            }
+        }
     }
 }
