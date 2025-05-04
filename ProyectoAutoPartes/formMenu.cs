@@ -24,6 +24,7 @@ namespace ProyectoAutoPartes
         private claseGestionRRHH rRHH;
         private claseGestionFinanciera financiera;
         private verificarUsuarioContrasenia verificarUsuario;
+        private classeProveedores proveedores;
 
         public formMenu()
         {
@@ -35,6 +36,7 @@ namespace ProyectoAutoPartes
             this.rRHH = new claseGestionRRHH(connectionString, this);
             this.financiera = new claseGestionFinanciera(connectionString, this);
             this.verificarUsuario = new verificarUsuarioContrasenia(connectionString, this);
+            this.proveedores = new classeProveedores(connectionString, this);
             MoificarEsteticas();
         }
 
@@ -651,7 +653,11 @@ namespace ProyectoAutoPartes
         #endregion
 
         #region Proveedores
-
+        private void CargarDatos()
+        {
+            DataTable datos = proveedores.GetTablaDatos();
+            dataGridView1.DataSource = datos;
+        }
         #endregion
 
 
