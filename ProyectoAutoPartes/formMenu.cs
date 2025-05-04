@@ -246,12 +246,12 @@ namespace ProyectoAutoPartes
         {
             radioButtonClienteRegNo.Checked = false;
             DialogResult registrar = MessageBox.Show("Desea registralo", "Registro de clientes", MessageBoxButtons.YesNoCancel);
-            if(registrar == DialogResult.Yes)
+            if (registrar == DialogResult.Yes)
             {
                 formularioAgregarCliente agregarCliente = new();
                 agregarCliente.ShowDialog();
             }
-            else if(registrar == DialogResult.No)
+            else if (registrar == DialogResult.No)
             {
                 MessageBox.Show("Ok", "Registro de clientes", MessageBoxButtons.OK);
             }
@@ -642,7 +642,7 @@ namespace ProyectoAutoPartes
         private void radioButtonProveedorSI_CheckedChanged(object sender, EventArgs e)
         {
             radioButtonProveedorNO.Checked = false;
-            
+
         }
 
         private void radioButtonProveedorNO_CheckedChanged(object sender, EventArgs e)
@@ -653,13 +653,41 @@ namespace ProyectoAutoPartes
         #endregion
 
         #region Proveedores
-        private void CargarDatos()
+
+        private void CargarDatosProveedores()
         {
-            DataTable datos = proveedores.GetTablaDatos();
+            DataTable datos = proveedores.GetTablaProveedores();
             dataGridView1.DataSource = datos;
         }
+
+        private void buttonGuararProveedor_Click(object sender, EventArgs e)
+        {
+            if (VerificarNivel3())
+            {
+                string nitProveeor = textBoxNitProveedor.Text;
+                string nombreProveedor = textBoxNombreProveedor.Text;
+                string tipoProveedor = comboBoxTipoProveedor.Text;
+                string telefonoProveedor = textBoxTelefonoProveedor.Text;
+                string direccionProveedor = textBoxDireccionProveedor.Text;
+                proveedores.InsertarProveedor(nitProveeor, nombreProveedor, telefonoProveedor, tipoProveedor, direccionProveedor);
+            }
+            else
+            {
+                textBoxNitProveedor.Clear();
+                textBoxNombreProveedor.Clear();
+                textBoxTelefonoProveedor.Clear();
+                textBoxDireccionProveedor.Clear();
+            }
+        }
+
+        private void buttonBuscarProveedor_Click(object sender, EventArgs e)
+        {
+            string valor = Interaction.InputBox("Ingrese el nombre del proveedor", "Busqueda proveedor");
+            proveedores.BuscarProveedores(valor);
+
+        }
+
+
         #endregion
-
-
     }
 }

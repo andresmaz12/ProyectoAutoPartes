@@ -1485,6 +1485,7 @@
             buttonBuscarProveedor.TabIndex = 35;
             buttonBuscarProveedor.Text = "Buscar Proveedor";
             buttonBuscarProveedor.UseVisualStyleBackColor = true;
+            buttonBuscarProveedor.Click += buttonBuscarProveedor_Click;
             // 
             // buttonGuararProveedor
             // 
@@ -1494,6 +1495,7 @@
             buttonGuararProveedor.TabIndex = 34;
             buttonGuararProveedor.Text = "Guardar Proveedor";
             buttonGuararProveedor.UseVisualStyleBackColor = true;
+            buttonGuararProveedor.Click += buttonGuararProveedor_Click;
             // 
             // label40
             // 
