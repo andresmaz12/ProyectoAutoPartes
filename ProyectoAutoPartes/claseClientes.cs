@@ -12,24 +12,28 @@ namespace ProyectoAutoPartes
 {
     public class claseClientes
     {
-        private string connectionString;
-        private formMenu form;
+        private readonly string connectionString;
+        private readonly IFormDependencies form;
 
         // Constructor con inyección de dependencias
-        public claseClientes(string connectionString, formMenu form)
+        public claseClientes(string connectionString, IFormDependencies form)
         {
             this.connectionString = connectionString;
             this.form = form;
         }
 
-        public void CargarDatos()
+        public DataTable CargarDatosClientes(string nombreTabla)
         {
-            using var conn = new MySqlConnection(connectionString);
-            string query = "SELECT * FROM Clientes"; //Aqui se llama a la tabla que se quiere usar, es posible reutilizar el codigo en caso de ser necesesario
-            var adapter = new MySqlDataAdapter(query, conn);
             DataTable dt = new DataTable();
-            adapter.Fill(dt);
-            form.dataGridViewClientes.DataSource = dt;
+
+            using (var conn = new MySqlConnection(connectionString))
+            {
+                string query = $"SELECT * FROM {nombreTabla}";
+                var adapter = new MySqlDataAdapter(query, conn);
+                adapter.Fill(dt);
+            }
+
+            return dt;
         }
 
         public void BuscarCliente(string nombre)
@@ -70,7 +74,6 @@ namespace ProyectoAutoPartes
                     connection.Open();
                     command.ExecuteNonQuery();
                     MessageBox.Show("Cliente agregado con éxito!");
-                    CargarDatos();
                 }
                 catch (Exception ex)
                 {

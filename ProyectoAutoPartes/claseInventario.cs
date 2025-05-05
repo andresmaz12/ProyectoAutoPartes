@@ -10,13 +10,12 @@ using System.Windows.Forms; // Asegurar el uso de MessageBox
 
 namespace ProyectoAutoPartes
 {
-    public class claseGestionInventario // comentario xd 
+    public class claseGestionInventario // ya aprece la base de datos o no?
     {
-        private string connectionString;
-        private formMenu form;
+        private readonly string connectionString;
+        private readonly IFormDependencies form;
 
-        // Constructor con inyección de dependencias
-        public claseGestionInventario(string connectionString, formMenu form)
+        public claseGestionInventario(string connectionString, IFormDependencies form)
         {
             this.connectionString = connectionString;
             this.form = form;
@@ -58,33 +57,28 @@ namespace ProyectoAutoPartes
             }
         }
 
-        public void BuscarElemento()
+        public DataTable BuscarProducto(string nombreProducto, bool buscarPorCoincidenciaParcial = true)
         {
-            // Obtener el nombre desde un InputBox
-            string nombre = Interaction.InputBox("Ingrese el nombre del producto a buscar:", "Búsqueda de Producto", "").Trim();
-
-            if (string.IsNullOrEmpty(nombre))
+            if (string.IsNullOrWhiteSpace(nombreProducto))
             {
-                MessageBox.Show("Debe ingresar un nombre para buscar.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
+                throw new ArgumentException("El nombre del producto no puede estar vacío", nameof(nombreProducto));
             }
 
-            string query = "SELECT * FROM Productos WHERE Nombre_producto LIKE @nombre";
+            string query = buscarPorCoincidenciaParcial
+                ? "SELECT * FROM Productos WHERE Nombre_producto LIKE @nombre"
+                : "SELECT * FROM Productos WHERE Nombre_producto = @nombre";
 
             using (MySqlConnection conn = new MySqlConnection(connectionString))
+            using (MySqlCommand cmd = new MySqlCommand(query, conn))
             {
-                conn.Open(); // Se abre explícitamente la conexión
+                cmd.Parameters.AddWithValue("@nombre",
+                    buscarPorCoincidenciaParcial ? $"%{nombreProducto}%" : nombreProducto);
 
-                using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                using (MySqlDataAdapter adapter = new MySqlDataAdapter(cmd))
                 {
-                    cmd.Parameters.AddWithValue("@nombre", $"%{nombre}%"); 
-
-                    using (MySqlDataAdapter adapter = new MySqlDataAdapter(cmd))
-                    {
-                        DataTable dt = new DataTable();
-                        adapter.Fill(dt);
-                        form.dataGridViewInvetario.DataSource = dt; 
-                    }
+                    DataTable dt = new DataTable();
+                    adapter.Fill(dt);
+                    return dt;
                 }
             }
         }
@@ -200,7 +194,7 @@ namespace ProyectoAutoPartes
                 catch (Exception ex)
                 {
                     transaction.Rollback();
-                    MessageBox.Show("Error al registrar la compra: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Error al realizar la compra: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }

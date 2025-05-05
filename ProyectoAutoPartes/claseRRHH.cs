@@ -14,17 +14,17 @@ namespace ProyectoAutoPartes
     public class claseGestionRRHH
     {
         //Dirección de la base de datos 
-        private string connectionString;
-        private formMenu form;
+        private readonly string connectionString;
+        private readonly IFormDependencies form;
 
         // Constructor con inyección de dependencias
-        public claseGestionRRHH(string connectionString, formMenu form)
+        public claseGestionRRHH(string connectionString, IFormDependencies form)
         {
             this.connectionString = connectionString;
             this.form = form;
         }
 
-        public bool VerificarUsuario(string usuario, string contraseña)
+        public bool VerificarUsuario(string usuario, string contraseÃ±a)
         {
             bool accesoPermitido = false;
 
@@ -32,21 +32,21 @@ namespace ProyectoAutoPartes
             {
                 try
                 {
-                    string query = "SELECT Contraseña FROM Empleados WHERE Usuario = @usuario";
+                    string query = "SELECT ContraseÃ±a FROM Empleados WHERE Usuario = @usuario";
 
                     using (MySqlCommand cmd = new MySqlCommand(query, conn))
                     {
                         cmd.Parameters.AddWithValue("@usuario", usuario);
 
                         conn.Open();
-                        object resultado = cmd.ExecuteScalar(); // Obtiene la contraseña almacenada
+                        object resultado = cmd.ExecuteScalar(); // Obtiene la contraseÃ±a almacenada
 
                         if (resultado != null)
                         {
-                            string contraseñaGuardada = resultado.ToString();
+                            string contraseÃ±aGuardada = resultado.ToString();
 
-                            // Comparar contraseñas
-                            if (contraseña == contraseñaGuardada)
+                            // Comparar contraseÃ±as
+                            if (contraseÃ±a == contraseÃ±aGuardada)
                             {
                                 accesoPermitido = true;
                             }
@@ -99,7 +99,7 @@ namespace ProyectoAutoPartes
 
                 if (dtResultado.Rows.Count == 0)
                 {
-                    MessageBox.Show("No se encontraron empleados con ese nombre", "Búsqueda", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("No se encontraron empleados con ese nombre", "BÃºsqueda", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
 
                 return dtResultado;
@@ -112,13 +112,13 @@ namespace ProyectoAutoPartes
         }
 
         public bool AgregarEmpleado(string dpiEmpleado, string nombre, DateTime fechaNacimiento, string rol, 
-                                string cuentaBancaria, string usuario, string contraseña, int faltas, double bonos, double salario)
+                                string cuentaBancaria, string usuario, string contraseÃ±a, int faltas, double bonos, double salario)
         {
             try
             {
                 using (MySqlConnection connection = new MySqlConnection(connectionString))
                 {
-                    // Crear ID automático basado en el DPI (ultimos 4 números)
+                    // Crear ID automÃ¡tico basado en el DPI (ultimos 4 nÃºmeros)
                     string idEmpleado = "";
                     if (dpiEmpleado.Length >= 4)
                     {
@@ -130,7 +130,7 @@ namespace ProyectoAutoPartes
                     }
 
                     string query = "INSERT INTO Empleados (ID, DPI_Empleado, Nombre, " +
-                                  "FechaDeNacimiento, Rol, CuentaBancaria, Usuario, Contraseña, NumeroFaltas, Bonos, Salario, FechaContratacion) " +
+                                  "FechaDeNacimiento, Rol, CuentaBancaria, Usuario, ContraseÃ±a, NumeroFaltas, Bonos, Salario, FechaContratacion) " +
                                   "VALUES (@ID, @DPI, @Nombre, @Fecha, @Rol, @Cuenta, @Usuario, @Password, @Faltas, @Bonos, @Salario, @FechaContratacion)";
 
                     MySqlCommand command = new MySqlCommand(query, connection);
@@ -142,7 +142,7 @@ namespace ProyectoAutoPartes
                     command.Parameters.AddWithValue("@Rol", rol);
                     command.Parameters.AddWithValue("@Cuenta", cuentaBancaria);
                     command.Parameters.AddWithValue("@Usuario", usuario);
-                    command.Parameters.AddWithValue("@Password", contraseña);
+                    command.Parameters.AddWithValue("@Password", contraseÃ±a);
                     command.Parameters.AddWithValue("@Faltas", faltas);
                     command.Parameters.AddWithValue("@Bonos", bonos);
                     command.Parameters.AddWithValue("@Salario", salario);
@@ -160,17 +160,17 @@ namespace ProyectoAutoPartes
             }
         }
 
-        public void ModificarLlavesAcceso(string idEmpleado, string nuevoUsuario, string nuevaContraseña)
+        public void ModificarLlavesAcceso(string idEmpleado, string nuevoUsuario, string nuevaContraseÃ±a)
         {
             try
             {
                 using (MySqlConnection connection = new MySqlConnection(connectionString))
                 {
-                    string query = "UPDATE Empleados SET Usuario = @Usuario, Contraseña = @Password WHERE ID = @ID";
+                    string query = "UPDATE Empleados SET Usuario = @Usuario, ContraseÃ±a = @Password WHERE ID = @ID";
 
                     MySqlCommand command = new MySqlCommand(query, connection);
                     command.Parameters.AddWithValue("@Usuario", nuevoUsuario);
-                    command.Parameters.AddWithValue("@Password", nuevaContraseña);
+                    command.Parameters.AddWithValue("@Password", nuevaContraseÃ±a);
                     command.Parameters.AddWithValue("@ID", idEmpleado);
 
                     connection.Open();
@@ -178,11 +178,11 @@ namespace ProyectoAutoPartes
 
                     if (filasAfectadas > 0)
                     {
-                        MessageBox.Show("Credenciales actualizadas correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show("Credenciales actualizadas correctamente", "Ãxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                     else
                     {
-                        MessageBox.Show("No se encontró el empleado con el ID especificado", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show("No se encontrÃ³ el empleado con el ID especificado", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
                 }
             }
@@ -194,9 +194,9 @@ namespace ProyectoAutoPartes
 
         public int SeleccionarNivel(string rol)
         {
-            int nivelAcceso = 5; // Nivel predeterminado (más restrictivo)
+            int nivelAcceso = 5; // Nivel predeterminado (mÃ¡s restrictivo)
             
-            // Asignamos nivel según el rol (1 es el más alto/administrativo, 5 el más bajo)
+            // Asignamos nivel segÃºn el rol (1 es el mÃ¡s alto/administrativo, 5 el mÃ¡s bajo)
             switch (rol.ToLower())
             {
                 case "gerente":
@@ -225,29 +225,29 @@ namespace ProyectoAutoPartes
 
         public double Salario()
         {
-            string input = Interaction.InputBox("Ingrese el salario del empleado", "Inscripción Empleado", "");
+            string input = Interaction.InputBox("Ingrese el salario del empleado", "InscripciÃ³n Empleado", "");
 
             if (double.TryParse(input, NumberStyles.Any, CultureInfo.InvariantCulture, out double salario))
             {
                 if (salario <= 0)
                 {
                     MessageBox.Show("El salario debe ser mayor a cero", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return Salario(); // Recursión para volver a pedir el salario
+                    return Salario(); // RecursiÃ³n para volver a pedir el salario
                 }
                 
-                MessageBox.Show("Salario agregado correctamente", "Inscripción de empleado", MessageBoxButtons.OK);
-                return salario; // Retorna el salario válido
+                MessageBox.Show("Salario agregado correctamente", "InscripciÃ³n de empleado", MessageBoxButtons.OK);
+                return salario; // Retorna el salario vÃ¡lido
             }
             else
             {
-                MessageBox.Show("Ingrese un número válido para el salario", "Inscripción de empleado", MessageBoxButtons.OK);
-                return Salario(); // Vuelve a pedir el salario hasta que sea válido
+                MessageBox.Show("Ingrese un nÃºmero vÃ¡lido para el salario", "InscripciÃ³n de empleado", MessageBoxButtons.OK);
+                return Salario(); // Vuelve a pedir el salario hasta que sea vÃ¡lido
             }
         }
 
         public bool EsFechaValida(string fecha)
         {
-            // Intentamos convertir la fecha según diversos formatos comunes
+            // Intentamos convertir la fecha segÃºn diversos formatos comunes
             string[] formatos = { "yyyy-MM-dd", "dd/MM/yyyy", "MM/dd/yyyy", "dd-MM-yyyy" };
             
             return DateTime.TryParseExact(fecha, formatos, 
@@ -257,7 +257,7 @@ namespace ProyectoAutoPartes
         /// <summary>
         /// Filtra empleados por salario mayor o igual al especificado
         /// </summary>
-        /// <param name="salarioMinimo">Salario mínimo para filtrar</param>
+        /// <param name="salarioMinimo">Salario mÃ­nimo para filtrar</param>
         /// <returns>DataTable con los empleados que cumplen el criterio</returns>
         public DataTable FiltrarSalario(int salarioMinimo)
         {
@@ -303,7 +303,7 @@ namespace ProyectoAutoPartes
         }
 
         /// <summary>
-        /// Filtra empleados por rol específico
+        /// Filtra empleados por rol especÃ­fico
         /// </summary>
         /// <param name="rol">Rol para filtrar</param>
         /// <returns>DataTable con los empleados que cumplen el criterio</returns>
@@ -352,9 +352,9 @@ namespace ProyectoAutoPartes
         }
 
         /// <summary>
-        /// Filtra empleados por número de faltas mayor o igual al especificado
+        /// Filtra empleados por nÃºmero de faltas mayor o igual al especificado
         /// </summary>
-        /// <param name="faltasMinimo">Número mínimo de faltas para filtrar</param>
+        /// <param name="faltasMinimo">NÃºmero mÃ­nimo de faltas para filtrar</param>
         /// <returns>DataTable con los empleados que cumplen el criterio</returns>
         public DataTable FiltrarPorFaltas(int faltasMinimo)
         {
@@ -400,9 +400,9 @@ namespace ProyectoAutoPartes
         }
 
         /// <summary>
-        /// Filtra empleados por número de ventas mayor o igual al especificado
+        /// Filtra empleados por nÃºmero de ventas mayor o igual al especificado
         /// </summary>
-        /// <param name="ventasMinimo">Número mínimo de ventas para filtrar</param>
+        /// <param name="ventasMinimo">NÃºmero mÃ­nimo de ventas para filtrar</param>
         /// <returns>DataTable con los empleados que cumplen el criterio</returns>
         public DataTable FiltrarPorVentas(int ventasMinimo)
         {
@@ -448,7 +448,7 @@ namespace ProyectoAutoPartes
         }
 
         /// <summary>
-        /// Método adicional para cargar todos los empleados
+        /// MÃ©todo adicional para cargar todos los empleados
         /// </summary>
         /// <returns>DataTable con todos los empleados</returns>
         public DataTable CargarTodosEmpleados()
@@ -494,7 +494,7 @@ namespace ProyectoAutoPartes
         /// Elimina un empleado por su ID
         /// </summary>
         /// <param name="idEmpleado">ID del empleado a eliminar</param>
-        /// <returns>True si se eliminó correctamente, False en caso contrario</returns>
+        /// <returns>True si se eliminÃ³ correctamente, False en caso contrario</returns>
         public bool EliminarEmpleado(string idEmpleado)
         {
             try
@@ -512,12 +512,12 @@ namespace ProyectoAutoPartes
 
                         if (filasAfectadas > 0)
                         {
-                            MessageBox.Show("Empleado eliminado correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            MessageBox.Show("Empleado eliminado correctamente", "Ãxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             return true;
                         }
                         else
                         {
-                            MessageBox.Show("No se encontró un empleado con ese ID", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            MessageBox.Show("No se encontrÃ³ un empleado con ese ID", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                             return false;
                         }
                     }
@@ -531,7 +531,7 @@ namespace ProyectoAutoPartes
         }
         
         /// <summary>
-        /// Actualiza la información de un empleado
+        /// Actualiza la informaciÃ³n de un empleado
         /// </summary>
         public bool ActualizarEmpleado(string idEmpleado, string nombre, string rol, string cuentaBancaria, 
                                     double salario, int faltas, double bonos)
@@ -564,12 +564,12 @@ namespace ProyectoAutoPartes
 
                         if (filasAfectadas > 0)
                         {
-                            MessageBox.Show("Información del empleado actualizada correctamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            MessageBox.Show("InformaciÃ³n del empleado actualizada correctamente", "Ãxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             return true;
                         }
                         else
                         {
-                            MessageBox.Show("No se encontró un empleado con ese ID", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            MessageBox.Show("No se encontrÃ³ un empleado con ese ID", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                             return false;
                         }
                     }
