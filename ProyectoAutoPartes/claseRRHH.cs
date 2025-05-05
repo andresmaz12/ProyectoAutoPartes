@@ -2,155 +2,262 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Runtime.InteropServices.Marshalling;
 using System.Text;
 using Microsoft.VisualBasic;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 using System.Windows.Forms;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Globalization;
 
 namespace ProyectoAutoPartes 
 {
     public class claseGestionRRHH
     {
-        //DirecciÛn de la base de datos 
-        private string connectionString = "D:\\Base de datos VB\\ProyectoAutoPartes\\Avamce.... de proyecto.prueba6.mwb";
-
+        //Direcci√≥n de la base de datos 
+        private string connectionString;
         private formMenu form;
 
-        // Constructor con inyecciÛn de dependencias
+        // Constructor con inyecci√≥n de dependencias
         public claseGestionRRHH(string connectionString, formMenu form)
         {
             this.connectionString = connectionString;
             this.form = form;
         }
 
-        public bool VerificarUsuario(string usuario, string contraseÒa)
+        public bool VerificarUsuario(string usuario, string contrase√±a)
         {
             bool accesoPermitido = false;
 
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
-                string query = "SELECT ContraseÒa FROM Empleados WHERE Usuario = @usuario";
-
-                using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                try
                 {
-                    cmd.Parameters.AddWithValue("@usuario", usuario);
+                    string query = "SELECT Contrase√±a FROM Empleados WHERE Usuario = @usuario";
 
-                    conn.Open();
-                    object resultado = cmd.ExecuteScalar(); // Obtiene la contraseÒa almacenada
-
-                    if (resultado != null)
+                    using (MySqlCommand cmd = new MySqlCommand(query, conn))
                     {
-                        string contraseÒaGuardada = resultado.ToString();
+                        cmd.Parameters.AddWithValue("@usuario", usuario);
 
-                        // Comparar contraseÒas (si usas hashing, aquÌ aplicarÌas la verificaciÛn)
-                        if (contraseÒa == contraseÒaGuardada)
+                        conn.Open();
+                        object resultado = cmd.ExecuteScalar(); // Obtiene la contrase√±a almacenada
+
+                        if (resultado != null)
                         {
-                            accesoPermitido = true;
+                            string contrase√±aGuardada = resultado.ToString();
+
+                            // Comparar contrase√±as
+                            if (contrase√±a == contrase√±aGuardada)
+                            {
+                                accesoPermitido = true;
+                            }
                         }
                     }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error al verificar usuario: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
 
             return accesoPermitido;
         }
 
-        public void BuscarEmpleado()
+        public DataTable BuscarEmpleado(string nombre)
         {
-            string nombre = Interaction.InputBox("Cual es el nombre del empleado", "Busqueda de empleados", "");
+            DataTable dtResultado = new DataTable();
+
+            try
+            {
+                using (MySqlConnection conexion = new MySqlConnection(connectionString))
+                {
+                    string query = @"SELECT 
+                                    ID, 
+                                    Nombre, 
+                                    Apellido, 
+                                    Rol, 
+                                    Salario, 
+                                    FechaContratacion, 
+                                    NumeroFaltas, 
+                                    NumeroVentas
+                                FROM 
+                                    Empleados 
+                                WHERE 
+                                    Nombre LIKE @Nombre
+                                ORDER BY 
+                                    Apellido, Nombre";
+
+                    using (MySqlCommand comando = new MySqlCommand(query, conexion))
+                    {
+                        // Usamos LIKE para buscar coincidencias parciales
+                        comando.Parameters.AddWithValue("@Nombre", "%" + nombre + "%");
+
+                        conexion.Open();
+                        MySqlDataAdapter adaptador = new MySqlDataAdapter(comando);
+                        adaptador.Fill(dtResultado);
+                    }
+                }
+
+                if (dtResultado.Rows.Count == 0)
+                {
+                    MessageBox.Show("No se encontraron empleados con ese nombre", "B√∫squeda", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+
+                return dtResultado;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al buscar empleado: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
+            }
         }
 
-        public void AgregarEmpleado(string dpiEmpleado, string nombre, DateTime fechaNacimiento, string rol, 
-                                string cuentaBancaria, string usuario, string contraseÒa, int faltas, double bonos, double salario)
+        public bool AgregarEmpleado(string dpiEmpleado, string nombre, DateTime fechaNacimiento, string rol, 
+                                string cuentaBancaria, string usuario, string contrase√±a, int faltas, double bonos, double salario)
         {
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            try
             {
-                string query = "INSERT INTO RRHH (DPI_Empleado, ID_Empleado, Nombre, " +
-                              "FechaDeNacimiento, Rol, CuentaBancaria, Usuario, ContraseÒa, Faltas, Bonos, Salario) " +
-                              "VALUES (@DPI, @ID, @Nombre, @Fecha, @Rol, @Cuenta, @Usuario, @Password, @Faltas, @Bonos, @Salario)";
-
-                MySqlCommand command = new MySqlCommand(query, connection);
-
-                command.Parameters.AddWithValue("@DPI", dpiEmpleado);
-                command.Parameters.AddWithValue("@Nombre", nombre);
-                command.Parameters.AddWithValue("@Fecha", fechaNacimiento);
-                command.Parameters.AddWithValue("@Rol", rol);
-                command.Parameters.AddWithValue("@Cuenta", cuentaBancaria);
-                command.Parameters.AddWithValue("@Usuario", usuario);
-                command.Parameters.AddWithValue("@Password", contraseÒa);
-                command.Parameters.AddWithValue("@Faltas", faltas);
-                command.Parameters.AddWithValue("@Bonos", bonos);
-                command.Parameters.AddWithValue("@Salario", salario);
-
-                try
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
                 {
+                    // Crear ID autom√°tico basado en el DPI (ultimos 4 n√∫meros)
+                    string idEmpleado = "";
+                    if (dpiEmpleado.Length >= 4)
+                    {
+                        idEmpleado = dpiEmpleado.Substring(dpiEmpleado.Length - 4);
+                    }
+                    else
+                    {
+                        idEmpleado = dpiEmpleado;
+                    }
+
+                    string query = "INSERT INTO Empleados (ID, DPI_Empleado, Nombre, " +
+                                  "FechaDeNacimiento, Rol, CuentaBancaria, Usuario, Contrase√±a, NumeroFaltas, Bonos, Salario, FechaContratacion) " +
+                                  "VALUES (@ID, @DPI, @Nombre, @Fecha, @Rol, @Cuenta, @Usuario, @Password, @Faltas, @Bonos, @Salario, @FechaContratacion)";
+
+                    MySqlCommand command = new MySqlCommand(query, connection);
+
+                    command.Parameters.AddWithValue("@ID", idEmpleado);
+                    command.Parameters.AddWithValue("@DPI", dpiEmpleado);
+                    command.Parameters.AddWithValue("@Nombre", nombre);
+                    command.Parameters.AddWithValue("@Fecha", fechaNacimiento.ToString("yyyy-MM-dd"));
+                    command.Parameters.AddWithValue("@Rol", rol);
+                    command.Parameters.AddWithValue("@Cuenta", cuentaBancaria);
+                    command.Parameters.AddWithValue("@Usuario", usuario);
+                    command.Parameters.AddWithValue("@Password", contrase√±a);
+                    command.Parameters.AddWithValue("@Faltas", faltas);
+                    command.Parameters.AddWithValue("@Bonos", bonos);
+                    command.Parameters.AddWithValue("@Salario", salario);
+                    command.Parameters.AddWithValue("@FechaContratacion", DateTime.Now.ToString("yyyy-MM-dd"));
+
                     connection.Open();
                     command.ExecuteNonQuery();
-                    MessageBox.Show("Empleado agregado con Èxito!");
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error al agregar empleado: " + ex.Message);
+                    return true;
                 }
             }
-        }
-
-
-        public void ModificarLlavesAcceso()
-        {
-            verificarUsuarioContrasenia verificarUsuario = new verificarUsuarioContrasenia();
-            verificarUsuario.ShowDialog();
-
-            usuarioContrasenia usuarioContrasenia = new usuarioContrasenia();
-            usuarioContrasenia.ShowDialog();
-        }
-
-        public void SeleccionarNivel(string rol)
-        {
-            switch (rol)
+            catch (Exception ex)
             {
-                case "a":
+                MessageBox.Show("Error al agregar empleado: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+        }
+
+        public void ModificarLlavesAcceso(string idEmpleado, string nuevoUsuario, string nuevaContrase√±a)
+        {
+            try
+            {
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                {
+                    string query = "UPDATE Empleados SET Usuario = @Usuario, Contrase√±a = @Password WHERE ID = @ID";
+
+                    MySqlCommand command = new MySqlCommand(query, connection);
+                    command.Parameters.AddWithValue("@Usuario", nuevoUsuario);
+                    command.Parameters.AddWithValue("@Password", nuevaContrase√±a);
+                    command.Parameters.AddWithValue("@ID", idEmpleado);
+
+                    connection.Open();
+                    int filasAfectadas = command.ExecuteNonQuery();
+
+                    if (filasAfectadas > 0)
+                    {
+                        MessageBox.Show("Credenciales actualizadas correctamente", "√âxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    else
+                    {
+                        MessageBox.Show("No se encontr√≥ el empleado con el ID especificado", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al modificar credenciales: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        public int SeleccionarNivel(string rol)
+        {
+            int nivelAcceso = 5; // Nivel predeterminado (m√°s restrictivo)
+            
+            // Asignamos nivel seg√∫n el rol (1 es el m√°s alto/administrativo, 5 el m√°s bajo)
+            switch (rol.ToLower())
+            {
+                case "gerente":
+                case "administrador":
+                    nivelAcceso = 1;
                     break;
-                case "b":
+                case "supervisor":
+                case "jefe":
+                    nivelAcceso = 2;
                     break;
-                case "c":
+                case "vendedor senior":
+                    nivelAcceso = 3;
                     break;
-                case "d":
+                case "vendedor":
+                    nivelAcceso = 4;
                     break;
-                case "e":
+                case "asistente":
+                case "bodeguero":
+                default:
+                    nivelAcceso = 5;
                     break;
             }
+            
+            return nivelAcceso;
         }
 
         public double Salario()
         {
-            string input = Interaction.InputBox("Ingrese el salario del empleado", "InscripciÛn Empleado", "");
+            string input = Interaction.InputBox("Ingrese el salario del empleado", "Inscripci√≥n Empleado", "");
 
-            if (double.TryParse(input, out double salario))
+            if (double.TryParse(input, NumberStyles.Any, CultureInfo.InvariantCulture, out double salario))
             {
-                MessageBox.Show("Salario agregado correctamente", "InscripciÛn de empleado", MessageBoxButtons.OK);
-                return salario; // Retorna el salario v·lido
+                if (salario <= 0)
+                {
+                    MessageBox.Show("El salario debe ser mayor a cero", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return Salario(); // Recursi√≥n para volver a pedir el salario
+                }
+                
+                MessageBox.Show("Salario agregado correctamente", "Inscripci√≥n de empleado", MessageBoxButtons.OK);
+                return salario; // Retorna el salario v√°lido
             }
             else
             {
-                MessageBox.Show("Ingrese un n˙mero v·lido para el salario (entero o con dos decimales)", "InscripciÛn de empleado", MessageBoxButtons.OK);
-                return Salario(); // Vuelve a pedir el salario hasta que sea v·lido
+                MessageBox.Show("Ingrese un n√∫mero v√°lido para el salario", "Inscripci√≥n de empleado", MessageBoxButtons.OK);
+                return Salario(); // Vuelve a pedir el salario hasta que sea v√°lido
             }
         }
 
         public bool EsFechaValida(string fecha)
         {
-            DateTime fechaConvertida;
-            return DateTime.TryParseExact(fecha, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out fechaConvertida);
+            // Intentamos convertir la fecha seg√∫n diversos formatos comunes
+            string[] formatos = { "yyyy-MM-dd", "dd/MM/yyyy", "MM/dd/yyyy", "dd-MM-yyyy" };
+            
+            return DateTime.TryParseExact(fecha, formatos, 
+                CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime fechaConvertida);
         }
 
         /// <summary>
         /// Filtra empleados por salario mayor o igual al especificado
         /// </summary>
-        /// <param name="salarioMinimo">Salario mÌnimo para filtrar</param>
+        /// <param name="salarioMinimo">Salario m√≠nimo para filtrar</param>
         /// <returns>DataTable con los empleados que cumplen el criterio</returns>
         public DataTable FiltrarSalario(int salarioMinimo)
         {
@@ -190,14 +297,13 @@ namespace ProyectoAutoPartes
             }
             catch (Exception ex)
             {
-                // Registrar error en log
-                Console.WriteLine($"Error al filtrar por salario: {ex.Message}");
+                MessageBox.Show($"Error al filtrar por salario: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return null;
             }
         }
 
         /// <summary>
-        /// Filtra empleados por rol especÌfico
+        /// Filtra empleados por rol espec√≠fico
         /// </summary>
         /// <param name="rol">Rol para filtrar</param>
         /// <returns>DataTable con los empleados que cumplen el criterio</returns>
@@ -240,16 +346,15 @@ namespace ProyectoAutoPartes
             }
             catch (Exception ex)
             {
-                // Registrar error en log
-                Console.WriteLine($"Error al filtrar por rol: {ex.Message}");
+                MessageBox.Show($"Error al filtrar por rol: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return null;
             }
         }
 
         /// <summary>
-        /// Filtra empleados por n˙mero de faltas mayor o igual al especificado
+        /// Filtra empleados por n√∫mero de faltas mayor o igual al especificado
         /// </summary>
-        /// <param name="faltasMinimo">N˙mero mÌnimo de faltas para filtrar</param>
+        /// <param name="faltasMinimo">N√∫mero m√≠nimo de faltas para filtrar</param>
         /// <returns>DataTable con los empleados que cumplen el criterio</returns>
         public DataTable FiltrarPorFaltas(int faltasMinimo)
         {
@@ -289,16 +394,15 @@ namespace ProyectoAutoPartes
             }
             catch (Exception ex)
             {
-                // Registrar error en log
-                Console.WriteLine($"Error al filtrar por faltas: {ex.Message}");
+                MessageBox.Show($"Error al filtrar por faltas: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return null;
             }
         }
 
         /// <summary>
-        /// Filtra empleados por n˙mero de ventas mayor o igual al especificado
+        /// Filtra empleados por n√∫mero de ventas mayor o igual al especificado
         /// </summary>
-        /// <param name="ventasMinimo">N˙mero mÌnimo de ventas para filtrar</param>
+        /// <param name="ventasMinimo">N√∫mero m√≠nimo de ventas para filtrar</param>
         /// <returns>DataTable con los empleados que cumplen el criterio</returns>
         public DataTable FiltrarPorVentas(int ventasMinimo)
         {
@@ -338,14 +442,13 @@ namespace ProyectoAutoPartes
             }
             catch (Exception ex)
             {
-                // Registrar error en log
-                Console.WriteLine($"Error al filtrar por ventas: {ex.Message}");
+                MessageBox.Show($"Error al filtrar por ventas: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return null;
             }
         }
 
         /// <summary>
-        /// MÈtodo adicional para cargar todos los empleados
+        /// M√©todo adicional para cargar todos los empleados
         /// </summary>
         /// <returns>DataTable con todos los empleados</returns>
         public DataTable CargarTodosEmpleados()
@@ -382,9 +485,100 @@ namespace ProyectoAutoPartes
             }
             catch (Exception ex)
             {
-                // Registrar error en log
-                Console.WriteLine($"Error al cargar todos los empleados: {ex.Message}");
+                MessageBox.Show($"Error al cargar todos los empleados: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return null;
+            }
+        }
+        
+        /// <summary>
+        /// Elimina un empleado por su ID
+        /// </summary>
+        /// <param name="idEmpleado">ID del empleado a eliminar</param>
+        /// <returns>True si se elimin√≥ correctamente, False en caso contrario</returns>
+        public bool EliminarEmpleado(string idEmpleado)
+        {
+            try
+            {
+                using (MySqlConnection conexion = new MySqlConnection(connectionString))
+                {
+                    string query = "DELETE FROM Empleados WHERE ID = @ID";
+
+                    using (MySqlCommand comando = new MySqlCommand(query, conexion))
+                    {
+                        comando.Parameters.AddWithValue("@ID", idEmpleado);
+
+                        conexion.Open();
+                        int filasAfectadas = comando.ExecuteNonQuery();
+
+                        if (filasAfectadas > 0)
+                        {
+                            MessageBox.Show("Empleado eliminado correctamente", "√âxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            return true;
+                        }
+                        else
+                        {
+                            MessageBox.Show("No se encontr√≥ un empleado con ese ID", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return false;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al eliminar empleado: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+        }
+        
+        /// <summary>
+        /// Actualiza la informaci√≥n de un empleado
+        /// </summary>
+        public bool ActualizarEmpleado(string idEmpleado, string nombre, string rol, string cuentaBancaria, 
+                                    double salario, int faltas, double bonos)
+        {
+            try
+            {
+                using (MySqlConnection conexion = new MySqlConnection(connectionString))
+                {
+                    string query = @"UPDATE Empleados 
+                                  SET Nombre = @Nombre, 
+                                      Rol = @Rol, 
+                                      CuentaBancaria = @Cuenta, 
+                                      Salario = @Salario, 
+                                      NumeroFaltas = @Faltas, 
+                                      Bonos = @Bonos 
+                                  WHERE ID = @ID";
+
+                    using (MySqlCommand comando = new MySqlCommand(query, conexion))
+                    {
+                        comando.Parameters.AddWithValue("@ID", idEmpleado);
+                        comando.Parameters.AddWithValue("@Nombre", nombre);
+                        comando.Parameters.AddWithValue("@Rol", rol);
+                        comando.Parameters.AddWithValue("@Cuenta", cuentaBancaria);
+                        comando.Parameters.AddWithValue("@Salario", salario);
+                        comando.Parameters.AddWithValue("@Faltas", faltas);
+                        comando.Parameters.AddWithValue("@Bonos", bonos);
+
+                        conexion.Open();
+                        int filasAfectadas = comando.ExecuteNonQuery();
+
+                        if (filasAfectadas > 0)
+                        {
+                            MessageBox.Show("Informaci√≥n del empleado actualizada correctamente", "√âxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            return true;
+                        }
+                        else
+                        {
+                            MessageBox.Show("No se encontr√≥ un empleado con ese ID", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return false;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al actualizar empleado: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
             }
         }
     }
