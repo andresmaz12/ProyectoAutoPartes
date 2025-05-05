@@ -18,6 +18,8 @@ namespace ProyectoAutoPartes
 {
     public interface IFormDependencies
     {
+        object dataGridViewClientes { get; }
+
         void MostrarMensaje(string mensaje);
         void ActualizarDataGridView(DataTable datos);
         // Agrega otros métodos que realmente necesiten las clases
@@ -120,11 +122,11 @@ namespace ProyectoAutoPartes
 
         private void buttonAgregarInventario_Click(object sender, EventArgs e)
         {
-            if (!VerificarNivel2())
+            /*if (!VerificarNivel2())
             {
                 MessageBox.Show("No cuenta con el nivel necesario para realizar la acción", "Error");
                 return;
-            }
+            }*/
 
             using (var agregar = new formAgregarInventario())
             {
@@ -220,7 +222,7 @@ namespace ProyectoAutoPartes
         private void buttonAgregarProducto_Click(object sender, EventArgs e)
         {
             //Por medio de esto 
-            ventas.AgregarProductoLista();
+            /*ventas.AgregarProductoLista();*/
             //Libera todo los buttons bloqueados para evitar problemas con la lista enlazada
             buttonCancelarVenta.Enabled = true;
             buttonRealizarVenta.Enabled = true;
@@ -359,7 +361,7 @@ namespace ProyectoAutoPartes
         private void buttonBuscarEmpleado_Click(object sender, EventArgs e)
         {
             //Metodo el cual modifica desde la claseRRHH el datagridviewRRHH para que se muestre al o empleados con el nombre que desea buscar
-            rRHH.BuscarEmpleado();
+            /*rRHH.BuscarEmpleado();*/
         }
 
         private void buttonAgregarEmpleado_Click(object sender, EventArgs e)
@@ -418,8 +420,8 @@ namespace ProyectoAutoPartes
             }
 
             // Agregar empleado
-            rRHH.AgregarEmpleado(dpiEmpleado, nombreEmpleado, fecha, rolEmpleado, cuentaBanc, usuario, contrasenia, 0, 0, salario);
-
+            /*rRHH.AgregarEmpleado(dpiEmpleado, nombreEmpleado, fecha, rolEmpleado, cuentaBanc, usuario, contrasenia, 0, 0, salario);
+            */
             MessageBox.Show("Empleado agregado exitosamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
         }
@@ -677,7 +679,7 @@ namespace ProyectoAutoPartes
         private void CargarDatosFinanzas()
         {
             DataTable dt = financiera.ObtenerDatosParaGrafico();
-            Report report = new Report();
+            /*Report report = new Report();*/
             report.Load("InformeGrafico.frx");
 
             // 3. Registrar el DataTable en el reporte
