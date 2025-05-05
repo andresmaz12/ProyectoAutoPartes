@@ -1,55 +1,54 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
-using System.Windows.Forms;
+using System.Linq;
+using System.Text;
+using Microsoft.VisualBasic;
+using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
+using System.Globalization;
+using System.Windows.Forms;
 
 namespace ProyectoAutoPartes
 {
-    public interface IFormDependencies
-    {
-        DataGridView dataGridViewClientes { get; }
-        bool VerificarNivel3();
-          ClaseGestionVentas ventas { get; }
-    }
-
     public class ClaseClientes
     {
         private readonly string connectionString;
         private readonly IFormDependencies form;
 
-        // Constructor con inyección de dependencias
-        public ClaseClientes(string connectionString, IFormDependencies form)
+        // Constructor with dependency injection
+        public ClaseClientes(string connectionString, IFormDependencies formDependencies)
         {
-            this.connectionString = connectionString ?? throw new ArgumentNullException(nameof(connectionString));
-            this.form = form ?? throw new ArgumentNullException(nameof(form));
+            this.connectionString = connectionString;
+            this.form = formDependencies;
         }
 
-        // Cargar datos de clientes
+        // Load all clients (returns DataTable)
         public DataTable CargarDatos()
         {
+            DataTable dt = new DataTable();
+
             try
             {
                 using (var conn = new MySqlConnection(connectionString))
                 using (var adapter = new MySqlDataAdapter("SELECT * FROM Clientes", conn))
                 {
-                    DataTable dt = new DataTable();
                     adapter.Fill(dt);
-   
-                    form.dataGridViewClientes.DataSource = dt;
-                    return dt;
                 }
-            }              
+                return dt;
+            }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error al cargar datos: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return null;
+                throw new Exception($"Error loading data: {ex.Message}");
             }
         }
 
-        // Búsqueda flexible por criterio
-        public DataTable BuscarCliente(string criterio, string valor)
+        // Search client by name (returns DataTable)
+        public DataTable BuscarCliente(string nombre)
         {
-            if (string.IsNullOrWhiteSpace(valor))
+            DataTable dt = new DataTable();
+
+            if (string.IsNullOrWhiteSpace(nombre))
             {
                 return CargarDatos();
             }
@@ -58,34 +57,37 @@ namespace ProyectoAutoPartes
             {
                 using (var conn = new MySqlConnection(connectionString))
                 {
-                    string query = $"SELECT * FROM Clientes WHERE {criterio} LIKE @Valor";
+                    string query = "SELECT * FROM Clientes WHERE Nombre LIKE @Nombre";
                     using (var cmd = new MySqlCommand(query, conn))
                     {
-                        cmd.Parameters.AddWithValue("@Valor", $"%{valor}%");
+                        cmd.Parameters.AddWithValue("@Nombre", $"%{nombre}%");
 
                         var adapter = new MySqlDataAdapter(cmd);
-                        DataTable dt = new DataTable();
                         adapter.Fill(dt);
-                        form.dataGridViewClientes.DataSource = dt;
-                        return dt;
                     }
                 }
+                return dt;
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error al buscar cliente: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return null;
+                throw new Exception($"Error searching client: {ex.Message}");
             }
         }
 
-        // Guardar nuevo cliente
-        public bool GuardarCliente(string dpiCliente, string nit, string nombre, string tipoCliente,
-                                 string direccion, int comprasEmpresa, string telefono, double descuentosFidelidad)
+        // Save new client (returns success bool)
+        public bool GuardarCliente(
+            string dpiCliente,
+            string nit,
+            string nombre,
+            string tipoCliente,
+            string direccion,
+            int comprasEmpresa,
+            string telefono,
+            double descuentosFidelidad)
         {
             if (string.IsNullOrWhiteSpace(nombre) || string.IsNullOrWhiteSpace(dpiCliente))
             {
-                MessageBox.Show("Nombre y DPI son obligatorios.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return false;
+                throw new ArgumentException("Name and DPI are required.");
             }
 
             try
@@ -110,37 +112,22 @@ namespace ProyectoAutoPartes
                         command.Parameters.AddWithValue("@Descuentos", descuentosFidelidad);
 
                         connection.Open();
-                        int result = command.ExecuteNonQuery();
-                        if (result > 0)
-                        {
-                            MessageBox.Show("Cliente guardado con éxito!", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            CargarDatos();
-                            return true;
-                        }
-                        return false;
+                        return command.ExecuteNonQuery() > 0;
                     }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error al guardar: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false;
+                throw new Exception($"Error saving client: {ex.Message}");
             }
         }
 
-        // Eliminar cliente con validación de permisos
-        public bool EliminarCliente(string nombre)
+        // Delete client (returns success bool)
+        public bool EliminarClientes(string nombre)
         {
             if (string.IsNullOrWhiteSpace(nombre))
             {
-                MessageBox.Show("Nombre no puede estar vacío.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return false;
-            }
-
-            if (!form.VerificarNivel3())
-            {
-                MessageBox.Show("No tienes permisos para eliminar clientes.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return false;
+                throw new ArgumentException("Name cannot be empty.");
             }
 
             try
@@ -152,31 +139,22 @@ namespace ProyectoAutoPartes
                     {
                         cmd.Parameters.AddWithValue("@Nombre", nombre);
                         conn.Open();
-                        int rowsAffected = cmd.ExecuteNonQuery();
-
-                        if (rowsAffected > 0)
-                        {
-                            // Integración con claseGestionVentas
-                            form.ventas.EliminarElemento(nombre);
-
-                            MessageBox.Show("Cliente eliminado con éxito.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            CargarDatos();
-                            return true;
-                        }
-                        MessageBox.Show("Cliente no encontrado.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        return false;
+                        return cmd.ExecuteNonQuery() > 0;
                     }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error al eliminar: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false;
+                throw new Exception($"Error deleting client: {ex.Message}");
             }
         }
 
-        // Procesar reembolso con transacción
-        public bool ProcesarReembolso(int idProducto, int cantidad, double costoUnitario, string nitCliente)
+        // Process refund (returns success bool)
+        public bool ProcesarReembolso(
+            int idProducto,
+            int cantidad,
+            double costoUnitario,
+            string nitCliente)
         {
             try
             {
@@ -187,7 +165,7 @@ namespace ProyectoAutoPartes
                     {
                         try
                         {
-                            // Registrar reembolso
+                            // Register refund
                             const string insertQuery = @"INSERT INTO Reembolsos 
                                                         (ID_Producto, Cantidad, CostoUnitario, FechaReembolso, NIT_Cliente) 
                                                         VALUES (@idProducto, @cantidad, @costoUnitario, NOW(), @nitCliente)";
@@ -200,7 +178,7 @@ namespace ProyectoAutoPartes
                                 cmd.ExecuteNonQuery();
                             }
 
-                            // Actualizar inventario
+                            // Update inventory
                             const string updateQuery = @"UPDATE Inventario 
                                                          SET CantidadEnStock = CantidadEnStock + @cantidad 
                                                          WHERE ID_Producto = @idProducto";
@@ -212,22 +190,19 @@ namespace ProyectoAutoPartes
                             }
 
                             transaction.Commit();
-                            MessageBox.Show("Reembolso procesado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             return true;
                         }
-                        catch (Exception ex)
+                        catch
                         {
                             transaction.Rollback();
-                            MessageBox.Show($"Error durante el reembolso: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            return false;
+                            throw;
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error de conexión: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false;
+                throw new Exception($"Error processing refund: {ex.Message}");
             }
         }
     }
