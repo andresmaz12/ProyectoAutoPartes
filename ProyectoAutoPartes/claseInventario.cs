@@ -2,57 +2,57 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Text;
-using Microsoft.VisualBasic;
-using System.Threading.Tasks;
+using System.Windows.Forms;
 using MySql.Data.MySqlClient;
-using System.Windows.Forms; // Asegurar el uso de MessageBox
 
 namespace ProyectoAutoPartes
 {
-    public class claseGestionInventario // ya aprece la base de datos o no?
+    public class GestionInventario
     {
-        private readonly string connectionString;
-        private readonly IFormDependencies form;
+        private readonly string _connectionString;
+        private readonly IFormDependencies _form;
 
-        public claseGestionInventario(string connectionString, IFormDependencies form)
+        // Constructor con inyección de dependencias
+        public GestionInventario(string connectionString, IFormDependencies form)
         {
-            this.connectionString = connectionString;
-            this.form = form;
+            _connectionString = connectionString;
+            _form = form;
         }
 
-        // Método para insertar datos en la base de datos (Migrado de Access a MySQL)
-        // Se cambiaron OleDbConnection y OleDbCommand por MySqlConnection y MySqlCommand
-        // Se cambiaron los parámetros de '?' a '@nombre', '@descripcion', etc.
-        public void InsertarDatos( string nombreProducto, string descripcion, int cantidadStock, 
-                                  string especificacionVehiculo, double costo, double ganancia, double precio, int año)
+        public void InsertarProducto(string nombreProducto, string descripcion, int cantidadStock,
+                                     string especificacionVehiculo, double costo, double ganancia,
+                                     double precio, int año)
         {
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            using (var connection = new MySqlConnection(_connectionString))
             {
-                string query = "INSERT INTO Inventario (ID_Producto, NombreProducto, Descripcion, " +
-                              "CantidadEnStock, EspecificacionVehiculo, Costo, Ganancia, Precio, Año) " +
-                              "VALUES (@ID, @Nombre, @Desc, @Stock, @Espec, @Costo, @Ganancia, @Precio, @Año)";
+                const string query = @"INSERT INTO Inventario 
+                                      (NombreProducto, Descripcion, CantidadEnStock, 
+                                      EspecificacionVehiculo, Costo, Ganancia, Precio, Año) 
+                                      VALUES (@Nombre, @Desc, @Stock, @Espec, @Costo, @Ganancia, @Precio, @Año)";
 
-                MySqlCommand command = new MySqlCommand(query, connection);
-
-                command.Parameters.AddWithValue("@Nombre", nombreProducto);
-                command.Parameters.AddWithValue("@Desc", descripcion);
-                command.Parameters.AddWithValue("@Stock", cantidadStock);
-                command.Parameters.AddWithValue("@Espec", especificacionVehiculo);
-                command.Parameters.AddWithValue("@Costo", costo);
-                command.Parameters.AddWithValue("@Ganancia", ganancia);
-                command.Parameters.AddWithValue("@Precio", precio);
-                command.Parameters.AddWithValue("@Año", año);
-
-                try
+                using (var command = new MySqlCommand(query, connection))
                 {
-                    connection.Open();
-                    command.ExecuteNonQuery();
-                    MessageBox.Show("Producto agregado al inventario con éxito!");
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error al agregar producto: " + ex.Message);
+                    command.Parameters.AddWithValue("@Nombre", nombreProducto);
+                    command.Parameters.AddWithValue("@Desc", descripcion);
+                    command.Parameters.AddWithValue("@Stock", cantidadStock);
+                    command.Parameters.AddWithValue("@Espec", especificacionVehiculo);
+                    command.Parameters.AddWithValue("@Costo", costo);
+                    command.Parameters.AddWithValue("@Ganancia", ganancia);
+                    command.Parameters.AddWithValue("@Precio", precio);
+                    command.Parameters.AddWithValue("@Año", año);
+
+                    try
+                    {
+                        connection.Open();
+                        command.ExecuteNonQuery();
+                        MessageBox.Show("Producto agregado al inventario con éxito!", "Éxito",
+                                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error al agregar producto: " + ex.Message, "Error",
+                                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
             }
         }
@@ -65,136 +65,225 @@ namespace ProyectoAutoPartes
             }
 
             string query = buscarPorCoincidenciaParcial
-                ? "SELECT * FROM Productos WHERE Nombre_producto LIKE @nombre"
-                : "SELECT * FROM Productos WHERE Nombre_producto = @nombre";
+                ? "SELECT * FROM Inventario WHERE NombreProducto LIKE @nombre"
+                : "SELECT * FROM Inventario WHERE NombreProducto = @nombre";
 
-            using (MySqlConnection conn = new MySqlConnection(connectionString))
-            using (MySqlCommand cmd = new MySqlCommand(query, conn))
+            using (var connection = new MySqlConnection(_connectionString))
+            using (var command = new MySqlCommand(query, connection))
             {
-                cmd.Parameters.AddWithValue("@nombre",
+                command.Parameters.AddWithValue("@nombre",
                     buscarPorCoincidenciaParcial ? $"%{nombreProducto}%" : nombreProducto);
 
-                using (MySqlDataAdapter adapter = new MySqlDataAdapter(cmd))
+                using (var adapter = new MySqlDataAdapter(command))
                 {
-                    DataTable dt = new DataTable();
+                    var dt = new DataTable();
                     adapter.Fill(dt);
                     return dt;
                 }
             }
         }
-        // Método para editar datos (Migrado de Access a MySQL)
-        // Se reemplazaron OleDb por MySql en conexiones y comandos
-        public void EditarDatos()
+
+        public void EditarProducto(int id, string nombre, string descripcion, double costo, int stock)
         {
-            formularioEditarDatos form7 = new formularioEditarDatos();
-            DialogResult result = form7.ShowDialog();
-
-            if (result == DialogResult.OK)
+            using (var connection = new MySqlConnection(_connectionString))
             {
-                using (MySqlConnection conn = new MySqlConnection(connectionString))
-                {
-                    conn.Open();
-                    string query = "UPDATE inventario SET NombreProducto = @nombre, Descripcion = @descripcion, Costo = @costo, CantidadEnStock = @stock WHERE ID_Producto = @id";
-                    using (MySqlCommand cmd = new MySqlCommand(query, conn))
-                    {
-                        cmd.Parameters.AddWithValue("@nombre", form7.Nombre);
-                        cmd.Parameters.AddWithValue("@descripcion", form7.Descripcion);
-                        cmd.Parameters.AddWithValue("@costo", form7.Precio); // Renombrado de 'Precio' a 'Costo'
-                        cmd.Parameters.AddWithValue("@stock", form7.Cantidad);
-                        cmd.Parameters.AddWithValue("@id", form7.ID);
+                const string query = @"UPDATE Inventario 
+                                     SET NombreProducto = @nombre, 
+                                         Descripcion = @descripcion, 
+                                         Costo = @costo, 
+                                         CantidadEnStock = @stock 
+                                     WHERE ID_Producto = @id";
 
-                        int filasAfectadas = cmd.ExecuteNonQuery();
+                using (var command = new MySqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@nombre", nombre);
+                    command.Parameters.AddWithValue("@descripcion", descripcion);
+                    command.Parameters.AddWithValue("@costo", costo);
+                    command.Parameters.AddWithValue("@stock", stock);
+                    command.Parameters.AddWithValue("@id", id);
+
+                    try
+                    {
+                        connection.Open();
+                        int filasAfectadas = command.ExecuteNonQuery();
 
                         if (filasAfectadas > 0)
-                            MessageBox.Show("Datos actualizados correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            MessageBox.Show("Producto actualizado correctamente.", "Éxito",
+                                          MessageBoxButtons.OK, MessageBoxIcon.Information);
                         else
-                            MessageBox.Show("No se encontró el producto para actualizar.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            MessageBox.Show("No se encontró el producto para actualizar.", "Advertencia",
+                                          MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error al actualizar producto: " + ex.Message, "Error",
+                                        MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }
         }
-        // Método para eliminar datos (Migrado de Access a MySQL)
-        // Se ajustaron comandos para que sean compatibles con MySQL
-        public void EliminarDatos()
-        {
-            // Obtener el ID desde un InputBox
-            string inputID = Interaction.InputBox("Ingrese el ID del producto que desea borrar:", "Eliminar Producto", "").Trim();
 
-            // Validar que el ID sea un número válido
-            if (!int.TryParse(inputID, out int ID))
+        public void EliminarProducto(int id)
+        {
+            var confirmacion = MessageBox.Show("¿Estás seguro de eliminar este producto?", "Confirmar",
+                                              MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+            if (confirmacion != DialogResult.Yes) return;
+
+            using (var connection = new MySqlConnection(_connectionString))
             {
-                MessageBox.Show("Por favor, ingrese un ID válido.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                const string query = "DELETE FROM Inventario WHERE ID_Producto = @id";
+
+                using (var command = new MySqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@id", id);
+
+                    try
+                    {
+                        connection.Open();
+                        int filasAfectadas = command.ExecuteNonQuery();
+
+                        if (filasAfectadas > 0)
+                            MessageBox.Show("Producto eliminado correctamente.", "Éxito",
+                                          MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        else
+                            MessageBox.Show("No se encontró el producto para eliminar.", "Advertencia",
+                                          MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error al eliminar producto: " + ex.Message, "Error",
+                                      MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+        }
+
+        public void BuscarProductoEnFormulario(string nombre)
+        {
+            if (string.IsNullOrWhiteSpace(nombre))
+            {
+                MessageBox.Show("Ingrese un nombre para buscar.", "Advertencia",
+                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            using (var connection = new MySqlConnection(_connectionString))
             {
-                conn.Open();
-                string query = "DELETE FROM inventario WHERE ID_Producto = @id"; // Corrección aquí
+                const string query = "SELECT * FROM Inventario WHERE NombreProducto LIKE @nombre";
 
-                using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                using (var command = new MySqlCommand(query, connection))
                 {
-                    cmd.Parameters.AddWithValue("@id", ID);
+                    command.Parameters.AddWithValue("@nombre", $"%{nombre}%");
 
-                    // Confirmación antes de eliminar
-                    DialogResult result = MessageBox.Show("¿Estás seguro de que deseas eliminar este producto?", "Confirmar eliminación",
-                                                          MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-
-                    if (result == DialogResult.Yes)
+                    try
                     {
-                        try
+                        connection.Open();
+                        using (var adapter = new MySqlDataAdapter(command))
                         {
-                            int filasAfectadas = cmd.ExecuteNonQuery();
-
-                            if (filasAfectadas > 0)
-                                MessageBox.Show("Producto eliminado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            else
-                                MessageBox.Show("No se encontró el producto para eliminar.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            var dt = new DataTable();
+                            adapter.Fill(dt);
+                            _form.ActualizarDataGridView(dt);
                         }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show("Error al eliminar el producto: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error en la búsqueda: " + ex.Message, "Error",
+                                        MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }
         }
-        public void ComprarInventario(string idProducto, int cantidadComprada, string proovedeor,double costoUnitario)
+
+        public void BuscarProductosMultiples(List<string> nombresProductos)
         {
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            if (nombresProductos == null || !nombresProductos.Any())
             {
-                connection.Open();
-                MySqlTransaction transaction = connection.BeginTransaction();
+                MessageBox.Show("Ingrese al menos un nombre de producto.", "Advertencia",
+                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
-                try
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                var parametros = nombresProductos.Select((nombre, index) => $"@nombre{index}").ToList();
+                var query = $"SELECT * FROM Inventario WHERE NombreProducto IN ({string.Join(",", parametros)})";
+
+                using (var command = new MySqlCommand(query, connection))
                 {
-                    // Insertar la compra en la tabla Compras
-                    string insertCompraQuery = "INSERT INTO Compras (ID_Producto, Cantidad, CostoUnitario, FechaCompra) VALUES (@ID_Producto, @Cantidad, @CostoUnitario, NOW())";
-                    using (MySqlCommand cmdCompra = new MySqlCommand(insertCompraQuery, connection, transaction))
+                    for (int i = 0; i < nombresProductos.Count; i++)
                     {
-                        cmdCompra.Parameters.AddWithValue("@ID_Producto", idProducto);
-                        cmdCompra.Parameters.AddWithValue("@Cantidad", cantidadComprada);
-                        cmdCompra.Parameters.AddWithValue("@CostoUnitario", costoUnitario);
-                        cmdCompra.ExecuteNonQuery();
+                        command.Parameters.AddWithValue($"@nombre{i}", nombresProductos[i]);
                     }
 
-                    // Actualizar el stock en la tabla Inventario
-                    string updateInventarioQuery = "UPDATE Inventario SET CantidadEnStock = CantidadEnStock + @Cantidad WHERE ID_Producto = @ID_Producto";
-                    using (MySqlCommand cmdInventario = new MySqlCommand(updateInventarioQuery, connection, transaction))
+                    try
                     {
-                        cmdInventario.Parameters.AddWithValue("@Cantidad", cantidadComprada);
-                        cmdInventario.Parameters.AddWithValue("@ID_Producto", idProducto);
-                        cmdInventario.ExecuteNonQuery();
+                        connection.Open();
+                        using (var adapter = new MySqlDataAdapter(command))
+                        {
+                            var dt = new DataTable();
+                            adapter.Fill(dt);
+                            _form.ActualizarDataGridView(dt);
+                        }
                     }
-
-                    // Confirmar la transacción
-                    transaction.Commit();
-                    MessageBox.Show("Compra realizada y stock actualizado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error en la búsqueda múltiple: " + ex.Message, "Error",
+                                      MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
-                catch (Exception ex)
+            }
+        }
+
+        public double CalcularValorTotalInventario()
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                const string query = "SELECT SUM(CantidadEnStock * Costo) FROM Inventario";
+
+                using (var command = new MySqlCommand(query, connection))
                 {
-                    transaction.Rollback();
-                    MessageBox.Show("Error al realizar la compra: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    try
+                    {
+                        connection.Open();
+                        var result = command.ExecuteScalar();
+                        return result != DBNull.Value ? Convert.ToDouble(result) : 0;
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error al calcular valor total: " + ex.Message, "Error",
+                                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return 0;
+                    }
+                }
+            }
+        }
+
+        public void IdentificarProductosConStockBajo(int limite)
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                const string query = "SELECT * FROM Inventario WHERE CantidadEnStock < @limite";
+
+                using (var command = new MySqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@limite", limite);
+
+                    try
+                    {
+                        connection.Open();
+                        using (var adapter = new MySqlDataAdapter(command))
+                        {
+                            var dt = new DataTable();
+                            adapter.Fill(dt);
+                            _form.ActualizarDataGridView(dt);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error al buscar productos con stock bajo: " + ex.Message, "Error",
+                                      MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
             }
         }
