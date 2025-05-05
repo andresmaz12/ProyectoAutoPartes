@@ -4,24 +4,25 @@ using System.Data;
 using System.Linq;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
+using Microsoft.VisualBasic;
 
 namespace ProyectoAutoPartes
 {
     public class GestionInventario
     {
         private readonly string _connectionString;
-        private readonly IFormDependencies _form;
+        private readonly IFormDependencies form;
 
-        // Constructor con inyección de dependencias
         public GestionInventario(string connectionString, IFormDependencies form)
         {
             _connectionString = connectionString;
-            _form = form;
+            this.form = form;
         }
 
+        // OPERACIONES BÁSICAS DE INVENTARIO
         public void InsertarProducto(string nombreProducto, string descripcion, int cantidadStock,
-                                     string especificacionVehiculo, double costo, double ganancia,
-                                     double precio, int año)
+                                   string especificacionVehiculo, double costo, double ganancia,
+                                   double precio, int año)
         {
             using (var connection = new MySqlConnection(_connectionString))
             {
@@ -46,39 +47,13 @@ namespace ProyectoAutoPartes
                         connection.Open();
                         command.ExecuteNonQuery();
                         MessageBox.Show("Producto agregado al inventario con éxito!", "Éxito",
-                                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                      MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                     catch (Exception ex)
                     {
                         MessageBox.Show("Error al agregar producto: " + ex.Message, "Error",
-                                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                      MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
-                }
-            }
-        }
-
-        public DataTable BuscarProducto(string nombreProducto, bool buscarPorCoincidenciaParcial = true)
-        {
-            if (string.IsNullOrWhiteSpace(nombreProducto))
-            {
-                throw new ArgumentException("El nombre del producto no puede estar vacío", nameof(nombreProducto));
-            }
-
-            string query = buscarPorCoincidenciaParcial
-                ? "SELECT * FROM Inventario WHERE NombreProducto LIKE @nombre"
-                : "SELECT * FROM Inventario WHERE NombreProducto = @nombre";
-
-            using (var connection = new MySqlConnection(_connectionString))
-            using (var command = new MySqlCommand(query, connection))
-            {
-                command.Parameters.AddWithValue("@nombre",
-                    buscarPorCoincidenciaParcial ? $"%{nombreProducto}%" : nombreProducto);
-
-                using (var adapter = new MySqlDataAdapter(command))
-                {
-                    var dt = new DataTable();
-                    adapter.Fill(dt);
-                    return dt;
                 }
             }
         }
@@ -159,7 +134,8 @@ namespace ProyectoAutoPartes
             }
         }
 
-        public void BuscarProductoEnFormulario(string nombre)
+        // BÚSQUEDAS Y CONSULTAS
+        public void BuscarProducto(string nombre)
         {
             if (string.IsNullOrWhiteSpace(nombre))
             {
@@ -183,13 +159,13 @@ namespace ProyectoAutoPartes
                         {
                             var dt = new DataTable();
                             adapter.Fill(dt);
-                            _form.ActualizarDataGridView(dt);
+                            _formMenu.dataGridViewInvetario.DataSource = dt;
                         }
                     }
                     catch (Exception ex)
                     {
                         MessageBox.Show("Error en la búsqueda: " + ex.Message, "Error",
-                                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                      MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }
@@ -223,7 +199,7 @@ namespace ProyectoAutoPartes
                         {
                             var dt = new DataTable();
                             adapter.Fill(dt);
-                            _form.ActualizarDataGridView(dt);
+                            _formMenu.dataGridViewInvetario.DataSource = dt;
                         }
                     }
                     catch (Exception ex)
@@ -235,6 +211,104 @@ namespace ProyectoAutoPartes
             }
         }
 
+        // GESTIÓN DE STOCK
+        public void ComprarProducto(int idProducto, int cantidad, double costoUnitario)
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                connection.Open();
+                using (var transaction = connection.BeginTransaction())
+                {
+                    try
+                    {
+                        // Registrar la compra
+                        const string insertQuery = @"INSERT INTO Compras 
+                                                     (ID_Producto, Cantidad, CostoUnitario, FechaCompra) 
+                                                     VALUES (@id, @cantidad, @costo, NOW())";
+
+                        using (var command = new MySqlCommand(insertQuery, connection, transaction))
+                        {
+                            command.Parameters.AddWithValue("@id", idProducto);
+                            command.Parameters.AddWithValue("@cantidad", cantidad);
+                            command.Parameters.AddWithValue("@costo", costoUnitario);
+                            command.ExecuteNonQuery();
+                        }
+
+                        // Actualizar inventario
+                        const string updateQuery = @"UPDATE Inventario 
+                                                   SET CantidadEnStock = CantidadEnStock + @cantidad 
+                                                   WHERE ID_Producto = @id";
+
+                        using (var command = new MySqlCommand(updateQuery, connection, transaction))
+                        {
+                            command.Parameters.AddWithValue("@id", idProducto);
+                            command.Parameters.AddWithValue("@cantidad", cantidad);
+                            command.ExecuteNonQuery();
+                        }
+
+                        transaction.Commit();
+                        MessageBox.Show("Compra registrada y stock actualizado.", "Éxito",
+                                      MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    catch (Exception ex)
+                    {
+                        transaction.Rollback();
+                        MessageBox.Show("Error al procesar compra: " + ex.Message, "Error",
+                                      MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+        }
+
+        public void ReintegrarReembolso(int idProducto, int cantidad, double costoUnitario)
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                connection.Open();
+                using (var transaction = connection.BeginTransaction())
+                {
+                    try
+                    {
+                        // Registrar el reembolso
+                        const string insertQuery = @"INSERT INTO Reembolsos 
+                                                   (ID_Producto, Cantidad, CostoUnitario, FechaRembolso) 
+                                                   VALUES (@id, @cantidad, @costo, NOW())";
+
+                        using (var command = new MySqlCommand(insertQuery, connection, transaction))
+                        {
+                            command.Parameters.AddWithValue("@id", idProducto);
+                            command.Parameters.AddWithValue("@cantidad", cantidad);
+                            command.Parameters.AddWithValue("@costo", costoUnitario);
+                            command.ExecuteNonQuery();
+                        }
+
+                        // Actualizar inventario
+                        const string updateQuery = @"UPDATE Inventario 
+                                                   SET CantidadEnStock = CantidadEnStock - @cantidad 
+                                                   WHERE ID_Producto = @id";
+
+                        using (var command = new MySqlCommand(updateQuery, connection, transaction))
+                        {
+                            command.Parameters.AddWithValue("@id", idProducto);
+                            command.Parameters.AddWithValue("@cantidad", cantidad);
+                            command.ExecuteNonQuery();
+                        }
+
+                        transaction.Commit();
+                        MessageBox.Show("Reembolso procesado y stock actualizado.", "Éxito",
+                                      MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    catch (Exception ex)
+                    {
+                        transaction.Rollback();
+                        MessageBox.Show("Error al procesar reembolso: " + ex.Message, "Error",
+                                      MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+        }
+
+        // REPORTES Y ANÁLISIS
         public double CalcularValorTotalInventario()
         {
             using (var connection = new MySqlConnection(_connectionString))
@@ -276,7 +350,7 @@ namespace ProyectoAutoPartes
                         {
                             var dt = new DataTable();
                             adapter.Fill(dt);
-                            _form.ActualizarDataGridView(dt);
+                            _formMenu.dataGridViewInvetario.DataSource = dt;
                         }
                     }
                     catch (Exception ex)

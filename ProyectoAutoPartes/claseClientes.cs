@@ -7,8 +7,10 @@ namespace ProyectoAutoPartes
 {
     public interface IFormDependencies
     {
-        private string connectionString;
-        private formMenu form;
+        DataGridView dataGridViewClientes { get; }
+        bool VerificarNivel3();
+          ClaseGestionVentas ventas { get; }
+    }
 
     public class ClaseClientes
     {
@@ -16,33 +18,50 @@ namespace ProyectoAutoPartes
         private readonly IFormDependencies form;
 
         // Constructor con inyección de dependencias
-        public claseClientes(string connectionString, formMenu form)
+        public ClaseClientes(string connectionString, IFormDependencies form)
         {
             this.connectionString = connectionString ?? throw new ArgumentNullException(nameof(connectionString));
             this.form = form ?? throw new ArgumentNullException(nameof(form));
         }
 
-        public void CargarDatos()
-        {
-            using var conn = new MySqlConnection(connectionString);
-            string query = "SELECT * FROM Clientes"; //Aqui se llama a la tabla que se quiere usar, es posible reutilizar el codigo en caso de ser necesesario
-            var adapter = new MySqlDataAdapter(query, conn);
-            DataTable dt = new DataTable();
-            adapter.Fill(dt);
-            form.dataGridViewClientes.DataSource = dt;
-        }
-
-        // Búsqueda de cliente por nombre (retorna DataTable con resultados )
-        public DataTable BuscarCliente(string nombre)
+        // Cargar datos de clientes
+        public DataTable CargarDatos()
         {
             try
             {
                 using (var conn = new MySqlConnection(connectionString))
+                using (var adapter = new MySqlDataAdapter("SELECT * FROM Clientes", conn))
                 {
-                    string query = "SELECT * FROM Clientes WHERE Nombre LIKE @nombre";
+                    DataTable dt = new DataTable();
+                    adapter.Fill(dt);
+   
+                    form.dataGridViewClientes.DataSource = dt;
+                    return dt;
+                }
+            }              
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al cargar datos: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
+            }
+        }
+
+        // Búsqueda flexible por criterio
+        public DataTable BuscarCliente(string criterio, string valor)
+        {
+            if (string.IsNullOrWhiteSpace(valor))
+            {
+                return CargarDatos();
+            }
+
+            try
+            {
+                using (var conn = new MySqlConnection(connectionString))
+                {
+                    string query = $"SELECT * FROM Clientes WHERE {criterio} LIKE @Valor";
                     using (var cmd = new MySqlCommand(query, conn))
                     {
-                        cmd.Parameters.AddWithValue("@nombre", $"%{nombre}%");
+                        cmd.Parameters.AddWithValue("@Valor", $"%{valor}%");
 
                         var adapter = new MySqlDataAdapter(cmd);
                         DataTable dt = new DataTable();
@@ -59,7 +78,7 @@ namespace ProyectoAutoPartes
             }
         }
 
-        // Guardar un nuevo cliente (retorna bool indicando éxito si esta es existente)
+        // Guardar nuevo cliente
         public bool GuardarCliente(string dpiCliente, string nit, string nombre, string tipoCliente,
                                  string direccion, int comprasEmpresa, string telefono, double descuentosFidelidad)
         {
@@ -90,24 +109,73 @@ namespace ProyectoAutoPartes
                         command.Parameters.AddWithValue("@Telefono", telefono);
                         command.Parameters.AddWithValue("@Descuentos", descuentosFidelidad);
 
-                try
-                {
-                    connection.Open();
-                    command.ExecuteNonQuery();
-                    MessageBox.Show("Cliente agregado con éxito!");
-                    CargarDatos();
+                        connection.Open();
+                        int result = command.ExecuteNonQuery();
+                        if (result > 0)
+                        {
+                            MessageBox.Show("Cliente guardado con éxito!", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            CargarDatos();
+                            return true;
+                        }
+                        return false;
+                    }
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error al agregar cliente: " + ex.Message);
-                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al guardar: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
             }
         }
 
-        public void EliminarClientes(string nombre)
+        // Eliminar cliente con validación de permisos
+        public bool EliminarCliente(string nombre)
         {
+            if (string.IsNullOrWhiteSpace(nombre))
+            {
+                MessageBox.Show("Nombre no puede estar vacío.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
 
-        // Procesar reembolso (retorna bool indicando éxito)
+            if (!form.VerificarNivel3())
+            {
+                MessageBox.Show("No tienes permisos para eliminar clientes.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+
+            try
+            {
+                using (var conn = new MySqlConnection(connectionString))
+                {
+                    string query = "DELETE FROM Clientes WHERE Nombre = @Nombre";
+                    using (var cmd = new MySqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@Nombre", nombre);
+                        conn.Open();
+                        int rowsAffected = cmd.ExecuteNonQuery();
+
+                        if (rowsAffected > 0)
+                        {
+                            // Integración con claseGestionVentas
+                            form.ventas.EliminarElemento(nombre);
+
+                            MessageBox.Show("Cliente eliminado con éxito.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            CargarDatos();
+                            return true;
+                        }
+                        MessageBox.Show("Cliente no encontrado.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al eliminar: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+        }
+
+        // Procesar reembolso con transacción
         public bool ProcesarReembolso(int idProducto, int cantidad, double costoUnitario, string nitCliente)
         {
             try
@@ -119,10 +187,10 @@ namespace ProyectoAutoPartes
                     {
                         try
                         {
-                            // Registrar reembolso en la tabla Reembolsos si el producto existe
+                            // Registrar reembolso
                             const string insertQuery = @"INSERT INTO Reembolsos 
-                                                      (ID_Producto, Cantidad, CostoUnitario, FechaReembolso, NIT_Cliente) 
-                                                      VALUES (@idProducto, @cantidad, @costoUnitario, NOW(), @nitCliente)";
+                                                        (ID_Producto, Cantidad, CostoUnitario, FechaReembolso, NIT_Cliente) 
+                                                        VALUES (@idProducto, @cantidad, @costoUnitario, NOW(), @nitCliente)";
                             using (var cmd = new MySqlCommand(insertQuery, connection, transaction))
                             {
                                 cmd.Parameters.AddWithValue("@idProducto", idProducto);
@@ -132,10 +200,10 @@ namespace ProyectoAutoPartes
                                 cmd.ExecuteNonQuery();
                             }
 
-                            // Actualizar inventario si el reembolso es exitoso
+                            // Actualizar inventario
                             const string updateQuery = @"UPDATE Inventario 
-                                                       SET CantidadEnStock = CantidadEnStock + @cantidad 
-                                                       WHERE ID_Producto = @idProducto";
+                                                         SET CantidadEnStock = CantidadEnStock + @cantidad 
+                                                         WHERE ID_Producto = @idProducto";
                             using (var cmd = new MySqlCommand(updateQuery, connection, transaction))
                             {
                                 cmd.Parameters.AddWithValue("@idProducto", idProducto);
@@ -156,7 +224,6 @@ namespace ProyectoAutoPartes
                     }
                 }
             }
-            // 
             catch (Exception ex)
             {
                 MessageBox.Show($"Error de conexión: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
