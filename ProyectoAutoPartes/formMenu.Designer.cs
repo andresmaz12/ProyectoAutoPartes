@@ -64,6 +64,8 @@
             dateTimePickerVentas = new DateTimePicker();
             dataGridViewVentas = new DataGridView();
             tabPage3 = new TabPage();
+            label39 = new Label();
+            textBoxTelefonoCliente = new TextBox();
             buttonEliminiarCliente = new Button();
             label7 = new Label();
             label6 = new Label();
@@ -129,10 +131,9 @@
             groupBoxDestionCompra = new GroupBox();
             radioButtonInsumos = new RadioButton();
             radioButtonInventario = new RadioButton();
-            button3 = new Button();
             button4 = new Button();
             button5 = new Button();
-            button6 = new Button();
+            buttonCancelarCompra = new Button();
             listBox2 = new ListBox();
             label32 = new Label();
             label33 = new Label();
@@ -144,15 +145,30 @@
             textBox1 = new TextBox();
             textBox2 = new TextBox();
             textBoxCompraInventario = new TextBox();
-            button7 = new Button();
-            button8 = new Button();
-            button9 = new Button();
+            buttonRealizaCompra = new Button();
+            buttonEliminarProdCompra = new Button();
+            buttonAgregarProdCompra = new Button();
             label37 = new Label();
             label38 = new Label();
             dateTimePicker2 = new DateTimePicker();
             dataGridView1 = new DataGridView();
-            label39 = new Label();
-            textBoxTelefonoCliente = new TextBox();
+            tabPage7 = new TabPage();
+            buttonEliminarProveedor = new Button();
+            buttonBuscarProveedor = new Button();
+            buttonGuararProveedor = new Button();
+            label40 = new Label();
+            textBoxTelefonoProveedor = new TextBox();
+            label41 = new Label();
+            label42 = new Label();
+            label43 = new Label();
+            label44 = new Label();
+            label45 = new Label();
+            label46 = new Label();
+            comboBoxTipoProveedor = new ComboBox();
+            textBoxDireccionProveedor = new TextBox();
+            textBoxNombreProveedor = new TextBox();
+            textBoxNitProveedor = new TextBox();
+            dataGridViewProovedores = new DataGridView();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewInvetario).BeginInit();
@@ -171,6 +187,8 @@
             groupBoxDestionCompra.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            tabPage7.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewProovedores).BeginInit();
             SuspendLayout();
             // 
             // tabControl1
@@ -182,6 +200,7 @@
             tabControl1.Controls.Add(tabPage4);
             tabControl1.Controls.Add(tabPage6);
             tabControl1.Controls.Add(tabPage5);
+            tabControl1.Controls.Add(tabPage7);
             tabControl1.Location = new Point(-3, 31);
             tabControl1.Multiline = true;
             tabControl1.Name = "tabControl1";
@@ -567,6 +586,22 @@
             tabPage3.Size = new Size(951, 414);
             tabPage3.TabIndex = 2;
             tabPage3.Text = "Clientes";
+            // 
+            // label39
+            // 
+            label39.AutoSize = true;
+            label39.Location = new Point(740, 300);
+            label39.Name = "label39";
+            label39.Size = new Size(111, 15);
+            label39.TabIndex = 18;
+            label39.Text = "Telefono del Cliente";
+            // 
+            // textBoxTelefonoCliente
+            // 
+            textBoxTelefonoCliente.Location = new Point(674, 318);
+            textBoxTelefonoCliente.Name = "textBoxTelefonoCliente";
+            textBoxTelefonoCliente.Size = new Size(229, 23);
+            textBoxTelefonoCliente.TabIndex = 17;
             // 
             // buttonEliminiarCliente
             // 
@@ -1120,10 +1155,9 @@
             tabPage5.BackColor = Color.CornflowerBlue;
             tabPage5.Controls.Add(groupBoxProveedor);
             tabPage5.Controls.Add(groupBoxDestionCompra);
-            tabPage5.Controls.Add(button3);
             tabPage5.Controls.Add(button4);
             tabPage5.Controls.Add(button5);
-            tabPage5.Controls.Add(button6);
+            tabPage5.Controls.Add(buttonCancelarCompra);
             tabPage5.Controls.Add(listBox2);
             tabPage5.Controls.Add(label32);
             tabPage5.Controls.Add(label33);
@@ -1135,9 +1169,9 @@
             tabPage5.Controls.Add(textBox1);
             tabPage5.Controls.Add(textBox2);
             tabPage5.Controls.Add(textBoxCompraInventario);
-            tabPage5.Controls.Add(button7);
-            tabPage5.Controls.Add(button8);
-            tabPage5.Controls.Add(button9);
+            tabPage5.Controls.Add(buttonRealizaCompra);
+            tabPage5.Controls.Add(buttonEliminarProdCompra);
+            tabPage5.Controls.Add(buttonAgregarProdCompra);
             tabPage5.Controls.Add(label37);
             tabPage5.Controls.Add(label38);
             tabPage5.Controls.Add(dateTimePicker2);
@@ -1215,15 +1249,6 @@
             radioButtonInventario.UseVisualStyleBackColor = true;
             radioButtonInventario.CheckedChanged += radioButtonInventario_CheckedChanged;
             // 
-            // button3
-            // 
-            button3.Location = new Point(580, 309);
-            button3.Name = "button3";
-            button3.Size = new Size(103, 41);
-            button3.TabIndex = 59;
-            button3.Text = "Editar Compra";
-            button3.UseVisualStyleBackColor = true;
-            // 
             // button4
             // 
             button4.Location = new Point(689, 309);
@@ -1232,6 +1257,7 @@
             button4.TabIndex = 58;
             button4.Text = "Eliminar Compra";
             button4.UseVisualStyleBackColor = true;
+            button4.Click += button4_Click;
             // 
             // button5
             // 
@@ -1241,15 +1267,17 @@
             button5.TabIndex = 57;
             button5.Text = "Buscar por Factura";
             button5.UseVisualStyleBackColor = true;
+            button5.Click += button5_Click;
             // 
-            // button6
+            // buttonCancelarCompra
             // 
-            button6.Location = new Point(378, 366);
-            button6.Name = "button6";
-            button6.Size = new Size(103, 41);
-            button6.TabIndex = 56;
-            button6.Text = "Cancelar Venta";
-            button6.UseVisualStyleBackColor = true;
+            buttonCancelarCompra.Location = new Point(378, 366);
+            buttonCancelarCompra.Name = "buttonCancelarCompra";
+            buttonCancelarCompra.Size = new Size(103, 41);
+            buttonCancelarCompra.TabIndex = 56;
+            buttonCancelarCompra.Text = "Cancelar Compra";
+            buttonCancelarCompra.UseVisualStyleBackColor = true;
+            buttonCancelarCompra.Click += buttonCancelarCompra_Click;
             // 
             // listBox2
             // 
@@ -1335,7 +1363,7 @@
             textBox2.Name = "textBox2";
             textBox2.Size = new Size(209, 23);
             textBox2.TabIndex = 46;
-            textBox2.Text = "Se llenara solo";
+            textBox2.Text = "(Llene en caso de haber)";
             // 
             // textBoxCompraInventario
             // 
@@ -1343,34 +1371,37 @@
             textBoxCompraInventario.Name = "textBoxCompraInventario";
             textBoxCompraInventario.Size = new Size(209, 23);
             textBoxCompraInventario.TabIndex = 45;
-            textBoxCompraInventario.Text = "Llene si es inventario";
+            textBoxCompraInventario.Text = "(Llene si es inventario)";
             // 
-            // button7
+            // buttonRealizaCompra
             // 
-            button7.Location = new Point(269, 366);
-            button7.Name = "button7";
-            button7.Size = new Size(103, 41);
-            button7.TabIndex = 44;
-            button7.Text = "Realizar Venta";
-            button7.UseVisualStyleBackColor = true;
+            buttonRealizaCompra.Location = new Point(269, 366);
+            buttonRealizaCompra.Name = "buttonRealizaCompra";
+            buttonRealizaCompra.Size = new Size(103, 41);
+            buttonRealizaCompra.TabIndex = 44;
+            buttonRealizaCompra.Text = "Realizar Compra";
+            buttonRealizaCompra.UseVisualStyleBackColor = true;
+            buttonRealizaCompra.Click += buttonRealizaCompra_Click;
             // 
-            // button8
+            // buttonEliminarProdCompra
             // 
-            button8.Location = new Point(160, 366);
-            button8.Name = "button8";
-            button8.Size = new Size(103, 41);
-            button8.TabIndex = 43;
-            button8.Text = "Eliminar Producto";
-            button8.UseVisualStyleBackColor = true;
+            buttonEliminarProdCompra.Location = new Point(160, 366);
+            buttonEliminarProdCompra.Name = "buttonEliminarProdCompra";
+            buttonEliminarProdCompra.Size = new Size(103, 41);
+            buttonEliminarProdCompra.TabIndex = 43;
+            buttonEliminarProdCompra.Text = "Eliminar Producto";
+            buttonEliminarProdCompra.UseVisualStyleBackColor = true;
+            buttonEliminarProdCompra.Click += buttonEliminarProdCompra_Click;
             // 
-            // button9
+            // buttonAgregarProdCompra
             // 
-            button9.Location = new Point(51, 366);
-            button9.Name = "button9";
-            button9.Size = new Size(103, 41);
-            button9.TabIndex = 42;
-            button9.Text = "Agregar Producto";
-            button9.UseVisualStyleBackColor = true;
+            buttonAgregarProdCompra.Location = new Point(51, 366);
+            buttonAgregarProdCompra.Name = "buttonAgregarProdCompra";
+            buttonAgregarProdCompra.Size = new Size(103, 41);
+            buttonAgregarProdCompra.TabIndex = 42;
+            buttonAgregarProdCompra.Text = "Agregar Producto";
+            buttonAgregarProdCompra.UseVisualStyleBackColor = true;
+            buttonAgregarProdCompra.Click += buttonAgregarProdCompra_Click;
             // 
             // label37
             // 
@@ -1407,27 +1438,176 @@
             dataGridView1.Size = new Size(338, 218);
             dataGridView1.TabIndex = 38;
             // 
-            // label39
+            // tabPage7
             // 
-            label39.AutoSize = true;
-            label39.Location = new Point(740, 300);
-            label39.Name = "label39";
-            label39.Size = new Size(111, 15);
-            label39.TabIndex = 18;
-            label39.Text = "Telefono del Cliente";
+            tabPage7.BackColor = Color.CornflowerBlue;
+            tabPage7.Controls.Add(buttonEliminarProveedor);
+            tabPage7.Controls.Add(buttonBuscarProveedor);
+            tabPage7.Controls.Add(buttonGuararProveedor);
+            tabPage7.Controls.Add(label40);
+            tabPage7.Controls.Add(textBoxTelefonoProveedor);
+            tabPage7.Controls.Add(label41);
+            tabPage7.Controls.Add(label42);
+            tabPage7.Controls.Add(label43);
+            tabPage7.Controls.Add(label44);
+            tabPage7.Controls.Add(label45);
+            tabPage7.Controls.Add(label46);
+            tabPage7.Controls.Add(comboBoxTipoProveedor);
+            tabPage7.Controls.Add(textBoxDireccionProveedor);
+            tabPage7.Controls.Add(textBoxNombreProveedor);
+            tabPage7.Controls.Add(textBoxNitProveedor);
+            tabPage7.Controls.Add(dataGridViewProovedores);
+            tabPage7.Location = new Point(27, 4);
+            tabPage7.Name = "tabPage7";
+            tabPage7.Size = new Size(951, 414);
+            tabPage7.TabIndex = 7;
+            tabPage7.Text = "Proveedores";
             // 
-            // textBoxTelefonoCliente
+            // buttonEliminarProveedor
             // 
-            textBoxTelefonoCliente.Location = new Point(674, 318);
-            textBoxTelefonoCliente.Name = "textBoxTelefonoCliente";
-            textBoxTelefonoCliente.Size = new Size(229, 23);
-            textBoxTelefonoCliente.TabIndex = 17;
+            buttonEliminarProveedor.Location = new Point(174, 360);
+            buttonEliminarProveedor.Name = "buttonEliminarProveedor";
+            buttonEliminarProveedor.Size = new Size(133, 40);
+            buttonEliminarProveedor.TabIndex = 36;
+            buttonEliminarProveedor.Text = "Eliminar Proveedor";
+            buttonEliminarProveedor.UseVisualStyleBackColor = true;
+            buttonEliminarProveedor.Click += buttonEliminarProveedor_Click;
+            // 
+            // buttonBuscarProveedor
+            // 
+            buttonBuscarProveedor.Location = new Point(35, 360);
+            buttonBuscarProveedor.Name = "buttonBuscarProveedor";
+            buttonBuscarProveedor.Size = new Size(133, 40);
+            buttonBuscarProveedor.TabIndex = 35;
+            buttonBuscarProveedor.Text = "Buscar Proveedor";
+            buttonBuscarProveedor.UseVisualStyleBackColor = true;
+            buttonBuscarProveedor.Click += buttonBuscarProveedor_Click;
+            // 
+            // buttonGuararProveedor
+            // 
+            buttonGuararProveedor.Location = new Point(785, 360);
+            buttonGuararProveedor.Name = "buttonGuararProveedor";
+            buttonGuararProveedor.Size = new Size(133, 40);
+            buttonGuararProveedor.TabIndex = 34;
+            buttonGuararProveedor.Text = "Guardar Proveedor";
+            buttonGuararProveedor.UseVisualStyleBackColor = true;
+            buttonGuararProveedor.Click += buttonGuararProveedor_Click;
+            // 
+            // label40
+            // 
+            label40.AutoSize = true;
+            label40.Location = new Point(761, 251);
+            label40.Name = "label40";
+            label40.Size = new Size(128, 15);
+            label40.TabIndex = 33;
+            label40.Text = "Telefono del Proveedor";
+            // 
+            // textBoxTelefonoProveedor
+            // 
+            textBoxTelefonoProveedor.Location = new Point(695, 269);
+            textBoxTelefonoProveedor.Name = "textBoxTelefonoProveedor";
+            textBoxTelefonoProveedor.Size = new Size(229, 23);
+            textBoxTelefonoProveedor.TabIndex = 32;
+            // 
+            // label41
+            // 
+            label41.AutoSize = true;
+            label41.Font = new Font("Pivot Classic", 21.75F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
+            label41.Location = new Point(645, 16);
+            label41.Name = "label41";
+            label41.Size = new Size(297, 33);
+            label41.TabIndex = 31;
+            label41.Text = "Agregar Proveedor";
+            // 
+            // label42
+            // 
+            label42.AutoSize = true;
+            label42.Font = new Font("Pivot Classic", 21.75F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
+            label42.Location = new Point(131, 16);
+            label42.Name = "label42";
+            label42.Size = new Size(333, 33);
+            label42.TabIndex = 30;
+            label42.Text = "Lista de Proveedores";
+            // 
+            // label43
+            // 
+            label43.AutoSize = true;
+            label43.Location = new Point(755, 198);
+            label43.Name = "label43";
+            label43.Size = new Size(133, 15);
+            label43.TabIndex = 29;
+            label43.Text = "Direccion del Proveedor";
+            // 
+            // label44
+            // 
+            label44.AutoSize = true;
+            label44.Location = new Point(768, 150);
+            label44.Name = "label44";
+            label44.Size = new Size(103, 15);
+            label44.TabIndex = 28;
+            label44.Text = "Tipo de Proveedor";
+            // 
+            // label45
+            // 
+            label45.AutoSize = true;
+            label45.Location = new Point(761, 106);
+            label45.Name = "label45";
+            label45.Size = new Size(127, 15);
+            label45.TabIndex = 27;
+            label45.Text = "Nombre del Proveedor";
+            // 
+            // label46
+            // 
+            label46.AutoSize = true;
+            label46.Location = new Point(773, 62);
+            label46.Name = "label46";
+            label46.Size = new Size(101, 15);
+            label46.TabIndex = 26;
+            label46.Text = "NIT del Proveedor";
+            // 
+            // comboBoxTipoProveedor
+            // 
+            comboBoxTipoProveedor.FormattingEnabled = true;
+            comboBoxTipoProveedor.Items.AddRange(new object[] { "Mayorista", "Cliente comun" });
+            comboBoxTipoProveedor.Location = new Point(695, 168);
+            comboBoxTipoProveedor.Name = "comboBoxTipoProveedor";
+            comboBoxTipoProveedor.Size = new Size(229, 23);
+            comboBoxTipoProveedor.TabIndex = 24;
+            // 
+            // textBoxDireccionProveedor
+            // 
+            textBoxDireccionProveedor.Location = new Point(695, 216);
+            textBoxDireccionProveedor.Name = "textBoxDireccionProveedor";
+            textBoxDireccionProveedor.Size = new Size(229, 23);
+            textBoxDireccionProveedor.TabIndex = 23;
+            // 
+            // textBoxNombreProveedor
+            // 
+            textBoxNombreProveedor.Location = new Point(695, 124);
+            textBoxNombreProveedor.Name = "textBoxNombreProveedor";
+            textBoxNombreProveedor.Size = new Size(229, 23);
+            textBoxNombreProveedor.TabIndex = 22;
+            // 
+            // textBoxNitProveedor
+            // 
+            textBoxNitProveedor.Location = new Point(695, 80);
+            textBoxNitProveedor.Name = "textBoxNitProveedor";
+            textBoxNitProveedor.Size = new Size(229, 23);
+            textBoxNitProveedor.TabIndex = 20;
+            // 
+            // dataGridViewProovedores
+            // 
+            dataGridViewProovedores.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewProovedores.Location = new Point(13, 52);
+            dataGridViewProovedores.Name = "dataGridViewProovedores";
+            dataGridViewProovedores.Size = new Size(516, 302);
+            dataGridViewProovedores.TabIndex = 19;
             // 
             // formMenu
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.LawnGreen;
+            BackColor = Color.DimGray;
             ClientSize = new Size(978, 447);
             Controls.Add(tabControl1);
             MaximizeBox = false;
@@ -1460,6 +1640,9 @@
             groupBoxDestionCompra.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).EndInit();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            tabPage7.ResumeLayout(false);
+            tabPage7.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewProovedores).EndInit();
             ResumeLayout(false);
         }
 
@@ -1557,10 +1740,10 @@
         private TextBox textBoxRenta;
         private TextBox textBoxServiciosBasicos;
         private TabPage tabPage5;
-        private Button button3;
+        private Button buttonEditar;
         private Button button4;
         private Button button5;
-        private Button button6;
+        private Button buttonCancelarCompra;
         private ListBox listBox2;
         private Label label32;
         private Label label33;
@@ -1572,9 +1755,9 @@
         private TextBox textBox1;
         private TextBox textBox2;
         private TextBox textBoxCompraInventario;
-        private Button button7;
-        public Button button8;
-        private Button button9;
+        private Button buttonRealizaCompra;
+        public Button buttonEliminarProdCompra;
+        private Button buttonAgregarProdCompra;
         private Label label37;
         private Label label38;
         public DateTimePicker dateTimePicker2;
@@ -1590,5 +1773,22 @@
         private RadioButton radioButtonClienteRegSi;
         private Label label39;
         private TextBox textBoxTelefonoCliente;
+        private TabPage tabPage7;
+        private Label label40;
+        private TextBox textBoxTelefonoProveedor;
+        private Label label41;
+        private Label label42;
+        private Label label43;
+        private Label label44;
+        private Label label45;
+        private Label label46;
+        private ComboBox comboBoxTipoProveedor;
+        private TextBox textBoxDireccionProveedor;
+        private TextBox textBoxNombreProveedor;
+        private TextBox textBoxNitProveedor;
+        public DataGridView dataGridViewProovedores;
+        private Button buttonEliminarProveedor;
+        private Button buttonBuscarProveedor;
+        private Button buttonGuararProveedor;
     }
 }

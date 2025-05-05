@@ -7,8 +7,8 @@ namespace ProyectoAutoPartes
 {
     public interface IFormDependencies
     {
-        DataGridView dataGridViewClientes { get; }
-    }
+        private string connectionString;
+        private formMenu form;
 
     public class ClaseClientes
     {
@@ -16,31 +16,20 @@ namespace ProyectoAutoPartes
         private readonly IFormDependencies form;
 
         // Constructor con inyección de dependencias
-        public ClaseClientes(string connectionString, IFormDependencies form)
+        public claseClientes(string connectionString, formMenu form)
         {
             this.connectionString = connectionString ?? throw new ArgumentNullException(nameof(connectionString));
             this.form = form ?? throw new ArgumentNullException(nameof(form));
         }
 
-        // Cargar datos de clientes en el DataGridView y retornar DataTable
-        public DataTable CargarDatos()
+        public void CargarDatos()
         {
-            try
-            {
-                using (var conn = new MySqlConnection(connectionString))
-                using (var adapter = new MySqlDataAdapter("SELECT * FROM Clientes", conn))
-                {
-                    DataTable dt = new DataTable();
-                    adapter.Fill(dt);
-                    form.dataGridViewClientes.DataSource = dt;
-                    return dt;
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error al cargar datos: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return null;
-            }
+            using var conn = new MySqlConnection(connectionString);
+            string query = "SELECT * FROM Clientes"; //Aqui se llama a la tabla que se quiere usar, es posible reutilizar el codigo en caso de ser necesesario
+            var adapter = new MySqlDataAdapter(query, conn);
+            DataTable dt = new DataTable();
+            adapter.Fill(dt);
+            form.dataGridViewClientes.DataSource = dt;
         }
 
         // Búsqueda de cliente por nombre (retorna DataTable con resultados )
@@ -101,62 +90,22 @@ namespace ProyectoAutoPartes
                         command.Parameters.AddWithValue("@Telefono", telefono);
                         command.Parameters.AddWithValue("@Descuentos", descuentosFidelidad);
 
-                        connection.Open();
-                        int result = command.ExecuteNonQuery();
-                        if (result > 0)
-                        {
-                            MessageBox.Show("Cliente guardado con éxito!", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            CargarDatos();
-                            return true;
-                        }
-                        return false;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error al guardar: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false;
-            }
-        }
-
-        // Eliminar un cliente (retorna bool indicando éxito)
-        public bool EliminarCliente(string nombre)
-        {
-            if (string.IsNullOrWhiteSpace(nombre))
-            {
-                MessageBox.Show("Nombre no puede estar vacío.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return false;
-            }
-            
-            try
-            {
-                using (var conn = new MySqlConnection(connectionString))
+                try
                 {
-                    string query = "DELETE FROM Clientes WHERE Nombre = @Nombre";
-                    using (var cmd = new MySqlCommand(query, conn))
-                    {
-                        cmd.Parameters.AddWithValue("@Nombre", nombre);
-                        conn.Open();
-                        int rowsAffected = cmd.ExecuteNonQuery();
-
-                        if (rowsAffected > 0)
-                        {
-                            MessageBox.Show("Cliente eliminado.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            CargarDatos();
-                            return true;
-                        }
-                        MessageBox.Show("Cliente no encontrado.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        return false;
-                    }
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                    MessageBox.Show("Cliente agregado con éxito!");
+                    CargarDatos();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error al agregar cliente: " + ex.Message);
                 }
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error al eliminar: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false;
-            }
         }
+
+        public void EliminarClientes(string nombre)
+        {
 
         // Procesar reembolso (retorna bool indicando éxito)
         public bool ProcesarReembolso(int idProducto, int cantidad, double costoUnitario, string nitCliente)
