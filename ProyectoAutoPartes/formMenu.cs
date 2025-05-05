@@ -233,15 +233,115 @@ namespace ProyectoAutoPartes
             string elemento = Interaction.InputBox("Ingrese el ID del producto", "Eliminar producto", "Ej. 00");
             ventas.EliminarElementoLista(elemento);
         }
-
         private void buttonRealizarVenta_Click(object sender, EventArgs e)
         {
-            //Se liberan los buttons para evitar problemas con la lista enlazada
-            buttonCancelarVenta.Enabled = false;
-            buttonRealizarVenta.Enabled = false;
-            buttonEliminarProducto.Enabled = false;
-        }
+            try
+            {
+                // Verificar que haya productos en la lista temporal
+                if (ventas.ObtenerCantidadItemsTemporales() <= 0)
+                {
+                    MessageBox.Show("No hay productos en la lista de venta", "Error", 
+                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
 
+                // Obtener IDs de productos en la lista de venta
+                List<VentaTemporal> ventasTemporales = ventas.facturas.ObtenerVentasTemporales();
+                List<string> idsProductos = ventasTemporales.Select(v => v.IdProducto).ToList();
+
+                // Verificar inventario ANTES de la venta
+                DataTable inventarioAntes = ventas.VerificarCambiosInventario(idsProductos);
+                
+                // Confirmar la venta
+                DialogResult confirmar = MessageBox.Show(
+                    "¿Está seguro de procesar esta venta? Se actualizará el inventario.", 
+                    "Confirmar venta", 
+                    MessageBoxButtons.YesNo, 
+                    MessageBoxIcon.Question);
+
+                if (confirmar == DialogResult.Yes)
+                {
+                    // Procesar la venta y actualizar el inventario
+                    if (ventas.ProcesarVentas())
+                    {
+                        // Verificar inventario DESPUÉS de la venta
+                        DataTable inventarioDespues = ventas.VerificarCambiosInventario(idsProductos);
+                        
+                        // Crear un resumen de los cambios
+                        StringBuilder resumen = new StringBuilder();
+                        resumen.AppendLine("Resumen de cambios en inventario:");
+                        resumen.AppendLine("ID | Producto | Stock Antes | Stock Después | Diferencia");
+                        resumen.AppendLine("--------------------------------------------------------");
+                        
+                        foreach (string idProducto in idsProductos)
+                        {
+                            DataRow filaAntes = inventarioAntes.Select($"ID_Producto = '{idProducto}'").FirstOrDefault();
+                            DataRow filaDespues = inventarioDespues.Select($"ID_Producto = '{idProducto}'").FirstOrDefault();
+                            
+                            if (filaAntes != null && filaDespues != null)
+                            {
+                                int stockAntes = Convert.ToInt32(filaAntes["CantidadEnStock"]);
+                                int stockDespues = Convert.ToInt32(filaDespues["CantidadEnStock"]);
+                                int diferencia = stockDespues - stockAntes;
+                                
+                                resumen.AppendLine($"{idProducto} | {filaAntes["NombreProducto"]} | {stockAntes} | {stockDespues} | {diferencia}");
+                            }
+                        }
+                        
+                        // Mostrar resultados
+                        MessageBox.Show($"Venta procesada correctamente.\n\n{resumen}", 
+                                    "Éxito - Inventario Actualizado", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        
+                        // Deshabilitar botones relacionados
+                        buttonCancelarVenta.Enabled = false;
+                        buttonRealizarVenta.Enabled = false;
+                        buttonEliminarProducto.Enabled = false;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Hubo un problema al procesar la venta. Intente nuevamente.", 
+                                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al realizar la venta: {ex.Message}", 
+                            "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            try
+            {
+                // Confirmar la venta
+                DialogResult confirmar = MessageBox.Show(
+                    "¿Está seguro de procesar esta venta? Se actualizará el inventario.", 
+                    "Confirmar venta", 
+                    MessageBoxButtons.YesNo, 
+                    MessageBoxIcon.Question);
+
+                if (confirmar == DialogResult.Yes)
+                {
+                    // Procesar la venta - este método ahora maneja tanto la venta como la actualización del inventario
+                    if (ventas.ProcesarVentas())
+                    {
+                        MessageBox.Show("Venta procesada correctamente y el inventario ha sido actualizado.", 
+                                    "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        
+                        // Actualizar el DataGridView con los datos de inventario actualizados (si lo tienes)
+                        // Por ejemplo: CargarDatosInventario();
+                        
+                        // Deshabilitar botones relacionados
+                        buttonCancelarVenta.Enabled = false;
+                        buttonRealizarVenta.Enabled = false;
+                        buttonEliminarProducto.Enabled = false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al realizar la venta: {ex.Message}", 
+                            "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
         private void buttonBusquedaFactura_Click(object sender, EventArgs e)
         {
             string noFactura = Interaction.InputBox("Ingrese el numero de factura", "Busqueda por factura", "Ej. 10XY");
