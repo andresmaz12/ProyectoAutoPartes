@@ -16,29 +16,37 @@ using MySqlConnector;
 
 namespace ProyectoAutoPartes
 {
-    public partial class formMenu : Form
+    public interface IFormDependencies
+    {
+        void MostrarMensaje(string mensaje);
+        void ActualizarDataGridView(DataTable datos);
+        // Agrega otros métodos que realmente necesiten las clases
+    }
+
+    public partial class formMenu : Form, IFormDependencies
     {
         private claseGestionInventario inventario;
-        private claseGestionVentas ventas;
+        private calseGestionVentas ventas;
         private claseClientes clientes;
         private claseGestionRRHH rRHH;
         private claseGestionFinanciera financiera;
         private verificarUsuarioContrasenia verificarUsuario;
         private classeProveedores proveedores;
+        // otras variables...
 
         public formMenu()
         {
             InitializeComponent();
+
             string connectionString = @"";
             this.inventario = new claseGestionInventario(connectionString, this);
-            this.ventas = new claseGestionVentas(connectionString, this);
+            this.ventas = new calseGestionVentas(connectionString, this);
             this.clientes = new claseClientes(connectionString, this);
             this.rRHH = new claseGestionRRHH(connectionString, this);
             this.financiera = new claseGestionFinanciera(connectionString, this);
             this.verificarUsuario = new verificarUsuarioContrasenia(connectionString, this);
             this.proveedores = new classeProveedores(connectionString, this);
             MoificarEsteticas();
-            CargarDatosProveedores();
         }
 
         #region Metodos internos
@@ -112,60 +120,96 @@ namespace ProyectoAutoPartes
 
         private void buttonAgregarInventario_Click(object sender, EventArgs e)
         {
-            if (VerificarNivel3() == true)
+            if (!VerificarNivel2())
             {
-                formAgregarInventario agregar = new formAgregarInventario();
-                agregar.ShowDialog();
-                inventario.InsertarDatos(agregar.Nombre, agregar.Descripcion, agregar.Stock, agregar.Especificacion,
-                    agregar.Costo, agregar.Ganancia, agregar.Precio, agregar.Anio);
+                MessageBox.Show("No cuenta con el nivel necesario para realizar la acción", "Error");
+                return;
             }
-            else
+
+            using (var agregar = new formAgregarInventario())
             {
-                MessageBox.Show("Error", "No cuenta con el nivel necesario para realizar la accion ");
+                if (agregar.ShowDialog() == DialogResult.OK && inventario != null)
+                {
+                    inventario.InsertarDatos(agregar.Nombre, agregar.Descripcion, agregar.Stock,
+                                          agregar.Especificacion, agregar.Costo, agregar.Ganancia,
+                                          agregar.Precio, agregar.Anio);
+                }
             }
         }
 
         private void buttonEditarInventario_Click(object sender, EventArgs e)
         {
-            if (VerificarNivel2() == true)
+            if (!VerificarNivel2())
             {
-                inventario.EditarDatos();
+                MessageBox.Show("No cuenta con el nivel necesario para realizar la acción", "Error");
+                return;
             }
-            else
-            {
-                MessageBox.Show("Error", "No cuenta con el nivel necesario para realizar la accion ");
-            }
+
+            inventario?.EditarDatos();
         }
 
         private void buttonEliminarInventario_Click(object sender, EventArgs e)
         {
-            if (VerificarNivel2() == true)
+            if (!VerificarNivel2())
             {
-                inventario.EliminarDatos();
+                MessageBox.Show("No cuenta con el nivel necesario para realizar la acción", "Error");
+                return;
             }
-            else
-            {
-                MessageBox.Show("Error", "No cuenta con el nivel necesario para realizar la accion ");
-            }
+
+            inventario?.EliminarDatos();
         }
 
         private void buttonBuscarInventario_Click(object sender, EventArgs e)
         {
-            inventario.BuscarElemento();
+            try
+            {
+                // Opción 1: Usar un TextBox en lugar de InputBox
+                string nombreABuscar = Interaction.InputBox("Ingrese el nombre del producto a buscar","Busqueda de productos");
+
+                // Opción 2: Mantener el InputBox si es necesario
+                // string nombreABuscar = Interaction.InputBox("Ingrese el nombre del producto:", "Buscar Producto", "").Trim();
+
+                if (!string.IsNullOrEmpty(nombreABuscar))
+                {
+                    DataTable resultados = inventario.BuscarProducto(nombreABuscar);
+                    dataGridViewInvetario.DataSource = resultados;
+
+                    if (resultados.Rows.Count == 0)
+                    {
+                        MessageBox.Show("No se encontraron productos con ese nombre", "Información",
+                                      MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Por favor ingrese un nombre para buscar", "Advertencia",
+                                  MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al buscar producto: {ex.Message}", "Error",
+                              MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void buttonComprarInventario_Click(object sender, EventArgs e)
         {
-
-            if (VerificarNivel1() == true)
+            if (!VerificarNivel1())
             {
-                formularioCompraInventario compraInventario = new formularioCompraInventario();
-                compraInventario.ShowDialog();
-                inventario.ComprarInventario(compraInventario.IdProducto, compraInventario.CantComprada, compraInventario.Proveedor, compraInventario.PrecioUnitario);
+                MessageBox.Show("No cuenta con el nivel necesario para realizar la acción", "Error");
+                return;
             }
-            else
+
+            using (var compraInventario = new formularioCompraInventario())
             {
-                MessageBox.Show("No cuenta con el nivel necesario para realizar la accion ", "Error", MessageBoxButtons.OK);
+                if (compraInventario.ShowDialog() == DialogResult.OK && inventario != null)
+                {
+                    inventario.ComprarInventario(compraInventario.IdProducto,
+                                               compraInventario.CantComprada,
+                                               compraInventario.Proveedor,
+                                               compraInventario.PrecioUnitario);
+                }
             }
         }
         #endregion
@@ -187,7 +231,7 @@ namespace ProyectoAutoPartes
         {
             //Por medio del message box se obtiene el ID del producto a elminiar
             string elemento = Interaction.InputBox("Ingrese el ID del producto", "Eliminar producto", "Ej. 00");
-            ventas.EliminiarElemento(elemento);
+            ventas.EliminarElementoLista(elemento);
         }
 
         private void buttonRealizarVenta_Click(object sender, EventArgs e)
@@ -211,7 +255,7 @@ namespace ProyectoAutoPartes
             if (cancelarVenta == DialogResult.Yes)
             {
                 //El metodo simplemente vacia la lista enlazada permitiendo al dependiente hacer otra venta
-                ventas.VaciarLista();
+                ventas.VaciarListaTemporal();
                 //Se bloquean los botones hasta que se vuelva a agregar otro producto evitando problemas con la lista enlazada
                 buttonCancelarVenta.Enabled = true;
                 buttonRealizarVenta.Enabled = true;
@@ -234,8 +278,11 @@ namespace ProyectoAutoPartes
         }
         private void buttonEliminarCompra_Click(object sender, EventArgs e)
         {
-            string idVenta = "";
-            ventas.EliminarVenta(idVenta);
+            if(VerificarNivel2())
+            {
+                string idVenta = Interaction.InputBox("Ingrese el ID de la venta","Ventas", "Ej. 00");
+                ventas.EliminarVenta(idVenta);
+            }
         }
 
         private void radioButtonClienteRegNo_CheckedChanged(object sender, EventArgs e)
@@ -261,6 +308,26 @@ namespace ProyectoAutoPartes
 
         // Modulo clientes
         #region Clientes
+        private void CargarClientes()
+        {
+            try
+            {
+                DataTable datosClientes = clientes.CargarDatosClientes("Clientes");
+                dataGridViewClientes.DataSource = datosClientes;
+
+                // Opcional: Configurar columnas si es necesario
+                if (dataGridViewClientes.Columns.Count > 0)
+                {
+                    dataGridViewClientes.Columns["Id"].HeaderText = "ID Cliente";
+                    dataGridViewClientes.Columns["Nombre"].HeaderText = "Nombre Completo";
+                    // ... otras configuraciones de columnas
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
 
         private void buttonGuardarCliente_Click(object sender, EventArgs e)
         {
@@ -607,7 +674,22 @@ namespace ProyectoAutoPartes
 
         }
 
+        private void CargarDatosFinanzas()
+        {
+            DataTable dt = financiera.ObtenerDatosParaGrafico();
+            Report report = new Report();
+            report.Load("InformeGrafico.frx");
 
+            // 3. Registrar el DataTable en el reporte
+            report.RegisterData(dt, "DatosGrafico");
+
+            // 4. Asignar los datos al gráfico en el reporte
+            report.SetParameterValue("ParametroCategoria", "Categoria");
+            report.SetParameterValue("ParametroValor", "Valor");
+
+            // 5. Mostrar el reporte
+            report.Show();
+        }
         private void button1_Click(object sender, EventArgs e)
         {
             int porcentImp = Convert.ToInt32(textBoxImpuestos.Text);
@@ -628,27 +710,77 @@ namespace ProyectoAutoPartes
         #endregion
 
         #region Compras
+        //Verifica el destino de la compra
+        private bool DestionCompra = false;
+        //se encarga de ver que el usuario chequee el radiobuton
+        private bool Cheked1 = false;
+        private bool Cheked2 = false;
 
         private void radioButtonInventario_CheckedChanged(object sender, EventArgs e)
         {
             radioButtonInsumos.Checked = false;
+            DestionCompra = true;
+            Cheked1 = true;
         }
-
 
         private void radioButtonInsumos_CheckedChanged(object sender, EventArgs e)
         {
             radioButtonInventario.Checked = false;
+            DestionCompra = false;
+            Cheked1 = true;
         }
 
         private void radioButtonProveedorSI_CheckedChanged(object sender, EventArgs e)
         {
             radioButtonProveedorNO.Checked = false;
-
+            Cheked2 = true;
         }
 
         private void radioButtonProveedorNO_CheckedChanged(object sender, EventArgs e)
         {
             radioButtonProveedorSI.Checked = false;
+            Cheked2 = true;
+        }
+
+        private void buttonRealizaCompra_Click(object sender, EventArgs e)
+        {
+            if (!Cheked1 && !Cheked2)
+            {
+                MessageBox.Show("Asegurese de que haya llenado todos los campos", "Error");
+            }
+            else
+            {
+                if (DestionCompra)
+                {
+
+                }
+            }
+        }
+
+        //Buton para eliminar una compra del histoiral 
+        private void button4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void buttonAgregarProdCompra_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void buttonEliminarProdCompra_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void buttonCancelarCompra_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        //Buton para buscar por factura
+        private void button5_Click(object sender, EventArgs e)
+        {
 
         }
         #endregion

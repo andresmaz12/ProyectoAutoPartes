@@ -10,10 +10,10 @@ namespace ProyectoAutoPartes
 {
     public class classeProveedores
     {
-        private string connectionString;
-        private formMenu form;
+        private readonly string connectionString;
+        private readonly IFormDependencies form;
 
-        public classeProveedores(string connectionString, formMenu form)
+        public classeProveedores(string connectionString, IFormDependencies form)
         {
             this.connectionString = connectionString;
             this.form = form;

@@ -131,10 +131,9 @@
             groupBoxDestionCompra = new GroupBox();
             radioButtonInsumos = new RadioButton();
             radioButtonInventario = new RadioButton();
-            button3 = new Button();
             button4 = new Button();
             button5 = new Button();
-            button6 = new Button();
+            buttonCancelarCompra = new Button();
             listBox2 = new ListBox();
             label32 = new Label();
             label33 = new Label();
@@ -146,9 +145,9 @@
             textBox1 = new TextBox();
             textBox2 = new TextBox();
             textBoxCompraInventario = new TextBox();
-            button7 = new Button();
-            button8 = new Button();
-            button9 = new Button();
+            buttonRealizaCompra = new Button();
+            buttonEliminarProdCompra = new Button();
+            buttonAgregarProdCompra = new Button();
             label37 = new Label();
             label38 = new Label();
             dateTimePicker2 = new DateTimePicker();
@@ -1156,10 +1155,9 @@
             tabPage5.BackColor = Color.CornflowerBlue;
             tabPage5.Controls.Add(groupBoxProveedor);
             tabPage5.Controls.Add(groupBoxDestionCompra);
-            tabPage5.Controls.Add(button3);
             tabPage5.Controls.Add(button4);
             tabPage5.Controls.Add(button5);
-            tabPage5.Controls.Add(button6);
+            tabPage5.Controls.Add(buttonCancelarCompra);
             tabPage5.Controls.Add(listBox2);
             tabPage5.Controls.Add(label32);
             tabPage5.Controls.Add(label33);
@@ -1171,9 +1169,9 @@
             tabPage5.Controls.Add(textBox1);
             tabPage5.Controls.Add(textBox2);
             tabPage5.Controls.Add(textBoxCompraInventario);
-            tabPage5.Controls.Add(button7);
-            tabPage5.Controls.Add(button8);
-            tabPage5.Controls.Add(button9);
+            tabPage5.Controls.Add(buttonRealizaCompra);
+            tabPage5.Controls.Add(buttonEliminarProdCompra);
+            tabPage5.Controls.Add(buttonAgregarProdCompra);
             tabPage5.Controls.Add(label37);
             tabPage5.Controls.Add(label38);
             tabPage5.Controls.Add(dateTimePicker2);
@@ -1251,15 +1249,6 @@
             radioButtonInventario.UseVisualStyleBackColor = true;
             radioButtonInventario.CheckedChanged += radioButtonInventario_CheckedChanged;
             // 
-            // button3
-            // 
-            button3.Location = new Point(580, 309);
-            button3.Name = "button3";
-            button3.Size = new Size(103, 41);
-            button3.TabIndex = 59;
-            button3.Text = "Editar Compra";
-            button3.UseVisualStyleBackColor = true;
-            // 
             // button4
             // 
             button4.Location = new Point(689, 309);
@@ -1268,6 +1257,7 @@
             button4.TabIndex = 58;
             button4.Text = "Eliminar Compra";
             button4.UseVisualStyleBackColor = true;
+            button4.Click += button4_Click;
             // 
             // button5
             // 
@@ -1277,15 +1267,17 @@
             button5.TabIndex = 57;
             button5.Text = "Buscar por Factura";
             button5.UseVisualStyleBackColor = true;
+            button5.Click += button5_Click;
             // 
-            // button6
+            // buttonCancelarCompra
             // 
-            button6.Location = new Point(378, 366);
-            button6.Name = "button6";
-            button6.Size = new Size(103, 41);
-            button6.TabIndex = 56;
-            button6.Text = "Cancelar Venta";
-            button6.UseVisualStyleBackColor = true;
+            buttonCancelarCompra.Location = new Point(378, 366);
+            buttonCancelarCompra.Name = "buttonCancelarCompra";
+            buttonCancelarCompra.Size = new Size(103, 41);
+            buttonCancelarCompra.TabIndex = 56;
+            buttonCancelarCompra.Text = "Cancelar Compra";
+            buttonCancelarCompra.UseVisualStyleBackColor = true;
+            buttonCancelarCompra.Click += buttonCancelarCompra_Click;
             // 
             // listBox2
             // 
@@ -1371,7 +1363,7 @@
             textBox2.Name = "textBox2";
             textBox2.Size = new Size(209, 23);
             textBox2.TabIndex = 46;
-            textBox2.Text = "Se llenara solo";
+            textBox2.Text = "(Llene en caso de haber)";
             // 
             // textBoxCompraInventario
             // 
@@ -1379,34 +1371,37 @@
             textBoxCompraInventario.Name = "textBoxCompraInventario";
             textBoxCompraInventario.Size = new Size(209, 23);
             textBoxCompraInventario.TabIndex = 45;
-            textBoxCompraInventario.Text = "Llene si es inventario";
+            textBoxCompraInventario.Text = "(Llene si es inventario)";
             // 
-            // button7
+            // buttonRealizaCompra
             // 
-            button7.Location = new Point(269, 366);
-            button7.Name = "button7";
-            button7.Size = new Size(103, 41);
-            button7.TabIndex = 44;
-            button7.Text = "Realizar Venta";
-            button7.UseVisualStyleBackColor = true;
+            buttonRealizaCompra.Location = new Point(269, 366);
+            buttonRealizaCompra.Name = "buttonRealizaCompra";
+            buttonRealizaCompra.Size = new Size(103, 41);
+            buttonRealizaCompra.TabIndex = 44;
+            buttonRealizaCompra.Text = "Realizar Compra";
+            buttonRealizaCompra.UseVisualStyleBackColor = true;
+            buttonRealizaCompra.Click += buttonRealizaCompra_Click;
             // 
-            // button8
+            // buttonEliminarProdCompra
             // 
-            button8.Location = new Point(160, 366);
-            button8.Name = "button8";
-            button8.Size = new Size(103, 41);
-            button8.TabIndex = 43;
-            button8.Text = "Eliminar Producto";
-            button8.UseVisualStyleBackColor = true;
+            buttonEliminarProdCompra.Location = new Point(160, 366);
+            buttonEliminarProdCompra.Name = "buttonEliminarProdCompra";
+            buttonEliminarProdCompra.Size = new Size(103, 41);
+            buttonEliminarProdCompra.TabIndex = 43;
+            buttonEliminarProdCompra.Text = "Eliminar Producto";
+            buttonEliminarProdCompra.UseVisualStyleBackColor = true;
+            buttonEliminarProdCompra.Click += buttonEliminarProdCompra_Click;
             // 
-            // button9
+            // buttonAgregarProdCompra
             // 
-            button9.Location = new Point(51, 366);
-            button9.Name = "button9";
-            button9.Size = new Size(103, 41);
-            button9.TabIndex = 42;
-            button9.Text = "Agregar Producto";
-            button9.UseVisualStyleBackColor = true;
+            buttonAgregarProdCompra.Location = new Point(51, 366);
+            buttonAgregarProdCompra.Name = "buttonAgregarProdCompra";
+            buttonAgregarProdCompra.Size = new Size(103, 41);
+            buttonAgregarProdCompra.TabIndex = 42;
+            buttonAgregarProdCompra.Text = "Agregar Producto";
+            buttonAgregarProdCompra.UseVisualStyleBackColor = true;
+            buttonAgregarProdCompra.Click += buttonAgregarProdCompra_Click;
             // 
             // label37
             // 
@@ -1745,10 +1740,10 @@
         private TextBox textBoxRenta;
         private TextBox textBoxServiciosBasicos;
         private TabPage tabPage5;
-        private Button button3;
+        private Button buttonEditar;
         private Button button4;
         private Button button5;
-        private Button button6;
+        private Button buttonCancelarCompra;
         private ListBox listBox2;
         private Label label32;
         private Label label33;
@@ -1760,9 +1755,9 @@
         private TextBox textBox1;
         private TextBox textBox2;
         private TextBox textBoxCompraInventario;
-        private Button button7;
-        public Button button8;
-        private Button button9;
+        private Button buttonRealizaCompra;
+        public Button buttonEliminarProdCompra;
+        private Button buttonAgregarProdCompra;
         private Label label37;
         private Label label38;
         public DateTimePicker dateTimePicker2;

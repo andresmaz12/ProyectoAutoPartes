@@ -11,31 +11,43 @@ using System.Windows.Forms;
 
 namespace ProyectoAutoPartes
 {
-    public class claseGestionVentas
+    public class calseGestionVentas
     {
-        //Llama a la lista enlazada para realizar 
-        linkedListFacturas facturas = new linkedListFacturas();
-        //Dirección de la base de datos 
-        private string connectionString = "Server=localHost; ";
-
-        private formMenu form;
+        private readonly LinkedListVentas facturas;
+        private readonly string connectionString;
+        private readonly IFormDependencies form;
 
         // Constructor con inyección de dependencias
-        public claseGestionVentas(string connectionString, formMenu form)
+        public calseGestionVentas(string connectionString, IFormDependencies form)
         {
             this.connectionString = connectionString;
             this.form = form;
         }
 
-        public void AgregarProductoLista()
+        // Método para agregar producto a la lista temporal de ventas
+        public bool AgregarProductoLista(string idProducto, string nombreProducto, string nitCliente,
+                                       int cantidad, string noFactura, DateTime fechaVenta,
+                                       double precioUnitario, double precioTotal)
         {
-
+            try
+            {
+                facturas.AgregarVenta(idProducto, nombreProducto, nitCliente, cantidad,
+                                    noFactura, fechaVenta, precioUnitario, precioTotal);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
-        public void CargarDatosXFecha()
-        { 
-            string fechaSeleccionada = form.dateTimePickerVentas.Value.ToString("yyyy-MM-dd");
-            try 
+        // Método para cargar ventas por fecha (retorna DataTable en lugar de asignarlo directamente)
+        public DataTable CargarDatosXFecha(DateTime fecha)
+        {
+            DataTable dataTable = new DataTable();
+            string fechaSeleccionada = fecha.ToString("yyyy-MM-dd");
+
+            try
             {
                 using (MySqlConnection con = new MySqlConnection(connectionString))
                 {
@@ -43,55 +55,95 @@ namespace ProyectoAutoPartes
 
                     string query = "SELECT * FROM Ventas WHERE DATE(fecha) = @fecha";
                     MySqlCommand cmd = new MySqlCommand(query, con);
-                    cmd.CommandType = CommandType.Text;
                     cmd.Parameters.AddWithValue("@fecha", fechaSeleccionada);
 
                     MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-                    DataTable dataTable = new DataTable();
                     adapter.Fill(dataTable);
-
-                    form.dataGridViewVentas.DataSource = dataTable;
                 }
             }
-            catch(Exception ex) 
+            catch (Exception ex)
             {
-                MessageBox.Show("Error: " + ex.Message);
+                throw new Exception("Error al cargar datos: " + ex.Message);
             }
-                
+
+            return dataTable;
         }
 
-        public void BusquedaFactura(string factura)
+        // Método para buscar factura (retorna DataTable)
+        public DataTable BusquedaFactura(string noFactura)
         {
-            
-        }
+            DataTable dataTable = new DataTable();
 
-        public void VaciarLista()
-        {
-            facturas.VaciarLista();
-        }
-
-        public void EliminiarElemento(string elemento)
-        {
-            //Se usara un inputBox para obtener el id del producto 
-            facturas.EliminarProducto(elemento);
-        }
-        public void CrearFactura(string idproducto, string nombreproducto, string nitcliente, int cantidadllevada, string nofactura, DateTime fechacompra, double pagoindividual, double pagototal)
-        { 
-            facturas.AgregarDatosFactura(idproducto, nombreproducto, nitcliente, cantidadllevada, nofactura, fechacompra, pagoindividual, pagototal);
-        }
-        
-        public void RealizarCompra()
-        {
-            facturas.EfecturarCompra();
-        }
-        public void EditarVenta(int idVenta, string nuevoNoFactura, double nuevoPrecioTotal, DateTime nuevaFecha)
-        {
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            try
             {
-                try
+                using (MySqlConnection con = new MySqlConnection(connectionString))
+                {
+                    con.Open();
+
+                    string query = "SELECT * FROM Ventas WHERE NoFactura = @noFactura";
+                    MySqlCommand cmd = new MySqlCommand(query, con);
+                    cmd.Parameters.AddWithValue("@noFactura", noFactura);
+
+                    MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                    adapter.Fill(dataTable);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error en búsqueda de factura: " + ex.Message);
+            }
+
+            return dataTable;
+        }
+
+        // Método para vaciar la lista temporal
+        public void VaciarListaTemporal()
+        {
+            facturas.VaciarListaVentas();
+        }
+
+        // Método para eliminar elemento de la lista temporal
+        public bool EliminarElementoLista(string idProducto)
+        {
+            try
+            {
+                facturas.EliminarVenta(idProducto);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        // Método para procesar todas las ventas en la lista temporal
+        public bool ProcesarVentas()
+        {
+            try
+            {
+                facturas.ProcesarVentas();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al procesar ventas: " + ex.Message);
+            }
+        }
+
+        // Método para editar una venta existente en la BD
+        public bool EditarVenta(int idVenta, string nuevoNoFactura, double nuevoPrecioTotal, DateTime nuevaFecha)
+        {
+            try
+            {
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
                 {
                     connection.Open();
-                    string query = "UPDATE Ventas SET NoFactura = @NoFactura, PrecioTotal = @PrecioTotal, Fecha = @Fecha WHERE ID_Venta = @ID_Venta";
+                    string query = @"UPDATE Ventas SET 
+                                NoFactura = @NoFactura, 
+                                PrecioTotal = @PrecioTotal, 
+                                Fecha = @Fecha 
+                                WHERE ID_Venta = @ID_Venta";
+
                     using (MySqlCommand cmd = new MySqlCommand(query, connection))
                     {
                         cmd.Parameters.AddWithValue("@NoFactura", nuevoNoFactura);
@@ -99,49 +151,43 @@ namespace ProyectoAutoPartes
                         cmd.Parameters.AddWithValue("@Fecha", nuevaFecha);
                         cmd.Parameters.AddWithValue("@ID_Venta", idVenta);
 
-                        int filasAfectadas = cmd.ExecuteNonQuery();
-                        if (filasAfectadas > 0)
-                            MessageBox.Show("Venta editada correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        else
-                            MessageBox.Show("No se encontró la venta a editar.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return cmd.ExecuteNonQuery() > 0;
                     }
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error al editar la venta: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al editar venta: " + ex.Message);
             }
         }
 
-        public void EliminarVenta(string idVenta)
+        // Método para eliminar una venta de la BD
+        public bool EliminarVenta(string idVenta)
         {
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            try
             {
-                try
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
                 {
                     connection.Open();
                     string query = "DELETE FROM Ventas WHERE ID_Venta = @ID_Venta";
+
                     using (MySqlCommand cmd = new MySqlCommand(query, connection))
                     {
                         cmd.Parameters.AddWithValue("@ID_Venta", idVenta);
-
-                        DialogResult result = MessageBox.Show("¿Estás seguro de que deseas eliminar esta venta?", "Confirmar eliminación", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-                        if (result == DialogResult.Yes)
-                        {
-                            int filasAfectadas = cmd.ExecuteNonQuery();
-                            if (filasAfectadas > 0)
-                                MessageBox.Show("Venta eliminada correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            else
-                                MessageBox.Show("No se encontró la venta a eliminar.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        }
+                        return cmd.ExecuteNonQuery() > 0;
                     }
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error al eliminar la venta: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al eliminar venta: " + ex.Message);
             }
         }
 
+        // Método para obtener el conteo actual de items en lista temporal
+        public int ObtenerCantidadItemsTemporales()
+        {
+            return facturas.ObtenerCantidadVentas();
+        }
     }
 }

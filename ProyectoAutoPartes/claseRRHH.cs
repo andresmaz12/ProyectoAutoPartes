@@ -16,12 +16,11 @@ namespace ProyectoAutoPartes
     public class claseGestionRRHH
     {
         //Dirección de la base de datos 
-        private string connectionString = "D:\\Base de datos VB\\ProyectoAutoPartes\\Avamce.... de proyecto.prueba6.mwb";
-
-        private formMenu form;
+        private readonly string connectionString;
+        private readonly IFormDependencies form;
 
         // Constructor con inyección de dependencias
-        public claseGestionRRHH(string connectionString, formMenu form)
+        public claseGestionRRHH(string connectionString, IFormDependencies form)
         {
             this.connectionString = connectionString;
             this.form = form;
