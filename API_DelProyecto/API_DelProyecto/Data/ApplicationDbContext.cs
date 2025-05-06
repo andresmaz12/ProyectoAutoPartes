@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ProyectoAutoPartes.Models;
+using API_DelProyecto.Models;
 
-namespace ProyectoAutoPartes.Data
+namespace API_DelProyecto.Data
 {
     public class ApplicationDbContext : DbContext
     {
@@ -22,7 +22,20 @@ namespace ProyectoAutoPartes.Data
             modelBuilder.Entity<Producto>().Property(p => p.Año).HasMaxLength(20);
             modelBuilder.Entity<Producto>().Property(p => p.Modelo).HasMaxLength(100);
             modelBuilder.Entity<Producto>().Property(p => p.Imagen).HasMaxLength(255);
+            
+            // Configuración para Cotizaciones
+            modelBuilder.Entity<Cotizacion>().ToTable("Cotizaciones");
+            modelBuilder.Entity<Cotizacion>().Property(c => c.Nombre).IsRequired().HasMaxLength(100);
+            modelBuilder.Entity<Cotizacion>().Property(c => c.Email).IsRequired().HasMaxLength(100);
+            modelBuilder.Entity<Cotizacion>().Property(c => c.Telefono).HasMaxLength(20);
+            modelBuilder.Entity<Cotizacion>().Property(c => c.Mensaje).HasMaxLength(500);
+            
+            // Relación entre Cotización y Producto
+            modelBuilder.Entity<Cotizacion>()
+                .HasOne(c => c.Producto)
+                .WithMany()
+                .HasForeignKey(c => c.ProductoId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
-}       
-
+}
