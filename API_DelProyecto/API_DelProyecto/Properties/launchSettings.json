@@ -4,7 +4,7 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:12719",
+      "applicationUrl": "https://api-git-master-pablos-projects-4849ceb5.vercel.app/",
       "sslPort": 44307
     }
   },
@@ -14,7 +14,7 @@
       "dotnetRunMessages": true,
       "launchBrowser": true,
       "launchUrl": "swagger",
-      "applicationUrl": "http://localhost:5171",
+      "applicationUrl": "https://api-two-wine.vercel.app/",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
@@ -24,7 +24,7 @@
       "dotnetRunMessages": true,
       "launchBrowser": true,
       "launchUrl": "swagger",
-      "applicationUrl": "https://localhost:7214;http://localhost:5171",
+      "applicationUrl": "https://api-git-master-pablos-projects-4849ceb5.vercel.app/",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
