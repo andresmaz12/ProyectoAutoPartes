@@ -1,12 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ProyectoAutoPartes.Data;
-using ProyectoAutoPartes.Models;
+using API_DelProyecto.Data;
+using API_DelProyecto.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ProyectoAutoPartes.Controllers
+namespace API_DelProyecto.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -19,6 +20,23 @@ namespace ProyectoAutoPartes.Controllers
         {
             _context = context;
             _logger = logger;
+        }
+
+        // GET: api/Cotizaciones
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Cotizacion>>> GetCotizaciones()
+        {
+            try
+            {
+                return await _context.Cotizaciones
+                    .Include(c => c.Producto)
+                    .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al obtener todas las cotizaciones");
+                return StatusCode(500, "Error interno del servidor al obtener cotizaciones");
+            }
         }
 
         // POST: api/Cotizaciones
@@ -77,6 +95,31 @@ namespace ProyectoAutoPartes.Controllers
             {
                 _logger.LogError(ex, $"Error al obtener cotización con ID {id}");
                 return StatusCode(500, "Error interno del servidor al obtener la cotización");
+            }
+        }
+        
+        // PUT: api/Cotizaciones/5/atender
+        [HttpPut("{id}/atender")]
+        public async Task<IActionResult> AtenderCotizacion(int id)
+        {
+            try
+            {
+                var cotizacion = await _context.Cotizaciones.FindAsync(id);
+                if (cotizacion == null)
+                {
+                    return NotFound();
+                }
+
+                cotizacion.Atendida = true;
+                _context.Entry(cotizacion).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error al atender cotización con ID {id}");
+                return StatusCode(500, "Error interno del servidor al atender la cotización");
             }
         }
     }

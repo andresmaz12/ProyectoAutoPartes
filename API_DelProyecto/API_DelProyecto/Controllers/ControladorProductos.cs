@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ProyectoAutoPartes.Data;
-using ProyectoAutoPartes.Models;
+using API_DelProyecto.Data;
+using API_DelProyecto.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ProyectoAutoPartes.Controllers
+namespace API_DelProyecto.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

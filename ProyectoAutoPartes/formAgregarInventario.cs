@@ -30,66 +30,95 @@ namespace ProyectoAutoPartes
             InitializeComponent();
         }
 
+        // Constructor con parámetros para editar productos existentes
+        public formAgregarInventario(int id, string nombre, string descripcion, string especificacion, 
+                                     double costo, double ganancia, int anio, int stock, string ruta)
+        {
+            InitializeComponent();
+            
+            // Asignar valores a los controles del formulario
+            ID = id;
+            textBoxID.Text = id.ToString();
+            textBoxNombreProd.Text = nombre;
+            richTextBoxDescripcion.Text = descripcion;
+            textBoxEspecificacion.Text = especificacion;
+            textBoxCosto.Text = costo.ToString();
+            textBoxGanancias.Text = ganancia.ToString();
+            textBoxAnioVehiculo.Text = anio.ToString();
+            textBoxStock.Text = stock.ToString();
+            textBoxRuta.Text = ruta;
+            
+            // Cambiar el texto del botón para reflejar que estamos editando
+            buttonAgregar.Text = "Actualizar";
+        }
+
         private void buttonAgregar_Click(object sender, EventArgs e)
         {
-            // Asignar los valores a las propiedades, validando los datos ingresados
+            // Validar que los campos requeridos no estén vacíos
+            if (string.IsNullOrWhiteSpace(textBoxNombreProd.Text))
+            {
+                MessageBox.Show("Por favor, ingrese el nombre del producto.");
+                textBoxNombreProd.Focus();
+                return;
+            }
 
-            // Asignar el valor del nombre
+            // Asignar valores a las propiedades
             Nombre = textBoxNombreProd.Text;
-
-            // Asignar el valor de la descripción
             Descripcion = richTextBoxDescripcion.Text;
-
-            //Asignar un valor para la especificacion del vehiculo
             Especificacion = textBoxEspecificacion.Text;
 
             // Validar que el costo sea un número decimal
-            if (double.TryParse(textBoxCosto.Text, out double precio))
+            if (double.TryParse(textBoxCosto.Text, out double costo))
             {
-                Costo = precio;  // Asignar el valor a la propiedad Precio
+                Costo = costo;
             }
             else
             {
-                MessageBox.Show("Por favor, ingrese un valor válido para el Precio.");
-                return;  // Salir si la validación falla
+                MessageBox.Show("Por favor, ingrese un valor válido para el Costo.");
+                textBoxCosto.Focus();
+                return;
             }
 
             // Validar que la ganancia sea un número decimal
-            if (double.TryParse(textBoxCosto.Text, out double ganancia))
+            if (double.TryParse(textBoxGanancias.Text, out double ganancia))
             {
-                Ganancia = ganancia;  // Asignar el valor a la propiedad Precio
+                Ganancia = ganancia;
             }
             else
             {
-                MessageBox.Show("Por favor, ingrese un valor válido para el Precio.");
-                return;  // Salir si la validación falla
+                MessageBox.Show("Por favor, ingrese un valor válido para la Ganancia.");
+                textBoxGanancias.Focus();
+                return;
             }
 
             // Validar que el stock sea un número entero
             if (int.TryParse(textBoxStock.Text, out int stock))
             {
-                Stock = stock;  // Asignar el valor a la propiedad Stock
+                Stock = stock;
             }
             else
             {
                 MessageBox.Show("Por favor, ingrese un valor válido para el Stock.");
-                return;  // Salir si la validación falla
+                textBoxStock.Focus();
+                return;
             }
 
+            // Validar que el año sea un número entero
             if (int.TryParse(textBoxAnioVehiculo.Text, out int anio))
             {
-                Anio = anio;  // Asignar el valor a la propiedad Stock
+                Anio = anio;
             }
             else
             {
-                MessageBox.Show("Por favor, ingrese un valor válido para el Stock.");
-                return;  // Salir si la validación falla
+                MessageBox.Show("Por favor, ingrese un valor válido para el Año del vehículo.");
+                textBoxAnioVehiculo.Focus();
+                return;
             }
 
-            //Asigna un valor al precio 
-            Precio = (Costo + Ganancia);
+            // Calcular el precio final (costo + ganancia)
+            Precio = Costo + Ganancia;
 
-            //Asignar un valor para la ruta de acceso de la imagen
+            // Asignar la ruta de la imagen
             Ruta = textBoxRuta.Text;
 
             // Cerrar el formulario y devolver un resultado exitoso
@@ -99,12 +128,25 @@ namespace ProyectoAutoPartes
 
         private void formAgregarInventario_Load(object sender, EventArgs e)
         {
-
+            // Aquí puedes inicializar valores o configuraciones al cargar el formulario
+            // Por ejemplo, centrar el formulario en la pantalla
+            this.CenterToParent();
         }
 
         private void buttonCancelar_Click(object sender, EventArgs e)
         {
+            // Confirmar si el usuario desea cancelar la operación
+            DialogResult result = MessageBox.Show("¿Está seguro que desea cancelar? Los datos no guardados se perderán.",
+                                                 "Confirmar cancelación",
+                                                 MessageBoxButtons.YesNo,
+                                                 MessageBoxIcon.Question);
 
+            if (result == DialogResult.Yes)
+            {
+                // Establecer el resultado como Cancel y cerrar
+                this.DialogResult = DialogResult.Cancel;
+                this.Close();
+            }
         }
 
         private void formAgregarInventario_FormClosing(object sender, FormClosingEventArgs e)

@@ -1,6 +1,6 @@
 using System;
 
-namespace ProyectoAutoPartes.Models
+namespace API_DelProyecto.Models
 {
     public class Cotizacion
     {

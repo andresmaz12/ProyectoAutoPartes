@@ -1,4 +1,4 @@
-﻿namespace ProyectoAutoPartes.Models
+﻿namespace API_DelProyecto.Models
 {
     public class Producto
     {
